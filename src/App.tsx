@@ -1,9 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import PageCommonComponent from "./page/pageCommonComponent";
+
 import PageIndex from "./page";
-import { GlobalStyle } from "./styled/globalStyles";
+import PageCommonComponent from "./page/pageCommonComponent";
 import Sider from "./component/sider/sider";
+
 import { CustomThemeProvider } from "./contexts/ThemeContext";
+import { GlobalStyle } from "./styled/globalStyles";
 
 function App() {
   return (
