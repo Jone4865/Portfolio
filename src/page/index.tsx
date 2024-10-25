@@ -697,6 +697,10 @@ const CardIconWrapper = styled.div`
 const ExperienceWrapper = styled.div`
   line-height: 1.3;
   margin-top: 2px;
+
+  div {
+    word-break: keep-all;
+  }
 `;
 
 const LineOne = styled.div<{ isDesktop: boolean }>`
