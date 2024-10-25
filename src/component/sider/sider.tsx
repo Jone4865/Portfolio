@@ -1,4 +1,6 @@
+import { useContext, useState } from "react";
 import styled from "styled-components";
+
 import {
   FaHeartbeat,
   FaEnvelope,
@@ -28,29 +30,16 @@ import {
 import { LuMessagesSquare, LuBookOpenCheck } from "react-icons/lu";
 import { TbBrandRedux, TbBrandReactNative } from "react-icons/tb";
 import { MdOutlineLightMode, MdOutlineNightlightRound } from "react-icons/md";
-
 import { GrRun } from "react-icons/gr";
 
 import profileImage from "../../assets/image/profile.png";
-import { useContext, useState } from "react";
-import { ThemeContext } from "../../contexts/ThemeContext";
 import useResponsive from "../../hooks/useResponsive";
+import { ThemeContext } from "../../contexts/ThemeContext";
 
 const Sider = () => {
+  const { isDesktop, isTablet } = useResponsive();
   const [stackVisible, setStackVisible] = useState(true);
   const [experienceVisible, setExperienceVisible] = useState(true);
-
-  const { isDesktop, isTablet } = useResponsive();
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText("cowhddnjsdl0@naver.com").then(() => {
-      alert("이메일 주소가 복사되었습니다.");
-    });
-  };
-
-  const handlePhoneCall = () => {
-    window.location.href = `tel:${"010-5705-4865"}`;
-  };
 
   const techArr = [
     { name: "React", icon: <FaReact /> },
@@ -77,6 +66,16 @@ const Sider = () => {
   ];
 
   const { toggleTheme, isDarkMode } = useContext(ThemeContext);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText("cowhddnjsdl0@naver.com").then(() => {
+      alert("이메일 주소가 복사되었습니다.");
+    });
+  };
+
+  const handlePhoneCall = () => {
+    window.location.href = `tel:${"010-5705-4865"}`;
+  };
 
   return (
     <Container isBig={isDesktop || isTablet}>
@@ -148,7 +147,7 @@ const Sider = () => {
       </TitleStyle>
       <TechWrapper visible={stackVisible}>
         {techArr.map((v) => (
-          <TechStyle>
+          <TechStyle key={v.name}>
             <div>{v.icon}</div>
             <div>{v.name}</div>
           </TechStyle>
@@ -202,6 +201,7 @@ const Container = styled.div<{ isBig: boolean }>`
   padding: 10px;
   overflow: scroll;
   z-index: 2;
+  margin-top: ${({ isBig }) => (isBig ? 0 : "250px")};
 `;
 
 const TopWrapper = styled.div`
@@ -356,4 +356,5 @@ const LightModeButtonWrapper = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  z-index: 2;
 `;
