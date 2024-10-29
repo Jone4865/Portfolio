@@ -9,6 +9,10 @@ import {
   FaReact,
   FaGraduationCap,
   FaGrinBeam,
+  FaAws,
+  FaGithub,
+  FaSourcetree,
+  FaFigma,
 } from "react-icons/fa";
 import {
   SiNextdotjs,
@@ -26,6 +30,12 @@ import {
   SiRecoil,
   SiStorybook,
   SiFlutter,
+  SiVercel,
+  SiAmazons3,
+  SiXcode,
+  SiAndroidstudio,
+  SiVisualstudio,
+  SiAdobexd,
 } from "react-icons/si";
 import { LuMessagesSquare, LuBookOpenCheck } from "react-icons/lu";
 import { TbBrandRedux, TbBrandReactNative } from "react-icons/tb";
@@ -45,24 +55,34 @@ const Sider = () => {
     { name: "React", icon: <FaReact /> },
     { name: "Next.js", icon: <SiNextdotjs /> },
     { name: "Typescript", icon: <SiTypescript /> },
-    { name: "Sass", icon: <SiSass /> },
+    { name: "Recoil", icon: <SiRecoil /> },
     { name: "Styledcomponent", icon: <SiStyledcomponents /> },
+    { name: "Sass", icon: <SiSass /> },
     { name: "AntDesign", icon: <SiAntdesign /> },
+    { name: "Mui", icon: <SiMui /> },
+    { name: "ReactQuery", icon: <SiReactquery /> },
     { name: "Apollographql", icon: <SiApollographql /> },
     { name: "Socket.io", icon: <SiSocketdotio /> },
     { name: "Axios", icon: <SiAxios /> },
-    { name: "Mui", icon: <SiMui /> },
-    { name: "ReactQuery", icon: <SiReactquery /> },
-    { name: "Recoil", icon: <SiRecoil /> },
+    { name: "VisualStudio", icon: <SiVisualstudio /> },
+    { name: "Github", icon: <FaGithub /> },
+    { name: "Sourcetree", icon: <FaSourcetree /> },
+    { name: "Figma", icon: <FaFigma /> },
+    { name: "AdobeXD", icon: <SiAdobexd /> },
     // { name: "Css3", icon: <SiCss3 /> },
     // { name: "Html5", icon: <SiHtml5 /> },
   ];
 
   const experienceTechArr = [
-    { name: "ReduxToolkit", icon: <TbBrandRedux /> },
-    { name: "StoryBook", icon: <SiStorybook /> },
+    { name: "AmazonAws", icon: <FaAws /> },
+    { name: "Vercel", icon: <SiVercel /> },
+    { name: "AmazonS3", icon: <SiAmazons3 /> },
     { name: "ReactNative", icon: <TbBrandReactNative /> },
     { name: "Flutter", icon: <SiFlutter /> },
+    { name: "XCode", icon: <SiXcode /> },
+    { name: "Android Studio", icon: <SiAndroidstudio /> },
+    { name: "ReduxToolkit", icon: <TbBrandRedux /> },
+    { name: "StoryBook", icon: <SiStorybook /> },
   ];
 
   const { toggleTheme, isDarkMode } = useContext(ThemeContext);
