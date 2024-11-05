@@ -198,6 +198,10 @@ function PageIndex() {
           name: "저장소 링크",
           url: "https://github.com/Jone4865/law_lawdiansHoldings",
         },
+        {
+          name: "관련영상 링크",
+          url: "https://drive.google.com/file/d/12jmJR7EIZw0DbMfhUEqaU9RaIU8XM2w0/view?usp=drive_link",
+        },
       ],
     },
     {
@@ -222,6 +226,10 @@ function PageIndex() {
         {
           name: "저장소 링크",
           url: "https://github.com/Jone4865/law_landing_realfi",
+        },
+        {
+          name: "관련영상 링크",
+          url: "https://drive.google.com/file/d/1-C0ixxMNVXRO6CDO9l-dtJPNETvxTWqG/view?usp=drive_link",
         },
       ],
     },
@@ -248,6 +256,10 @@ function PageIndex() {
         {
           name: "저장소 링크",
           url: "https://github.com/Jone4865/law_landing_gamdongplan",
+        },
+        {
+          name: "관련영상 링크",
+          url: "https://drive.google.com/file/d/1PvmixTpkjmTdYCh2hcXi-TlG_pLokSN7/view?usp=drive_link",
         },
       ],
     },
@@ -278,7 +290,7 @@ function PageIndex() {
         },
         {
           name: "관련영상 링크",
-          url: "https://drive.google.com/drive/folders/1RtOcW0blUPF5O-EsOuJPjiHqEc3BjEy6?usp=sharing",
+          url: "https://drive.google.com/file/d/1vhBm38_C92M3ov5CCcB_MgwmsGebARqp/view?usp=drive_link",
         },
       ],
     },
