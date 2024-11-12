@@ -3,6 +3,7 @@ import styled from "styled-components";
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   width?: number;
   buttonType?: "solid" | "outline";
+  test?: boolean;
 };
 
 const Button: React.FC<ButtonProps> = ({
