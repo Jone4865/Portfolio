@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const CardGallery: React.FC = ({}) => {
+const CardGallery: React.FC = () => {
   return (
     <Wrapper>
       <Gallery>

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const CardExpand: React.FC = ({}) => {
+const CardExpand: React.FC = () => {
   return (
     <Wrapper>
       <div
