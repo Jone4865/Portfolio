@@ -384,10 +384,10 @@ function PageIndex() {
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       const newVisibility = [...visibility];
 
+      const currentTarget = targetRefs.current;
+
       entries.forEach((entry) => {
-        const index = targetRefs.current.indexOf(
-          entry.target as HTMLDivElement
-        );
+        const index = currentTarget.indexOf(entry.target as HTMLDivElement);
         if (index !== -1) {
           newVisibility[index] = entry.isIntersecting;
         }
@@ -399,7 +399,9 @@ function PageIndex() {
       }
     };
 
-    const observers = targetRefs.current.map((el) => {
+    const currentTarget = targetRefs.current;
+
+    const observers = currentTarget.map((el) => {
       const observer = new IntersectionObserver(handleIntersection, {
         threshold: 0.1,
       });
@@ -413,7 +415,7 @@ function PageIndex() {
 
     return () => {
       observers.forEach((observer, index) => {
-        const el = targetRefs.current[index];
+        const el = currentTarget[index];
         if (el) {
           observer.unobserve(el);
         }
