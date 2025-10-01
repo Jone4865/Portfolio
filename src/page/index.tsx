@@ -10,12 +10,14 @@ import {
   SiApollographql,
   SiAxios,
   SiNextdotjs,
+  SiReacthookform,
   SiReactquery,
   SiRecoil,
   SiSass,
   SiSocketdotio,
   SiStorybook,
   SiStyledcomponents,
+  SiTailwindcss,
   SiTypescript,
 } from "react-icons/si";
 import { TbBrandRedux } from "react-icons/tb";
@@ -48,12 +50,39 @@ function PageIndex() {
       key: "Boundary",
       date: "2023.10 - 2024.10",
       experience: [
-        "reactjs를 활용한 csr 페이지 구현",
-        "mui, antd, styled-components를 활용한 UI 구현",
-        "react query를 활용한 api 요청 연동",
-        "react pdf를 통한 pdf 구현",
-        "i18next와 구글스프레드 시트 연동을 통한 key에 의존한 번역",
-        "recoil을 활용한 전역상태관리",
+        "Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선",
+        "Jotai 기반 전역 상태 관리 → 단순한 상태로 렌더링 최적화",
+        "React Hook Form + Zod 기반 폼 유효성 검사 → 타입 안전성과 런타임 오류 감소",
+        "next-intl + Google Spreadsheet 기반 다국어 시스템 → 글로벌 사용자 대응 강화",
+        "Google Maps API 기반 지도 컴포넌트 → 사용자 친화적 위치 정보 제공",
+        "Tailwind CSS 기반 UI 개발 → 생산성 향상과 일관된 스타일",
+      ],
+      people: "기획1, 디자인 3, 프론트엔드 2, 백엔드 2, 세일즈 포스 1",
+      stack: [
+        { name: "Next.js", icon: <SiNextdotjs /> },
+        { name: "TypeScript", icon: <SiTypescript /> },
+        { name: "React Hook Form", icon: <SiReacthookform /> },
+        { name: "Tailwind CSS", icon: <SiTailwindcss /> },
+      ],
+      subTitle: "신규 사이트 및 관리자 사이트 개발",
+      title: "Hanwha Vision - STEP",
+      link: [
+        {
+          name: "서비스 링크",
+          url: "https://step.hanwhavision.com/kr/login",
+        },
+      ],
+    },
+    {
+      key: "Boundary",
+      date: "2023.10 - 2024.10",
+      experience: [
+        "React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선",
+        "React Query 기반 데이터 패칭 → 캐싱과 리트라이로 성능 및 안정성 개선",
+        "Recoil 기반 전역 상태 관리 → 단순하고 직관적인 상태 로직",
+        "next-intl + Google Spreadsheet 기반 다국어 시스템 → 글로벌 사용자 대응",
+        "React PDF 기반 PDF 생성/다운로드 → 사용자 편의성과 문서 자동화",
+        "MUI·Ant Design·styled-components 기반 UI 개발 → 일관된 디자인과 생산성 향상",
       ],
       people: "기획&디자인 2, 프론트엔드 5, 백엔드 6",
       stack: [
@@ -62,7 +91,7 @@ function PageIndex() {
         { name: "Ant Design", icon: <SiAntdesign /> },
         { name: "React Query", icon: <SiReactquery /> },
         { name: "Recoil", icon: <SiRecoil /> },
-        { name: "styled-coponents", icon: <SiStyledcomponents /> },
+        { name: "styled-components", icon: <SiStyledcomponents /> },
       ],
       subTitle: "제약 회사 내부 교육 및 증상, 약물 관리 내부 프로젝트 구현",
       title: "Dream Trial",
@@ -71,14 +100,14 @@ function PageIndex() {
       key: "Lawdians",
       date: "2023.05 - 2023.09",
       experience: [
-        "nextjs 서버와 nodemailer, axios를 활용한 api 요청 및 응답, 메일 발송",
-        "nextjs 서버와 cheerio를 활용한 크롤링",
-        "react-js-pagination를 활용한 페이지네이션",
-        "scss mixin을 활용한 반응형 뷰 구현",
-        "react-slick을 활용한 캐러셀 구현",
-        "apollo-client, graphql을 활용한 api 요청",
-        "apollo-client, graphql-ws를 활용한 실시간 채팅기능 구현",
-        "nextjs를 활용한 ssr 페이지 구현",
+        "Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선",
+        "Apollo Client + GraphQL 기반 API 연동 → 데이터 일관성 및 효율적 통신",
+        "graphql-ws 기반 실시간 기능(채팅) → 고객-관리자 실시간 소통",
+        "Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리",
+        "Cheerio 기반 크롤링 → 외부 상품 데이터 자동 수집 및 운영 효율화",
+        "SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응",
+        "react-js-pagination 기반 페이지네이션 → 목록 탐색성 향상",
+        "react-slick 기반 캐러셀 → 프로모션 및 핵심 콘텐츠 노출 강화",
       ],
       people: "기획 1, 디자인 1, 프론트엔드 3, 백엔드 1",
       stack: [
@@ -101,10 +130,10 @@ function PageIndex() {
       key: "Lawdians",
       date: "2023.07 - 2023.08",
       experience: [
-        "apollo-client, graphql을 활용한 api 요청",
-        "styled-components, react-responsive를 활용한 반응형 뷰 구현",
-        "antd의 UI 컴포넌트를 활용한 사용자 인터페이스 설계 및 개발",
-        "react를 활용한 csr 페이지 구현",
+        "Apollo Client + GraphQL 기반 API 연동 → 데이터 일관성 및 효율적 통신",
+        "React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선",
+        "react-responsive 기반 반응형 구현 → 다양한 디바이스 대응",
+        "Ant Design 기반 UI 설계·개발 → 일관된 컴포넌트 활용",
       ],
       people: "기획 1, 프론트엔드 1, 백엔드 1",
       stack: [
@@ -127,10 +156,10 @@ function PageIndex() {
       key: "Lawdians",
       date: "2023.04 - 2023.05",
       experience: [
-        "apollo-client, graphql을 활용한 api 요청",
-        "styled-components, react-responsive를 활용한 반응형 뷰 구현",
-        "antd의 UI 컴포넌트를 활용한 사용자 인터페이스 설계 및 개발",
-        "react를 활용한 csr 페이지 구현",
+        "Apollo Client + GraphQL 기반 API 연동 → 데이터 일관성 및 효율적 통신",
+        "React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선",
+        "react-responsive 기반 반응형 구현 → 다양한 디바이스 대응",
+        "Ant Design 기반 UI 설계·개발 → 일관된 컴포넌트 활용",
       ],
       people: "기획 1, 프론트엔드 2, 백엔드 1",
       stack: [
@@ -153,10 +182,10 @@ function PageIndex() {
       key: "Lawdians",
       date: "2023.02 - 2023.03",
       experience: [
-        "apollo-client, graphql을 활용한 api 요청",
-        "styled-components, react-responsive를 활용한 반응형 뷰 구현",
-        "antd의 UI 컴포넌트를 활용한 사용자 인터페이스 설계 및 개발",
-        "react를 활용한 csr 페이지 구현",
+        "Apollo Client + GraphQL 기반 API 연동 → 데이터 일관성 및 효율적 통신",
+        "React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선",
+        "react-responsive 기반 반응형 구현 → 다양한 디바이스 대응",
+        "Ant Design 기반 UI 설계·개발 → 일관된 컴포넌트 활용",
       ],
       people: "기획 1, 프론트엔드 2, 백엔드 1",
       stack: [
@@ -179,10 +208,10 @@ function PageIndex() {
       key: "Lawdians",
       date: "2023.01 - 2023.02",
       experience: [
-        "nextjs를 활용한 ssr 페이지 구현",
-        "scss mixin을 활용한 반응형 뷰 구현",
-        "nextjs 서버와 nodemailer, axios를 활용한 api 요청 및 응답, 메일 발송",
-        "kakaomap api를 활용한 지도 컴포넌트 구현",
+        "Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선",
+        "Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리",
+        "KakaoMap API 기반 지도 컴포넌트 → 직관적 위치 정보 제공",
+        "SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응",
       ],
       people: "기획 1, 디자인 1, 프론트엔드 1",
       stack: [
@@ -208,10 +237,10 @@ function PageIndex() {
       key: "Lawdians",
       date: "2023.01 - 2023.01",
       experience: [
-        "nextjs를 활용한 ssr 페이지 구현",
-        "scss를 활용한 퍼블리싱",
-        "react-responsive를 활용한 반응형 뷰 구현",
-        "storybook을 활용한 컴포넌트 시각적 정리 및 문서화",
+        "Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선",
+        "react-responsive 기반 반응형 구현 → 다양한 디바이스 대응",
+        "Storybook 기반 컴포넌트 문서화 → 재사용성과 협업 효율 향상",
+        "SCSS 기반 스타일링 → 일관된 스타일과 유지보수성 강화",
       ],
       people: "기획 1, 디자인 1, 프론트엔드 1",
       stack: [
@@ -237,10 +266,10 @@ function PageIndex() {
       key: "Lawdians",
       date: "2023.01 - 2023.01",
       experience: [
-        "nextjs를 활용한 ssr 페이지 구현",
-        "scss mixin을 활용한 반응형 뷰 구현",
-        "nextjs 서버와 nodemailer, axios를 활용한 api 요청 및 응답, 메일 발송",
-        "storybook을 활용한 컴포넌트 시각적 정리 및 문서화",
+        "Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선",
+        "Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리",
+        "SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응",
+        "Storybook 기반 컴포넌트 문서화 → 재사용성과 협업 효율 향상",
       ],
       people: "기획 1, 디자인 1, 프론트엔드 1",
       stack: [
@@ -267,11 +296,11 @@ function PageIndex() {
       key: "Lawdians",
       date: "2023.01 - 2023.01",
       experience: [
-        "nextjs를 활용한 ssr 페이지 구현",
-        "scss mixin을 활용한 반응형 뷰 구현",
-        "nextjs 서버와 nodemailer, axios를 활용한 api 요청 및 응답, 메일 발송",
-        "storybook을 활용한 컴포넌트 시각적 정리 및 문서화",
-        "nextjs 서버와 cheerio를 활용한 크롤링",
+        "Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선",
+        "Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리",
+        "Cheerio 기반 크롤링 → 외부 데이터 자동 수집 및 운영 효율화",
+        "SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응",
+        "Storybook 기반 컴포넌트 문서화 → 재사용성과 협업 효율 향상",
       ],
       people: "기획 1, 디자인 1, 프론트엔드 1",
       stack: [
@@ -298,13 +327,13 @@ function PageIndex() {
       key: "Hanghae99",
       date: "2022.08 - 2022.09",
       experience: [
-        "socket.io를 활용한 실시간 채팅 기능 및 실시간 게임 구현",
-        "axios를 활용한 api 요청 및 응답",
-        "react를 활용한 csr 페이지 구현",
-        "kakao-login-api를 활용한 카카오 로그인 기능 구현",
-        "redux-toolkit을 활용한 전역상태관리",
-        "styled-components를 활용한 퍼블리싱",
-        "amazone s3, amazon cloud front, aws certificate manager를 통한 https 자동화 배포",
+        "Socket.io 기반 실시간 기능(채팅/게임) → 사용자 간 즉각적 상호작용",
+        "Redux Toolkit 기반 전역 상태 관리 → 상태 로직 단순화 및 유지보수성 향상",
+        "React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선",
+        "Axios 기반 API 요청/응답 처리 → 안정적 서버-클라이언트 통신",
+        "Amazon S3·CloudFront·ACM 기반 HTTPS 배포 자동화 → 안정적 운영 및 보안 강화",
+        "Kakao Login API 기반 소셜 로그인 → 간편한 인증 제공",
+        "styled-components 기반 스타일링 → 일관된 스타일과 유지보수성 강화",
       ],
       people: "디자인 1, 프론트엔드 2, 백엔드 3",
       stack: [
@@ -334,11 +363,11 @@ function PageIndex() {
       key: "Hanghae99",
       date: "2022.08 - 2022.08",
       experience: [
-        "redux-tullkit을 활용한 전역상태 관리",
-        "styled-components를 활용한 퍼블리싱",
-        "react를 활용한 csr 페이지 구현",
-        "amazone s3, amazon cloud front를 활용한 배포",
-        "axios를 활용한 api 요청 및 응답",
+        "Redux Toolkit 기반 전역 상태 관리 → 상태 로직 단순화 및 유지보수성 향상",
+        "React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선",
+        "Amazon S3·CloudFront 기반 배포 → 안정적 서비스 운영 환경",
+        "Axios 기반 API 요청/응답 처리 → 서버-클라이언트 통신 효율화",
+        "styled-components 기반 스타일링 → 일관된 스타일과 유지보수성 강화",
       ],
       people: "디자인 1, 프론트엔드 2, 백엔드 3",
       stack: [
@@ -534,12 +563,14 @@ function PageIndex() {
               </ExperienceWrapper>
             </div>
             <CardIconWrapper>
-              {v.stack.map((item) => (
-                <div key={item.name}>
-                  <span>{item.icon}</span>
-                  <span>{item.name}</span>
-                </div>
-              ))}
+              {[...v.stack]
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((item) => (
+                  <div key={item.name}>
+                    <span>{item.icon}</span>
+                    <span>{item.name}</span>
+                  </div>
+                ))}
             </CardIconWrapper>
             {v.link?.map((item) => (
               <div key={item.name}>
