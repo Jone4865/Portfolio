@@ -8,12 +8,16 @@ import RadioButton from "../component/radio";
 import InputWithIcon from "../component/inputWithIcon";
 import CardExpand from "../component/CardExpand";
 import CardGallery from "../component/CardGallery";
+import styled from "styled-components";
+import useResponsive from "../hooks/useResponsive";
 
 function PageCommonComponent() {
+  const { isDesktop, isTablet } = useResponsive();
+
   const [errorText, setErrorText] = useState("");
 
   return (
-    <div>
+    <Container isDesktop={isDesktop} isTablet={isTablet}>
       <div>Button</div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Button
@@ -131,8 +135,13 @@ function PageCommonComponent() {
       >
         <CardGallery />
       </div>
-    </div>
+    </Container>
   );
 }
 
 export default PageCommonComponent;
+
+const Container = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
+  margin-left: ${({ isDesktop, isTablet }) =>
+    isDesktop || isTablet ? "320px" : "0"};
+`;
