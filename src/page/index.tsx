@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState, useCallback } from "react";
 import { motion, useScroll } from "framer-motion";
 import styled, { css } from "styled-components";
 import Typical from "react-typical";
@@ -403,37 +403,57 @@ function PageIndex() {
   );
 
   // 스크롤 위치에 따른 활성 섹션 계산
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const sectionHeight = window.innerHeight;
-      
-      if (isMobile) {
-        // 모바일: 사이더 높이 + 300px 이후부터 섹션 계산
-        const introThreshold = sidebarHeight + 100;
-        if (scrollY < introThreshold) {
-          setActiveSection(0); // Home
-        } else {
-          const adjustedScrollY = scrollY - introThreshold;
-          const currentSection = Math.floor(adjustedScrollY / sectionHeight) + 1; // Intro부터 시작
-          const maxSection = 1 + project.length;
-          const clampedSection = Math.min(currentSection, maxSection);
-          setActiveSection(clampedSection);
-        }
+  const handleScroll = useCallback(() => {
+    const scrollY = window.scrollY;
+    const sectionHeight = window.innerHeight;
+    let newActiveSection = 0;
+    
+    if (isMobile) {
+      // 모바일: 사이더 높이 + 100px 이후부터 섹션 계산
+      const introThreshold = sidebarHeight + 100;
+      if (scrollY < introThreshold) {
+        newActiveSection = 0; // Home
       } else {
-        // 데스크톱: 기존 로직
-        const currentSection = Math.floor(scrollY / sectionHeight);
+        const adjustedScrollY = scrollY - introThreshold;
+        // 섹션 경계를 더 정확하게 계산 (시작 지점 기준)
+        const currentSection = Math.floor(adjustedScrollY / sectionHeight) + 1; // Intro부터 시작
         const maxSection = 1 + project.length;
-        const clampedSection = Math.min(currentSection, maxSection);
-        setActiveSection(clampedSection);
+        newActiveSection = Math.min(Math.max(currentSection, 1), maxSection);
+      }
+    } else {
+      // 데스크톱: 기존 로직
+      const currentSection = Math.floor(scrollY / sectionHeight);
+      const maxSection = 1 + project.length;
+      newActiveSection = Math.min(currentSection, maxSection);
+    }
+    
+    setActiveSection(prev => {
+      // 이전 섹션과 다를 때만 업데이트하여 중복 활성화 방지
+      if (newActiveSection !== prev) {
+        return newActiveSection;
+      }
+      return prev;
+    });
+  }, [isMobile, sidebarHeight, project.length]);
+
+  useEffect(() => {
+    // 스크롤 이벤트를 throttling하여 중복 호출 방지
+    let ticking = false;
+    const throttledHandleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', throttledHandleScroll);
     handleScroll(); // 초기 실행
 
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isMobile, sidebarHeight, project.length]);
+    return () => window.removeEventListener('scroll', throttledHandleScroll);
+  }, [handleScroll]);
 
   // 사이더 높이 측정
   useEffect(() => {
@@ -487,7 +507,7 @@ function PageIndex() {
             <PageDot
               isActive={activeSection === 1}
               onClick={() => {
-                const targetScroll = isMobile ? sidebarHeight + 300 : 1 * window.innerHeight;
+                const targetScroll = isMobile ? sidebarHeight + 100 : 1 * window.innerHeight;
                 window.scrollTo({ top: targetScroll, behavior: 'smooth' });
               }}
             />
@@ -502,7 +522,7 @@ function PageIndex() {
                 isActive={activeSection === idx + 2}
                 onClick={() => {
                   const targetScroll = isMobile 
-                    ? sidebarHeight + 300 + (idx + 1) * window.innerHeight
+                    ? sidebarHeight + 100 + (idx + 1) * window.innerHeight
                     : (idx + 2) * window.innerHeight;
                   window.scrollTo({ top: targetScroll, behavior: 'smooth' });
                 }}
@@ -524,6 +544,7 @@ function PageIndex() {
               src={backgroundImage}
               width={"100%"}
               height={"100%"}
+              style={{borderRadius: isMobile ? "0px" : "10px"}}
             />
           </TypingWrapper>
         </SectionContainer>
@@ -674,7 +695,7 @@ const TypingWrapper = styled.div<{
 `;
 
 const Invitation = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
-  height: 200px;
+  min-height: 200px;
   width: calc(100% - 80px);
   margin: 50px 20px;
   background-color: ${(props) => props.theme.siderBackGround};
@@ -685,7 +706,7 @@ const Invitation = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
   font-weight: bold;
   font-size: ${({ isDesktop, isTablet }) =>
     isDesktop ? "14px" : isTablet ? "12px" : "11px"};
-  padding: 0 20px;
+  padding: 5px 20px;
 `;
 
 const PrograssStyle = styled(motion.div)<{ isDesktop: boolean }>`
@@ -709,6 +730,8 @@ const CardWrapper = styled(motion.div)<{
   background-color: ${(props) => props.theme.cardColor};
   color: ${(props) => props.theme.cardText};
   width: 60%;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
 
   margin: 70px auto;
   border-radius: 20px;
