@@ -98,7 +98,7 @@ const Sider = () => {
   };
 
   return (
-    <Container isBig={isDesktop || isTablet}>
+    <Container isBig={isDesktop || isTablet} data-sider="true">
       <LightModeButtonWrapper onClick={toggleTheme}>
         {isDarkMode ? (
           <MdOutlineLightMode />
