@@ -19,7 +19,7 @@ function AppContent() {
         {!is404Page && <Sider />}
         <Routes>
           <Route path="/" element={<PageIndex />} />
-          <Route path="/common" element={<PageCommonComponent />} />
+          <Route path="/test" element={<PageCommonComponent />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </CustomThemeProvider>
