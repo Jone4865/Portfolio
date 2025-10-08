@@ -1,10 +1,10 @@
-import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { motion, useScroll } from "framer-motion";
 import styled, { css } from "styled-components";
 import Typical from "react-typical";
 
 //icon들
-import { FaAmazon, FaArrowUp, FaAws, FaReact } from "react-icons/fa";
+import { FaAmazon, FaAws, FaReact } from "react-icons/fa";
 import {
   SiAntdesign,
   SiApollographql,
@@ -41,9 +41,7 @@ function PageIndex() {
   const { isDesktop, isTablet, isMobile } = useResponsive();
   const { scrollYProgress } = useScroll();
 
-  const targetRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [visibility, setVisibility] = useState<boolean[]>([]);
-  const [arrowVisible, setArrowVisible] = useState(false);
+  const [activeSection, setActiveSection] = useState<number>(0);
 
   const [project] = useState<Data[]>([
     {
@@ -387,13 +385,7 @@ function PageIndex() {
     },
   ]);
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
+  
   const typicalComponent = useMemo(
     () => (
       <Typical
@@ -409,91 +401,94 @@ function PageIndex() {
     []
   );
 
+  // 스크롤 위치에 따른 활성 섹션 계산
   useEffect(() => {
-    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-      const newVisibility = [...visibility];
-
-      const currentTarget = targetRefs.current;
-
-      entries.forEach((entry) => {
-        const index = currentTarget.indexOf(entry.target as HTMLDivElement);
-        if (index !== -1) {
-          newVisibility[index] = entry.isIntersecting;
-        }
-      });
-
-      // 기존 상태와 비교해서 다를 때만 상태 업데이트
-      if (JSON.stringify(newVisibility) !== JSON.stringify(visibility)) {
-        setVisibility(newVisibility);
-      }
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const sectionHeight = window.innerHeight; // 화면 높이 단위
+      const currentSection = Math.floor(scrollY / sectionHeight);
+      setActiveSection(currentSection);
     };
 
-    const currentTarget = targetRefs.current;
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // 초기 실행
 
-    const observers = currentTarget.map((el) => {
-      const observer = new IntersectionObserver(handleIntersection, {
-        threshold: 0.1,
-      });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-      if (el) {
-        observer.observe(el);
-      }
-
-      return observer;
-    });
-
-    return () => {
-      observers.forEach((observer, index) => {
-        const el = currentTarget[index];
-        if (el) {
-          observer.unobserve(el);
-        }
-      });
-    };
-  }, [visibility]);
-
-  useEffect(() => {
-    const unsubscribe = scrollYProgress.onChange((latestProgress) => {
-      const scrollPosition =
-        latestProgress * document.documentElement.scrollHeight;
-
-      setArrowVisible(scrollPosition > 1000);
-    });
-
-    return () => unsubscribe();
-  }, [scrollYProgress]);
 
   return (
     <Container isDesktop={isDesktop} isTablet={isTablet}>
-      <Wrap>
-        <ToTopArrow
-          initial={{ opacity: arrowVisible ? 0 : 0.5, scale: 0.5 }}
-          animate={{ opacity: arrowVisible ? 0.5 : 0, scale: 1 }}
-          transition={{
-            duration: 0.8,
-            ease: [0, 0.71, 0.2, 1.01],
-          }}
-          onClick={scrollToTop}
-        >
-          <FaArrowUp />
-        </ToTopArrow>
+      <Wrap totalSections={2 + project.length}>
+        
         <PrograssStyle
           isDesktop={isDesktop}
           style={{ scaleX: scrollYProgress }}
         />
-        <TypingWrapper isDesktop={isDesktop} isTablet={isTablet}>
-          {typicalComponent}
-          <img
-            alt="backgroundImage"
-            src={backgroundImage}
-            width={"100%"}
-            height={"100%"}
-          />
-        </TypingWrapper>
-        <motion.div
-          initial={{ width: "0" }}
-          animate={{ width: "100%" }}
-          transition={{ ease: "easeInOut" }}
+        
+        {/* 페이지 인디케이터 */}
+        <PageIndicator isDesktop={isDesktop} isTablet={isTablet}>
+          {/* Home */}
+          <DotGroup>
+            <DotLabel>Home</DotLabel>
+            <PageDot
+              isActive={activeSection === 0}
+              onClick={() => {
+                const targetScroll = 0 * window.innerHeight;
+                window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+              }}
+            />
+          </DotGroup>
+          
+          {/* Intro */}
+          <DotGroup>
+            <DotLabel>Intro</DotLabel>
+            <PageDot
+              isActive={activeSection === 1}
+              onClick={() => {
+                const targetScroll = 1 * window.innerHeight;
+                window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+              }}
+            />
+          </DotGroup>
+          
+          {/* Projects */}
+          <DotGroup>
+            <DotLabel>Projects</DotLabel>
+            {project.map((_, idx) => (
+              <PageDot
+                key={idx}
+                isActive={activeSection === idx + 2}
+                onClick={() => {
+                  const targetScroll = (idx + 2) * window.innerHeight;
+                  window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+                }}
+              />
+            ))}
+          </DotGroup>
+        </PageIndicator>
+        {/* 섹션 0: TypingWrapper */}
+        <SectionContainer 
+          isActive={activeSection === 0}
+          isDesktop={isDesktop}
+          isTablet={isTablet}
+        >
+          <TypingWrapper isDesktop={isDesktop} isTablet={isTablet}>
+            {typicalComponent}
+            <img
+              alt="backgroundImage"
+              src={backgroundImage}
+              width={"100%"}
+              height={"100%"}
+            />
+          </TypingWrapper>
+        </SectionContainer>
+
+        {/* 섹션 1: Invitation */}
+        <SectionContainer 
+          isActive={activeSection === 1}
+          isDesktop={isDesktop}
+          isTablet={isTablet}
         >
           <Invitation isDesktop={isDesktop} isTablet={isTablet}>
             <div>
@@ -518,69 +513,60 @@ function PageIndex() {
               라고 말할 수 있게 되었습니다.
             </div>
           </Invitation>
-        </motion.div>
+        </SectionContainer>
 
+        {/* 섹션 2~N: 각 프로젝트 */}
         {project.map((v, idx) => (
-          <CardWrapper
-            key={v.title}
+          <SectionContainer 
+            key={v.title} 
+            isActive={activeSection === idx + 2}
             isDesktop={isDesktop}
             isTablet={isTablet}
-            isMobile={isMobile}
-            ref={(el) => (targetRefs.current[idx] = el)}
-            initial={{
-              scale: 0,
-              opacity: 0,
-              rotate: -20,
-            }}
-            animate={
-              visibility[idx]
-                ? { rotate: 0, scale: 1, opacity: 1 }
-                : { scale: 0 }
-            }
-            transition={{
-              type: "spring",
-              stiffness: 260,
-              damping: 20,
-            }}
-            whileHover={{ scale: 1.1 }}
           >
-            <LineOne isDesktop={isDesktop}>
-              <h2>프로젝트명 : {v.title}</h2>
-              <h4>기간 : {v.date}</h4>
-            </LineOne>
-            <div>
-              <span>목적</span> : {v.subTitle}
-            </div>
-            <div>
-              <span>인원</span> : {v.people}
-            </div>
-            <div>
-              <span>경험</span>
-              <ExperienceWrapper>
-                {v.experience.map((item) => (
-                  <div key={item}>&nbsp; - {item}</div>
-                ))}
-              </ExperienceWrapper>
-            </div>
-            <CardIconWrapper>
-              {[...v.stack]
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((item) => (
-                  <div key={item.name}>
-                    <span>{item.icon}</span>
-                    <span>{item.name}</span>
-                  </div>
-                ))}
-            </CardIconWrapper>
-            {v.link?.map((item) => (
-              <div key={item.name}>
-                <span>{item.name}</span> :{" "}
-                <a href={item.url} target="_blank" rel="noreferrer">
-                  {item.url}
-                </a>
+            <CardWrapper
+              isDesktop={isDesktop}
+              isTablet={isTablet}
+              isMobile={isMobile}
+              whileHover={{ scale: 1.1 }}
+            >
+              <LineOne isDesktop={isDesktop}>
+                <h2>프로젝트명 : {v.title}</h2>
+                <h4>기간 : {v.date}</h4>
+              </LineOne>
+              <div>
+                <span>목적</span> : {v.subTitle}
               </div>
-            ))}
-          </CardWrapper>
+              <div>
+                <span>인원</span> : {v.people}
+              </div>
+              <div>
+                <span>경험</span>
+                <ExperienceWrapper>
+                  {v.experience.map((item) => (
+                    <div key={item}>&nbsp; - {item}</div>
+                  ))}
+                </ExperienceWrapper>
+              </div>
+              <CardIconWrapper>
+                {[...v.stack]
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((item) => (
+                    <div key={item.name}>
+                      <span>{item.icon}</span>
+                      <span>{item.name}</span>
+                    </div>
+                  ))}
+              </CardIconWrapper>
+              {v.link?.map((item) => (
+                <div key={item.name}>
+                  <span>{item.name}</span> :{" "}
+                  <a href={item.url} target="_blank" rel="noreferrer">
+                    {item.url}
+                  </a>
+                </div>
+              ))}
+            </CardWrapper>
+          </SectionContainer>
         ))}
       </Wrap>
     </Container>
@@ -594,7 +580,30 @@ const Container = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
     isDesktop || isTablet ? "320px" : "0"};
 `;
 
-const Wrap = styled.div``;
+const Wrap = styled.div<{ totalSections: number }>`
+  height: ${({ totalSections }) => totalSections * 100}vh; /* 100vh * 섹션 수 */
+`;
+
+const SectionContainer = styled(motion.div)<{ 
+  isActive: boolean; 
+  isDesktop?: boolean; 
+  isTablet?: boolean; 
+}>`
+  position: fixed;
+  top: 0;
+  left: ${({ isDesktop, isTablet }) =>
+    isDesktop || isTablet ? "320px" : "0"};
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: ${({ isActive }) => isActive ? 10 : 1};
+  opacity: ${({ isActive }) => isActive ? 1 : 0};
+  transition: opacity 0.5s ease-in-out;
+`;
 
 const TypingWrapper = styled.div<{
   isDesktop: boolean;
@@ -647,26 +656,6 @@ const PrograssStyle = styled(motion.div)<{ isDesktop: boolean }>`
   margin-left: ${({ isDesktop }) => (isDesktop ? "320px" : "0")};
 `;
 
-const ToTopArrow = styled(motion.div)`
-  position: fixed;
-  z-index: 3;
-  bottom: 20px;
-  right: 20px;
-  height: 50px;
-  width: 50px;
-  border-radius: 100%;
-  background-color: ${(props) => props.theme.arrowBackGround};
-  color: ${(props) => props.theme.background};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0.5;
-  cursor: pointer;
-  text-align: center;
-  & > span {
-    margin-top: 5px;
-  }
-`;
 
 const CardWrapper = styled(motion.div)<{
   isDesktop: boolean;
@@ -752,4 +741,45 @@ const LineOne = styled.div<{ isDesktop: boolean }>`
   display: flex;
   flex-direction: ${({ isDesktop }) => (isDesktop ? "row" : "column")};
   justify-content: space-between;
+`;
+
+const PageIndicator = styled.div<{ isDesktop?: boolean; isTablet?: boolean }>`
+  position: fixed;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+`;
+
+const DotGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+`;
+
+const DotLabel = styled.div`
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+`;
+
+const PageDot = styled.div<{ isActive: boolean }>`
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: ${({ isActive }) => isActive ? "#ff0055" : "rgba(255, 255, 255, 0.5)"};
+  cursor: pointer;
+  transition: all 0.3s ease;
+  transform: scale(${({ isActive }) => isActive ? 1.2 : 1});
+  
+  &:hover {
+    background-color: #ff0055;
+    transform: scale(1.3);
+  }
 `;
