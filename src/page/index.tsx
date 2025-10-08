@@ -42,6 +42,7 @@ function PageIndex() {
   const { scrollYProgress } = useScroll();
 
   const [activeSection, setActiveSection] = useState<number>(0);
+  const [sidebarHeight, setSidebarHeight] = useState<number>(0);
 
   const [project] = useState<Data[]>([
     {
@@ -405,17 +406,56 @@ function PageIndex() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const sectionHeight = window.innerHeight; // 화면 높이 단위
-      const currentSection = Math.floor(scrollY / sectionHeight);
-      setActiveSection(currentSection);
+      const sectionHeight = window.innerHeight;
+      
+      if (isMobile) {
+        // 모바일: 사이더 높이 + 300px 이후부터 섹션 계산
+        const introThreshold = sidebarHeight + 100;
+        if (scrollY < introThreshold) {
+          setActiveSection(0); // Home
+        } else {
+          const adjustedScrollY = scrollY - introThreshold;
+          const currentSection = Math.floor(adjustedScrollY / sectionHeight) + 1; // Intro부터 시작
+          const maxSection = 1 + project.length;
+          const clampedSection = Math.min(currentSection, maxSection);
+          setActiveSection(clampedSection);
+        }
+      } else {
+        // 데스크톱: 기존 로직
+        const currentSection = Math.floor(scrollY / sectionHeight);
+        const maxSection = 1 + project.length;
+        const clampedSection = Math.min(currentSection, maxSection);
+        setActiveSection(clampedSection);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // 초기 실행
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isMobile, sidebarHeight, project.length]);
 
+  // 사이더 높이 측정
+  useEffect(() => {
+    const measureSidebarHeight = () => {
+      if (isMobile) {
+        const siderElement = document.querySelector('[data-sider]') as HTMLElement;
+        if (siderElement) {
+          setSidebarHeight(siderElement.scrollHeight);
+        }
+      }
+    };
+
+    // 초기 측정
+    measureSidebarHeight();
+
+    // 리사이즈 시 재측정
+    window.addEventListener('resize', measureSidebarHeight);
+
+    return () => {
+      window.removeEventListener('resize', measureSidebarHeight);
+    };
+  }, [isMobile]);
 
   return (
     <Container isDesktop={isDesktop} isTablet={isTablet}>
@@ -426,8 +466,9 @@ function PageIndex() {
           style={{ scaleX: scrollYProgress }}
         />
         
-        {/* 페이지 인디케이터 */}
-        <PageIndicator isDesktop={isDesktop} isTablet={isTablet}>
+        {/* 페이지 인디케이터 - 모바일에서는 Intro 활성화 시에만 표시 */}
+        {(activeSection >= 1 || !isMobile) && (
+          <PageIndicator isDesktop={isDesktop} isTablet={isTablet}>
           {/* Home */}
           <DotGroup>
             <DotLabel>Home</DotLabel>
@@ -446,7 +487,7 @@ function PageIndex() {
             <PageDot
               isActive={activeSection === 1}
               onClick={() => {
-                const targetScroll = 1 * window.innerHeight;
+                const targetScroll = isMobile ? sidebarHeight + 300 : 1 * window.innerHeight;
                 window.scrollTo({ top: targetScroll, behavior: 'smooth' });
               }}
             />
@@ -460,13 +501,16 @@ function PageIndex() {
                 key={idx}
                 isActive={activeSection === idx + 2}
                 onClick={() => {
-                  const targetScroll = (idx + 2) * window.innerHeight;
+                  const targetScroll = isMobile 
+                    ? sidebarHeight + 300 + (idx + 1) * window.innerHeight
+                    : (idx + 2) * window.innerHeight;
                   window.scrollTo({ top: targetScroll, behavior: 'smooth' });
                 }}
               />
             ))}
           </DotGroup>
         </PageIndicator>
+        )}
         {/* 섹션 0: TypingWrapper */}
         <SectionContainer 
           isActive={activeSection === 0}
@@ -625,7 +669,7 @@ const TypingWrapper = styled.div<{
     color: #d4cbcb;
     z-index: 3;
     font-size: ${({ isDesktop, isTablet }) =>
-      isDesktop ? "3vw" : isTablet ? "3vw" : ""};
+      isDesktop ? "2vw" : isTablet ? "2vw" : "4vw"};
   }
 `;
 
@@ -640,7 +684,7 @@ const Invitation = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
   align-items: center;
   font-weight: bold;
   font-size: ${({ isDesktop, isTablet }) =>
-    isDesktop ? "16px" : isTablet ? "12px" : "11px"};
+    isDesktop ? "14px" : isTablet ? "12px" : "11px"};
   padding: 0 20px;
 `;
 
