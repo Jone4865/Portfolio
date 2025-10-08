@@ -593,6 +593,7 @@ function PageIndex() {
               isTablet={isTablet}
               isMobile={isMobile}
               whileHover={{ scale: 1.1 }}
+              style={{ transition: "all 0.1s ease" }}
             >
               <LineOne isDesktop={isDesktop}>
                 <h2>프로젝트명 : {v.title}</h2>
@@ -614,20 +615,53 @@ function PageIndex() {
               </div>
               <CardIconWrapper>
                 {[...v.stack]
-                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .sort((a, b) => {
+                    // React와 Next.js를 가장 앞으로
+                    if (a.name === "React.js" || a.name === "React") return -1;
+                    if (b.name === "React.js" || b.name === "React") return 1;
+                    if (a.name === "Next.js") return -1;
+                    if (b.name === "Next.js") return 1;
+                    // 나머지는 알파벳 순으로 정렬
+                    return a.name.localeCompare(b.name);
+                  })
                   .map((item) => (
-                    <div key={item.name}>
+                    <motion.div 
+                      key={item.name}
+                      whileHover={{ 
+                        scale: 1.1
+                      }}
+                      style={{ 
+                        display: "flex", 
+                        alignItems: "center", 
+                        gap: "2px", 
+                        whiteSpace: "nowrap",
+                        cursor: "pointer",
+                        transition: "all 0.3s ease"
+                      }}
+                    >
                       <span>{item.icon}</span>
                       <span>{item.name}</span>
-                    </div>
+                    </motion.div>
                   ))}
               </CardIconWrapper>
               {v.link?.map((item) => (
                 <div key={item.name}>
                   <span>{item.name}</span> :{" "}
-                  <a href={item.url} target="_blank" rel="noreferrer">
+                  <motion.a 
+                    href={item.url} 
+                    target="_blank" 
+                    rel="noreferrer"
+                      whileHover={{ 
+                        color: "#ff0055",
+                        fontWeight: "bold"
+                      }}
+                    style={{ 
+                      transition: "all 0.1s ease",
+                      display: "inline-block"
+                    }}
+                  >
                     {item.url}
-                  </a>
+                  </motion.a>
                 </div>
               ))}
             </CardWrapper>
@@ -786,13 +820,8 @@ const CardIconWrapper = styled.div`
   border-left: none;
   border-right: none;
   padding: 8px 0 8px 5px;
-
-  div {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    white-space: nowrap;
-  }
+  min-height: 40px;
+  align-items: center;
 `;
 
 const ExperienceWrapper = styled.div`
