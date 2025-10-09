@@ -502,7 +502,7 @@ function PageIndex() {
             <PageDot
               isActive={activeSection === 0}
               onClick={() => {
-                const targetScroll = 0 * window.innerHeight;
+                const targetScroll = isMobile ? sidebarHeight + 100 : 0 * window.innerHeight;
                 window.scrollTo({ top: targetScroll, behavior: 'smooth' });
               }}
             />
