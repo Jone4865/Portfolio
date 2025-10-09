@@ -412,13 +412,13 @@ function PageIndex() {
       // 모바일: 사이더 높이 + 100px 이후부터 섹션 계산
       const introThreshold = sidebarHeight + 100;
       if (scrollY < introThreshold) {
-        newActiveSection = 0; // Home
+        newActiveSection = -1; // 사이더만 보이는 상태
       } else {
         const adjustedScrollY = scrollY - introThreshold;
         // 섹션 경계를 더 정확하게 계산 (시작 지점 기준)
-        const currentSection = Math.floor(adjustedScrollY / sectionHeight) + 1; // Intro부터 시작
+        const currentSection = Math.floor(adjustedScrollY / sectionHeight); // Home부터 시작
         const maxSection = 1 + project.length;
-        newActiveSection = Math.min(Math.max(currentSection, 1), maxSection);
+        newActiveSection = Math.min(Math.max(currentSection, 0), maxSection);
       }
     } else {
       // 데스크톱: 기존 로직
@@ -486,8 +486,8 @@ function PageIndex() {
           style={{ scaleX: scrollYProgress }}
         />
         
-        {/* 페이지 인디케이터 - 모바일에서는 Intro 활성화 시에만 표시 */}
-        {(activeSection >= 1 || !isMobile) && (
+        {/* 페이지 인디케이터 - 모바일에서는 Home 활성화 시에만 표시 */}
+        {(activeSection >= 0 || !isMobile) && (
           <PageIndicator isDesktop={isDesktop} isTablet={isTablet}>
           {/* Home */}
           <DotGroup>
@@ -507,7 +507,7 @@ function PageIndex() {
             <PageDot
               isActive={activeSection === 1}
               onClick={() => {
-                const targetScroll = isMobile ? sidebarHeight + 100 : 1 * window.innerHeight;
+                const targetScroll = isMobile ? sidebarHeight + 100 + window.innerHeight : 1 * window.innerHeight;
                 window.scrollTo({ top: targetScroll, behavior: 'smooth' });
               }}
             />
@@ -522,7 +522,7 @@ function PageIndex() {
                 isActive={activeSection === idx + 2}
                 onClick={() => {
                   const targetScroll = isMobile 
-                    ? sidebarHeight + 100 + (idx + 1) * window.innerHeight
+                    ? sidebarHeight + 100 + (idx + 2) * window.innerHeight
                     : (idx + 2) * window.innerHeight;
                   window.scrollTo({ top: targetScroll, behavior: 'smooth' });
                 }}
@@ -701,7 +701,10 @@ const TypingWrapper = styled.div<{
 }>`
   position: ${({ isDesktop, isTablet }) =>
     isDesktop || isTablet ? "relative" : "absolute"};
-  top: 0;
+  top: ${({ isDesktop, isTablet }) =>
+    isDesktop || isTablet ? "0" : "50%"};
+  transform: ${({ isDesktop, isTablet }) =>
+    isDesktop || isTablet ? "none" : "translateY(-50%)"};
   bottom: 0;
   left: 0;
   right: 0;
