@@ -221,7 +221,6 @@ const Container = styled.div<{ isBig: boolean }>`
   padding: 10px;
   overflow: scroll;
   z-index: 2;
-  margin-top: ${({ isBig }) => (isBig ? 0 : "250px")};
 `;
 
 const TopWrapper = styled.div`
