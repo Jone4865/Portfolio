@@ -47,7 +47,7 @@ function PageIndex() {
   const [project] = useState<Data[]>([
     {
       key: "Boundary",
-      date: "2023.10 - 2024.10",
+      date: "2024.10 - 2025.10",
       experience: [
         "Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선",
         "Jotai 기반 전역 상태 관리 → 단순한 상태로 렌더링 최적화",
