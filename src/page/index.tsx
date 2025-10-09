@@ -811,7 +811,6 @@ const CardIconWrapper = styled.div`
   border-left: none;
   border-right: none;
   padding: 8px 0 8px 5px;
-  min-height: 40px;
   align-items: center;
 `;
 
