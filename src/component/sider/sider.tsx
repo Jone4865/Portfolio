@@ -317,6 +317,11 @@ const TechWrapper = styled.div<{ visible: boolean }>`
 const TechStyle = styled.div`
   display: flex;
   gap: 6px;
+  transition: transform 0.1s ease;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 const EducationWrapper = styled.div`
@@ -345,6 +350,11 @@ const MeritIconWrapper = styled.div`
   padding: 0 15px;
   text-align: center;
   & > div {
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    &:hover {
+    transform: scale(1.1);
+  }
     :nth-child(2) {
       margin-top: 5px;
     }
