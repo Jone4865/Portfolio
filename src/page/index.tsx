@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 import Typical from "react-typical";
 
 //icon들
-import { FaAmazon, FaAws, FaReact } from "react-icons/fa";
+import { FaAmazon, FaAws, FaReact, FaChevronDown } from "react-icons/fa";
 import {
   SiAntdesign,
   SiApollographql,
@@ -479,7 +479,14 @@ function PageIndex() {
 
   return (
     <Container isDesktop={isDesktop} isTablet={isTablet}>
-      <Wrap totalSections={2 + project.length}>
+      <Wrap
+        totalSections={2 + project.length}
+        style={
+          isMobile
+            ? { height: `calc(${2 + project.length} * 100vh + ${sidebarHeight + 100}px)` }
+            : undefined
+        }
+      >
         
         <PrograssStyle
           isDesktop={isDesktop}
@@ -659,6 +666,20 @@ function PageIndex() {
           </SectionContainer>
         ))}
       </Wrap>
+      {activeSection >= 0 && activeSection < 1 + project.length && (
+        <GlobalScrollHint
+          onClick={() => {
+            const next = Math.min(activeSection + 1, 1 + project.length);
+            const vh = window.innerHeight;
+            const top = isMobile
+              ? sidebarHeight + 100 + next * vh
+              : next * vh;
+            window.scrollTo({ top, behavior: "smooth" });
+          }}
+        >
+          <FaChevronDown />
+        </GlobalScrollHint>
+      )}
     </Container>
   );
 }
@@ -870,5 +891,28 @@ const PageDot = styled.div<{ isActive: boolean }>`
   &:hover {
     background-color: #ff0055;
     transform: scale(1.3);
+  }
+`;
+
+const GlobalScrollHint = styled.div`
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  cursor: pointer;
+  z-index: 1001;
+  animation: bounce 1.2s infinite;
+
+  @keyframes bounce {
+    0%, 100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, 4px); }
   }
 `;
