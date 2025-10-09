@@ -615,15 +615,6 @@ function PageIndex() {
               </div>
               <CardIconWrapper>
                 {[...v.stack]
-                  .sort((a, b) => {
-                    // React와 Next.js를 가장 앞으로
-                    if (a.name === "React.js" || a.name === "React") return -1;
-                    if (b.name === "React.js" || b.name === "React") return 1;
-                    if (a.name === "Next.js") return -1;
-                    if (b.name === "Next.js") return 1;
-                    // 나머지는 알파벳 순으로 정렬
-                    return a.name.localeCompare(b.name);
-                  })
                   .map((item) => (
                     <motion.div 
                       key={item.name}
@@ -730,7 +721,7 @@ const TypingWrapper = styled.div<{
 
 const Invitation = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
   min-height: 200px;
-  width: calc(100% - 80px);
+  width: 60%;
   margin: 50px 20px;
   background-color: ${(props) => props.theme.siderBackGround};
   border-radius: 8px;
@@ -740,7 +731,7 @@ const Invitation = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
   font-weight: bold;
   font-size: ${({ isDesktop, isTablet }) =>
     isDesktop ? "14px" : isTablet ? "12px" : "11px"};
-  padding: 5px 20px;
+  padding: 20px;
 `;
 
 const PrograssStyle = styled(motion.div)<{ isDesktop: boolean }>`
