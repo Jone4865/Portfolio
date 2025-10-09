@@ -551,7 +551,7 @@ function PageIndex() {
               src={backgroundImage}
               width={"100%"}
               height={"100%"}
-              style={{borderRadius: isMobile ? "0px" : "10px"}}
+              style={{borderRadius: '10px'}}
             />
           </TypingWrapper>
         </SectionContainer>
@@ -668,6 +668,7 @@ function PageIndex() {
       </Wrap>
       {activeSection >= 0 && activeSection < 1 + project.length && (
         <GlobalScrollHint
+          isMobile={isMobile}
           onClick={() => {
             const next = Math.min(activeSection + 1, 1 + project.length);
             const vh = window.innerHeight;
@@ -741,6 +742,8 @@ const TypingWrapper = styled.div<{
     font-size: ${({ isDesktop, isTablet }) =>
       isDesktop ? "2vw" : isTablet ? "2vw" : "4vw"};
   }
+  padding: ${({ isDesktop, isTablet }) =>
+    isDesktop || isTablet ? "0" : "0 50px"};
 `;
 
 const Invitation = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
@@ -894,9 +897,9 @@ const PageDot = styled.div<{ isActive: boolean }>`
   }
 `;
 
-const GlobalScrollHint = styled.div`
+const GlobalScrollHint = styled.div<{ isMobile: boolean }>`
   position: fixed;
-  left: 50%;
+  left: ${({ isMobile }) => isMobile ? "50%" : "calc(50% + 160px)"};
   transform: translateX(-50%);
   bottom: 24px;
   display: flex;
