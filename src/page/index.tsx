@@ -598,6 +598,21 @@ function PageIndex() {
             </DotGroup>
           </PageIndicator>
         )}
+
+        {/* 스크롤 중 로딩 뷰 */}
+        {isProgrammaticScroll && (
+          <ScrollLoadingContainer isDesktop={isDesktop} isTablet={isTablet}>
+            <LoadingContent>
+              <LoadingSpinner>
+                <SpinnerCircle />
+                <SpinnerCircle />
+                <SpinnerCircle />
+              </LoadingSpinner>
+              <LoadingText>이동 중...</LoadingText>
+            </LoadingContent>
+          </ScrollLoadingContainer>
+        )}
+
         {/* 섹션 0: TypingWrapper */}
         <SectionContainer
           isActive={!isProgrammaticScroll && activeSection === 0}
@@ -968,6 +983,125 @@ const GlobalScrollHint = styled.div<{ isMobile: boolean }>`
     }
     50% {
       transform: translate(-50%, 4px);
+    }
+  }
+`;
+
+const ScrollLoadingContainer = styled.div<{ isDesktop?: boolean; isTablet?: boolean }>`
+  position: fixed;
+  top: 0;
+  left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '320px' : '0')};
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(20, 20, 30, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  z-index: 100;
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      backdrop-filter: blur(0px);
+    }
+    to {
+      opacity: 1;
+      backdrop-filter: blur(20px);
+    }
+  }
+`;
+
+const LoadingContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 40px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+`;
+
+const LoadingSpinner = styled.div`
+  position: relative;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SpinnerCircle = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 3px solid transparent;
+  border-top-color: #ff0055;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  &:nth-child(1) {
+    animation-duration: 1s;
+    border-top-color: #ff0055;
+  }
+
+  &:nth-child(2) {
+    width: 80%;
+    height: 80%;
+    animation-duration: 1.2s;
+    animation-direction: reverse;
+    border-top-color: rgba(255, 0, 85, 0.6);
+  }
+
+  &:nth-child(3) {
+    width: 60%;
+    height: 60%;
+    animation-duration: 0.8s;
+    border-top-color: rgba(255, 0, 85, 0.4);
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const LoadingText = styled.div`
+  color: #fff;
+  font-size: 18px;
+  font-weight: 300;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ff0055, transparent);
+    animation: expand 1.5s ease-in-out infinite;
+  }
+
+  @keyframes expand {
+    0%,
+    100% {
+      width: 0;
+      opacity: 0;
+    }
+    50% {
+      width: 100%;
+      opacity: 1;
     }
   }
 `;
