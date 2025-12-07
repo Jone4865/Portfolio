@@ -1,10 +1,10 @@
-import { ReactNode, useEffect, useMemo, useState, useCallback } from "react";
-import { motion, useScroll } from "framer-motion";
-import styled, { css } from "styled-components";
-import Typical from "react-typical";
+import { ReactNode, useEffect, useMemo, useState, useCallback } from 'react';
+import { motion, useScroll } from 'framer-motion';
+import styled, { css } from 'styled-components';
+import Typical from 'react-typical';
 
 //icon들
-import { FaAmazon, FaAws, FaReact, FaChevronDown } from "react-icons/fa";
+import { FaAmazon, FaAws, FaReact, FaChevronDown } from 'react-icons/fa';
 import {
   SiAntdesign,
   SiApollographql,
@@ -19,12 +19,12 @@ import {
   SiStyledcomponents,
   SiTailwindcss,
   SiTypescript,
-} from "react-icons/si";
-import { TbBrandRedux } from "react-icons/tb";
+} from 'react-icons/si';
+import { TbBrandRedux } from 'react-icons/tb';
 
-import backgroundImage from "../../src/assets/image/background.jpg";
+import backgroundImage from '../../src/assets/image/background.jpg';
 
-import useResponsive from "../hooks/useResponsive";
+import useResponsive from '../hooks/useResponsive';
 
 type Data = {
   key: string;
@@ -43,371 +43,376 @@ function PageIndex() {
 
   const [activeSection, setActiveSection] = useState<number>(0);
   const [sidebarHeight, setSidebarHeight] = useState<number>(0);
+  const [isProgrammaticScroll, setIsProgrammaticScroll] = useState<boolean>(false);
 
   const [project] = useState<Data[]>([
     {
-      key: "Boundary",
-      date: "2024.10 - 2025.10",
+      key: 'Boundary',
+      date: '2024.10 - 2025.10',
       experience: [
-        "Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선",
-        "Jotai 기반 전역 상태 관리 → 단순한 상태로 렌더링 최적화",
-        "React Hook Form + Zod 기반 폼 유효성 검사 → 타입 안전성과 런타임 오류 감소",
-        "next-intl + Google Spreadsheet 기반 다국어 시스템 → 글로벌 사용자 대응 강화",
-        "Google Maps API 기반 지도 컴포넌트 → 사용자 친화적 위치 정보 제공",
-        "Tailwind CSS 기반 UI 개발 → 생산성 향상과 일관된 스타일",
+        'Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선',
+        'Jotai 기반 전역 상태 관리 → 단순한 상태로 렌더링 최적화',
+        'React Hook Form + Zod 기반 폼 유효성 검사 → 타입 안전성과 런타임 오류 감소',
+        'next-intl + Google Spreadsheet 기반 다국어 시스템 → 글로벌 사용자 대응 강화',
+        'Google Maps API 기반 지도 컴포넌트 → 사용자 친화적 위치 정보 제공',
+        'Tailwind CSS 기반 UI 개발 → 생산성 향상과 일관된 스타일',
       ],
-      people: "기획1, 디자인 3, 프론트엔드 2, 백엔드 2, 세일즈 포스 1",
+      people: '기획1, 디자인 3, 프론트엔드 2, 백엔드 2, 세일즈 포스 1',
       stack: [
-        { name: "Next.js", icon: <SiNextdotjs /> },
-        { name: "TypeScript", icon: <SiTypescript /> },
-        { name: "React Hook Form", icon: <SiReacthookform /> },
-        { name: "Tailwind CSS", icon: <SiTailwindcss /> },
+        { name: 'Next.js', icon: <SiNextdotjs /> },
+        { name: 'TypeScript', icon: <SiTypescript /> },
+        { name: 'React Hook Form', icon: <SiReacthookform /> },
+        { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
       ],
-      subTitle: "신규 사이트 및 관리자 사이트 개발",
-      title: "Hanwha Vision - STEP",
+      subTitle: '신규 사이트 및 관리자 사이트 개발',
+      title: 'Hanwha Vision - STEP',
       link: [
         {
-          name: "서비스 링크",
-          url: "https://step.hanwhavision.com/kr/login",
+          name: '서비스 링크',
+          url: 'https://step.hanwhavision.com/kr/login',
         },
       ],
     },
     {
-      key: "Boundary",
-      date: "2023.10 - 2024.10",
+      key: 'Boundary',
+      date: '2023.10 - 2024.10',
       experience: [
-        "React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선",
-        "React Query 기반 데이터 패칭 → 캐싱과 리트라이로 성능 및 안정성 개선",
-        "Recoil 기반 전역 상태 관리 → 단순하고 직관적인 상태 로직",
-        "next-intl + Google Spreadsheet 기반 다국어 시스템 → 글로벌 사용자 대응",
-        "React PDF 기반 PDF 생성/다운로드 → 사용자 편의성과 문서 자동화",
-        "MUI·Ant Design·styled-components 기반 UI 개발 → 일관된 디자인과 생산성 향상",
+        'React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선',
+        'React Query 기반 데이터 패칭 → 캐싱과 리트라이로 성능 및 안정성 개선',
+        'Recoil 기반 전역 상태 관리 → 단순하고 직관적인 상태 로직',
+        'next-intl + Google Spreadsheet 기반 다국어 시스템 → 글로벌 사용자 대응',
+        'React PDF 기반 PDF 생성/다운로드 → 사용자 편의성과 문서 자동화',
+        'MUI·Ant Design·styled-components 기반 UI 개발 → 일관된 디자인과 생산성 향상',
       ],
-      people: "기획&디자인 2, 프론트엔드 5, 백엔드 6",
+      people: '기획&디자인 2, 프론트엔드 5, 백엔드 6',
       stack: [
-        { name: "React.js", icon: <FaReact /> },
-        { name: "TypeScript", icon: <SiTypescript /> },
-        { name: "Ant Design", icon: <SiAntdesign /> },
-        { name: "React Query", icon: <SiReactquery /> },
-        { name: "Recoil", icon: <SiRecoil /> },
-        { name: "styled-components", icon: <SiStyledcomponents /> },
+        { name: 'React.js', icon: <FaReact /> },
+        { name: 'TypeScript', icon: <SiTypescript /> },
+        { name: 'Ant Design', icon: <SiAntdesign /> },
+        { name: 'React Query', icon: <SiReactquery /> },
+        { name: 'Recoil', icon: <SiRecoil /> },
+        { name: 'styled-components', icon: <SiStyledcomponents /> },
       ],
-      subTitle: "제약 회사 내부 교육 및 증상, 약물 관리 내부 프로젝트 구현",
-      title: "Dream Trial",
+      subTitle: '제약 회사 내부 교육 및 증상, 약물 관리 내부 프로젝트 구현',
+      title: 'Dream Trial',
     },
     {
-      key: "Lawdians",
-      date: "2023.05 - 2023.09",
+      key: 'Lawdians',
+      date: '2023.05 - 2023.09',
       experience: [
-        "Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선",
-        "Apollo Client + GraphQL 기반 API 연동 → 데이터 일관성 및 효율적 통신",
-        "graphql-ws 기반 실시간 기능(채팅) → 고객-관리자 실시간 소통",
-        "Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리",
-        "Cheerio 기반 크롤링 → 외부 상품 데이터 자동 수집 및 운영 효율화",
-        "SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응",
-        "react-js-pagination 기반 페이지네이션 → 목록 탐색성 향상",
-        "react-slick 기반 캐러셀 → 프로모션 및 핵심 콘텐츠 노출 강화",
+        'Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선',
+        'Apollo Client + GraphQL 기반 API 연동 → 데이터 일관성 및 효율적 통신',
+        'graphql-ws 기반 실시간 기능(채팅) → 고객-관리자 실시간 소통',
+        'Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리',
+        'Cheerio 기반 크롤링 → 외부 상품 데이터 자동 수집 및 운영 효율화',
+        'SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응',
+        'react-js-pagination 기반 페이지네이션 → 목록 탐색성 향상',
+        'react-slick 기반 캐러셀 → 프로모션 및 핵심 콘텐츠 노출 강화',
       ],
-      people: "기획 1, 디자인 1, 프론트엔드 3, 백엔드 1",
+      people: '기획 1, 디자인 1, 프론트엔드 3, 백엔드 1',
       stack: [
-        { name: "Next.js", icon: <SiNextdotjs /> },
-        { name: "TypeScript", icon: <SiTypescript /> },
-        { name: "Sass", icon: <SiSass /> },
-        { name: "Apollographql", icon: <SiApollographql /> },
-        { name: "axios", icon: <SiAxios /> },
+        { name: 'Next.js', icon: <SiNextdotjs /> },
+        { name: 'TypeScript', icon: <SiTypescript /> },
+        { name: 'Sass', icon: <SiSass /> },
+        { name: 'Apollographql', icon: <SiApollographql /> },
+        { name: 'axios', icon: <SiAxios /> },
       ],
-      subTitle: "상품권 판매, IT 서비스 대행 사이트 구현",
-      title: "방배사",
+      subTitle: '상품권 판매, IT 서비스 대행 사이트 구현',
+      title: '방배사',
       link: [
         {
-          name: "저장소 링크",
-          url: "https://github.com/Jone4865/law_bangbaesa",
-        },
-      ],
-    },
-    {
-      key: "Lawdians",
-      date: "2023.07 - 2023.08",
-      experience: [
-        "Apollo Client + GraphQL 기반 API 연동 → 데이터 일관성 및 효율적 통신",
-        "React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선",
-        "react-responsive 기반 반응형 구현 → 다양한 디바이스 대응",
-        "Ant Design 기반 UI 설계·개발 → 일관된 컴포넌트 활용",
-      ],
-      people: "기획 1, 프론트엔드 1, 백엔드 1",
-      stack: [
-        { name: "React.js", icon: <FaReact /> },
-        { name: "TypeScript", icon: <SiTypescript /> },
-        { name: "Ant Design", icon: <SiAntdesign /> },
-        { name: "Apollographql", icon: <SiApollographql /> },
-        { name: "styled-components", icon: <SiStyledcomponents /> },
-      ],
-      subTitle: "방배사 프로젝트 관리자 홈페이지 구현",
-      title: "방배사 CMS",
-      link: [
-        {
-          name: "저장소 링크",
-          url: "https://github.com/Jone4865/law_cms_bangbaesa",
+          name: '저장소 링크',
+          url: 'https://github.com/Jone4865/law_bangbaesa',
         },
       ],
     },
     {
-      key: "Lawdians",
-      date: "2023.04 - 2023.05",
+      key: 'Lawdians',
+      date: '2023.07 - 2023.08',
       experience: [
-        "Apollo Client + GraphQL 기반 API 연동 → 데이터 일관성 및 효율적 통신",
-        "React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선",
-        "react-responsive 기반 반응형 구현 → 다양한 디바이스 대응",
-        "Ant Design 기반 UI 설계·개발 → 일관된 컴포넌트 활용",
+        'Apollo Client + GraphQL 기반 API 연동 → 데이터 일관성 및 효율적 통신',
+        'React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선',
+        'react-responsive 기반 반응형 구현 → 다양한 디바이스 대응',
+        'Ant Design 기반 UI 설계·개발 → 일관된 컴포넌트 활용',
       ],
-      people: "기획 1, 프론트엔드 2, 백엔드 1",
+      people: '기획 1, 프론트엔드 1, 백엔드 1',
       stack: [
-        { name: "React.js", icon: <FaReact /> },
-        { name: "TypeScript", icon: <SiTypescript /> },
-        { name: "Ant Design", icon: <SiAntdesign /> },
-        { name: "Apollographql", icon: <SiApollographql /> },
-        { name: "styled-components", icon: <SiStyledcomponents /> },
+        { name: 'React.js', icon: <FaReact /> },
+        { name: 'TypeScript', icon: <SiTypescript /> },
+        { name: 'Ant Design', icon: <SiAntdesign /> },
+        { name: 'Apollographql', icon: <SiApollographql /> },
+        { name: 'styled-components', icon: <SiStyledcomponents /> },
       ],
-      subTitle: "자사 쇼핑몰 CMS 개발 대비 템플릿 구현",
-      title: "자사 쇼핑몰 CMS 템플릿",
+      subTitle: '방배사 프로젝트 관리자 홈페이지 구현',
+      title: '방배사 CMS',
       link: [
         {
-          name: "저장소 링크",
-          url: "https://github.com/Jone4865/law_cms_shopSolution",
+          name: '저장소 링크',
+          url: 'https://github.com/Jone4865/law_cms_bangbaesa',
         },
       ],
     },
     {
-      key: "Lawdians",
-      date: "2023.02 - 2023.03",
+      key: 'Lawdians',
+      date: '2023.04 - 2023.05',
       experience: [
-        "Apollo Client + GraphQL 기반 API 연동 → 데이터 일관성 및 효율적 통신",
-        "React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선",
-        "react-responsive 기반 반응형 구현 → 다양한 디바이스 대응",
-        "Ant Design 기반 UI 설계·개발 → 일관된 컴포넌트 활용",
+        'Apollo Client + GraphQL 기반 API 연동 → 데이터 일관성 및 효율적 통신',
+        'React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선',
+        'react-responsive 기반 반응형 구현 → 다양한 디바이스 대응',
+        'Ant Design 기반 UI 설계·개발 → 일관된 컴포넌트 활용',
       ],
-      people: "기획 1, 프론트엔드 2, 백엔드 1",
+      people: '기획 1, 프론트엔드 2, 백엔드 1',
       stack: [
-        { name: "React.js", icon: <FaReact /> },
-        { name: "TypeScript", icon: <SiTypescript /> },
-        { name: "Ant Design", icon: <SiAntdesign /> },
-        { name: "Apollographql", icon: <SiApollographql /> },
-        { name: "styled-components", icon: <SiStyledcomponents /> },
+        { name: 'React.js', icon: <FaReact /> },
+        { name: 'TypeScript', icon: <SiTypescript /> },
+        { name: 'Ant Design', icon: <SiAntdesign /> },
+        { name: 'Apollographql', icon: <SiApollographql /> },
+        { name: 'styled-components', icon: <SiStyledcomponents /> },
       ],
-      subTitle: "리얼파이 프로젝트 관리자 홈페이지 구현",
-      title: "리얼파이 CMS",
+      subTitle: '자사 쇼핑몰 CMS 개발 대비 템플릿 구현',
+      title: '자사 쇼핑몰 CMS 템플릿',
       link: [
         {
-          name: "저장소 링크",
-          url: "https://github.com/Jone4865/law_cms_realfi",
+          name: '저장소 링크',
+          url: 'https://github.com/Jone4865/law_cms_shopSolution',
         },
       ],
     },
     {
-      key: "Lawdians",
-      date: "2023.01 - 2023.02",
+      key: 'Lawdians',
+      date: '2023.02 - 2023.03',
       experience: [
-        "Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선",
-        "Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리",
-        "KakaoMap API 기반 지도 컴포넌트 → 직관적 위치 정보 제공",
-        "SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응",
+        'Apollo Client + GraphQL 기반 API 연동 → 데이터 일관성 및 효율적 통신',
+        'React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선',
+        'react-responsive 기반 반응형 구현 → 다양한 디바이스 대응',
+        'Ant Design 기반 UI 설계·개발 → 일관된 컴포넌트 활용',
       ],
-      people: "기획 1, 디자인 1, 프론트엔드 1",
+      people: '기획 1, 프론트엔드 2, 백엔드 1',
       stack: [
-        { name: "Next.js", icon: <SiNextdotjs /> },
-        { name: "TypeScript", icon: <SiTypescript /> },
-        { name: "Sass", icon: <SiSass /> },
-        { name: "axios", icon: <SiAxios /> },
+        { name: 'React.js', icon: <FaReact /> },
+        { name: 'TypeScript', icon: <SiTypescript /> },
+        { name: 'Ant Design', icon: <SiAntdesign /> },
+        { name: 'Apollographql', icon: <SiApollographql /> },
+        { name: 'styled-components', icon: <SiStyledcomponents /> },
       ],
-      subTitle: "기업 홈페이지 구현",
-      title: "로디언즈 홀딩스",
+      subTitle: '리얼파이 프로젝트 관리자 홈페이지 구현',
+      title: '리얼파이 CMS',
       link: [
         {
-          name: "저장소 링크",
-          url: "https://github.com/Jone4865/law_lawdiansHoldings",
-        },
-        {
-          name: "관련영상 링크",
-          url: "https://drive.google.com/file/d/12jmJR7EIZw0DbMfhUEqaU9RaIU8XM2w0/view?usp=drive_link",
+          name: '저장소 링크',
+          url: 'https://github.com/Jone4865/law_cms_realfi',
         },
       ],
     },
     {
-      key: "Lawdians",
-      date: "2023.01 - 2023.01",
+      key: 'Lawdians',
+      date: '2023.01 - 2023.02',
       experience: [
-        "Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선",
-        "react-responsive 기반 반응형 구현 → 다양한 디바이스 대응",
-        "Storybook 기반 컴포넌트 문서화 → 재사용성과 협업 효율 향상",
-        "SCSS 기반 스타일링 → 일관된 스타일과 유지보수성 강화",
+        'Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선',
+        'Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리',
+        'KakaoMap API 기반 지도 컴포넌트 → 직관적 위치 정보 제공',
+        'SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응',
       ],
-      people: "기획 1, 디자인 1, 프론트엔드 1",
+      people: '기획 1, 디자인 1, 프론트엔드 1',
       stack: [
-        { name: "Next.js", icon: <SiNextdotjs /> },
-        { name: "TypeScript", icon: <SiTypescript /> },
-        { name: "Sass", icon: <SiSass /> },
-        { name: "StoryBook", icon: <SiStorybook /> },
+        { name: 'Next.js', icon: <SiNextdotjs /> },
+        { name: 'TypeScript', icon: <SiTypescript /> },
+        { name: 'Sass', icon: <SiSass /> },
+        { name: 'axios', icon: <SiAxios /> },
       ],
-      subTitle: "조각거래 플랫폼 랜딩페이지 구현",
-      title: "리얼파이 랜딩페이지",
+      subTitle: '기업 홈페이지 구현',
+      title: '로디언즈 홀딩스',
       link: [
         {
-          name: "저장소 링크",
-          url: "https://github.com/Jone4865/law_landing_realfi",
+          name: '저장소 링크',
+          url: 'https://github.com/Jone4865/law_lawdiansHoldings',
         },
         {
-          name: "관련영상 링크",
-          url: "https://drive.google.com/file/d/1-C0ixxMNVXRO6CDO9l-dtJPNETvxTWqG/view?usp=drive_link",
+          name: '관련영상 링크',
+          url: 'https://drive.google.com/file/d/12jmJR7EIZw0DbMfhUEqaU9RaIU8XM2w0/view?usp=drive_link',
         },
       ],
     },
     {
-      key: "Lawdians",
-      date: "2023.01 - 2023.01",
+      key: 'Lawdians',
+      date: '2023.01 - 2023.01',
       experience: [
-        "Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선",
-        "Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리",
-        "SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응",
-        "Storybook 기반 컴포넌트 문서화 → 재사용성과 협업 효율 향상",
+        'Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선',
+        'react-responsive 기반 반응형 구현 → 다양한 디바이스 대응',
+        'Storybook 기반 컴포넌트 문서화 → 재사용성과 협업 효율 향상',
+        'SCSS 기반 스타일링 → 일관된 스타일과 유지보수성 강화',
       ],
-      people: "기획 1, 디자인 1, 프론트엔드 1",
+      people: '기획 1, 디자인 1, 프론트엔드 1',
       stack: [
-        { name: "Next.js", icon: <SiNextdotjs /> },
-        { name: "TypeScript", icon: <SiTypescript /> },
-        { name: "Sass", icon: <SiSass /> },
-        { name: "StoryBook", icon: <SiStorybook /> },
-        { name: "axios", icon: <SiAxios /> },
+        { name: 'Next.js', icon: <SiNextdotjs /> },
+        { name: 'TypeScript', icon: <SiTypescript /> },
+        { name: 'Sass', icon: <SiSass /> },
+        { name: 'StoryBook', icon: <SiStorybook /> },
       ],
-      subTitle: "마케팅 운용 및 운영 대행 사이트 랜딩페이지 구현",
-      title: "감동기획 랜딩페이지",
+      subTitle: '조각거래 플랫폼 랜딩페이지 구현',
+      title: '리얼파이 랜딩페이지',
       link: [
         {
-          name: "저장소 링크",
-          url: "https://github.com/Jone4865/law_landing_gamdongplan",
+          name: '저장소 링크',
+          url: 'https://github.com/Jone4865/law_landing_realfi',
         },
         {
-          name: "관련영상 링크",
-          url: "https://drive.google.com/file/d/1PvmixTpkjmTdYCh2hcXi-TlG_pLokSN7/view?usp=drive_link",
+          name: '관련영상 링크',
+          url: 'https://drive.google.com/file/d/1-C0ixxMNVXRO6CDO9l-dtJPNETvxTWqG/view?usp=drive_link',
         },
       ],
     },
     {
-      key: "Lawdians",
-      date: "2023.01 - 2023.01",
+      key: 'Lawdians',
+      date: '2023.01 - 2023.01',
       experience: [
-        "Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선",
-        "Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리",
-        "Cheerio 기반 크롤링 → 외부 데이터 자동 수집 및 운영 효율화",
-        "SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응",
-        "Storybook 기반 컴포넌트 문서화 → 재사용성과 협업 효율 향상",
+        'Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선',
+        'Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리',
+        'SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응',
+        'Storybook 기반 컴포넌트 문서화 → 재사용성과 협업 효율 향상',
       ],
-      people: "기획 1, 디자인 1, 프론트엔드 1",
+      people: '기획 1, 디자인 1, 프론트엔드 1',
       stack: [
-        { name: "Next.js", icon: <SiNextdotjs /> },
-        { name: "TypeScript", icon: <SiTypescript /> },
-        { name: "Sass", icon: <SiSass /> },
-        { name: "StoryBook", icon: <SiStorybook /> },
-        { name: "axios", icon: <SiAxios /> },
+        { name: 'Next.js', icon: <SiNextdotjs /> },
+        { name: 'TypeScript', icon: <SiTypescript /> },
+        { name: 'Sass', icon: <SiSass /> },
+        { name: 'StoryBook', icon: <SiStorybook /> },
+        { name: 'axios', icon: <SiAxios /> },
       ],
-      subTitle: "상품권 판매, IT 서비스 대행 사이트 랜딩페이지",
-      title: "방배사 랜딩페이지",
+      subTitle: '마케팅 운용 및 운영 대행 사이트 랜딩페이지 구현',
+      title: '감동기획 랜딩페이지',
       link: [
         {
-          name: "저장소 링크",
-          url: "https://github.com/Jone4865/law_landing_bangbaesa",
+          name: '저장소 링크',
+          url: 'https://github.com/Jone4865/law_landing_gamdongplan',
         },
         {
-          name: "관련영상 링크",
-          url: "https://drive.google.com/file/d/1vhBm38_C92M3ov5CCcB_MgwmsGebARqp/view?usp=drive_link",
+          name: '관련영상 링크',
+          url: 'https://drive.google.com/file/d/1PvmixTpkjmTdYCh2hcXi-TlG_pLokSN7/view?usp=drive_link',
         },
       ],
     },
     {
-      key: "Hanghae99",
-      date: "2022.08 - 2022.09",
+      key: 'Lawdians',
+      date: '2023.01 - 2023.01',
       experience: [
-        "Socket.io 기반 실시간 기능(채팅/게임) → 사용자 간 즉각적 상호작용",
-        "Redux Toolkit 기반 전역 상태 관리 → 상태 로직 단순화 및 유지보수성 향상",
-        "React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선",
-        "Axios 기반 API 요청/응답 처리 → 안정적 서버-클라이언트 통신",
-        "Amazon S3·CloudFront·ACM 기반 HTTPS 배포 자동화 → 안정적 운영 및 보안 강화",
-        "Kakao Login API 기반 소셜 로그인 → 간편한 인증 제공",
-        "styled-components 기반 스타일링 → 일관된 스타일과 유지보수성 강화",
+        'Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선',
+        'Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리',
+        'Cheerio 기반 크롤링 → 외부 데이터 자동 수집 및 운영 효율화',
+        'SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응',
+        'Storybook 기반 컴포넌트 문서화 → 재사용성과 협업 효율 향상',
       ],
-      people: "디자인 1, 프론트엔드 2, 백엔드 3",
+      people: '기획 1, 디자인 1, 프론트엔드 1',
       stack: [
-        { name: "React.js", icon: <FaReact /> },
-        { name: "redux-thunk", icon: <TbBrandRedux /> },
-        { name: "styled-components", icon: <SiStyledcomponents /> },
-        { name: "Socket.IO", icon: <SiSocketdotio /> },
-        { name: "Amazon S3", icon: <FaAmazon /> },
-        { name: "Amazon CloudFront", icon: <FaAmazon /> },
-        { name: "AWS Certificate Manager", icon: <FaAws /> },
-        { name: "axios", icon: <SiAxios /> },
+        { name: 'Next.js', icon: <SiNextdotjs /> },
+        { name: 'TypeScript', icon: <SiTypescript /> },
+        { name: 'Sass', icon: <SiSass /> },
+        { name: 'StoryBook', icon: <SiStorybook /> },
+        { name: 'axios', icon: <SiAxios /> },
       ],
-      subTitle: "1:1 턴제 심리 카드게임",
-      title: "덜지니어스",
+      subTitle: '상품권 판매, IT 서비스 대행 사이트 랜딩페이지',
+      title: '방배사 랜딩페이지',
       link: [
         {
-          name: "저장소 링크",
-          url: "https://github.com/Jone4865/TherGeniusGame",
+          name: '저장소 링크',
+          url: 'https://github.com/Jone4865/law_landing_bangbaesa',
         },
         {
-          name: "관련영상 링크",
-          url: "https://www.youtube.com/watch?v=ESSO1rTWOhY",
+          name: '관련영상 링크',
+          url: 'https://drive.google.com/file/d/1vhBm38_C92M3ov5CCcB_MgwmsGebARqp/view?usp=drive_link',
         },
       ],
     },
     {
-      key: "Hanghae99",
-      date: "2022.08 - 2022.08",
+      key: 'Hanghae99',
+      date: '2022.08 - 2022.09',
       experience: [
-        "Redux Toolkit 기반 전역 상태 관리 → 상태 로직 단순화 및 유지보수성 향상",
-        "React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선",
-        "Amazon S3·CloudFront 기반 배포 → 안정적 서비스 운영 환경",
-        "Axios 기반 API 요청/응답 처리 → 서버-클라이언트 통신 효율화",
-        "styled-components 기반 스타일링 → 일관된 스타일과 유지보수성 강화",
+        'Socket.io 기반 실시간 기능(채팅/게임) → 사용자 간 즉각적 상호작용',
+        'Redux Toolkit 기반 전역 상태 관리 → 상태 로직 단순화 및 유지보수성 향상',
+        'React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선',
+        'Axios 기반 API 요청/응답 처리 → 안정적 서버-클라이언트 통신',
+        'Amazon S3·CloudFront·ACM 기반 HTTPS 배포 자동화 → 안정적 운영 및 보안 강화',
+        'Kakao Login API 기반 소셜 로그인 → 간편한 인증 제공',
+        'styled-components 기반 스타일링 → 일관된 스타일과 유지보수성 강화',
       ],
-      people: "디자인 1, 프론트엔드 2, 백엔드 3",
+      people: '디자인 1, 프론트엔드 2, 백엔드 3',
       stack: [
-        { name: "React.js", icon: <FaReact /> },
-        { name: "react-redux", icon: <TbBrandRedux /> },
-        { name: "styled-components", icon: <SiStyledcomponents /> },
-        { name: "axios", icon: <SiAxios /> },
+        { name: 'React.js', icon: <FaReact /> },
+        { name: 'redux-thunk', icon: <TbBrandRedux /> },
+        { name: 'styled-components', icon: <SiStyledcomponents /> },
+        { name: 'Socket.IO', icon: <SiSocketdotio /> },
+        { name: 'Amazon S3', icon: <FaAmazon /> },
+        { name: 'Amazon CloudFront', icon: <FaAmazon /> },
+        { name: 'AWS Certificate Manager', icon: <FaAws /> },
+        { name: 'axios', icon: <SiAxios /> },
       ],
-      subTitle: "웹 스무고개 게임 구현",
-      title: "20-Questions",
+      subTitle: '1:1 턴제 심리 카드게임',
+      title: '덜지니어스',
       link: [
         {
-          name: "저장소 링크",
-          url: "https://github.com/Jone4865/20questions",
+          name: '저장소 링크',
+          url: 'https://github.com/Jone4865/TherGeniusGame',
+        },
+        {
+          name: '관련영상 링크',
+          url: 'https://www.youtube.com/watch?v=ESSO1rTWOhY',
+        },
+      ],
+    },
+    {
+      key: 'Hanghae99',
+      date: '2022.08 - 2022.08',
+      experience: [
+        'Redux Toolkit 기반 전역 상태 관리 → 상태 로직 단순화 및 유지보수성 향상',
+        'React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선',
+        'Amazon S3·CloudFront 기반 배포 → 안정적 서비스 운영 환경',
+        'Axios 기반 API 요청/응답 처리 → 서버-클라이언트 통신 효율화',
+        'styled-components 기반 스타일링 → 일관된 스타일과 유지보수성 강화',
+      ],
+      people: '디자인 1, 프론트엔드 2, 백엔드 3',
+      stack: [
+        { name: 'React.js', icon: <FaReact /> },
+        { name: 'react-redux', icon: <TbBrandRedux /> },
+        { name: 'styled-components', icon: <SiStyledcomponents /> },
+        { name: 'axios', icon: <SiAxios /> },
+      ],
+      subTitle: '웹 스무고개 게임 구현',
+      title: '20-Questions',
+      link: [
+        {
+          name: '저장소 링크',
+          url: 'https://github.com/Jone4865/20questions',
         },
       ],
     },
   ]);
 
-  
   const typicalComponent = useMemo(
     () => (
       <Typical
         steps={[
-          "안녕하세요. 키보드 위를 서핑하는,",
+          '안녕하세요. 키보드 위를 서핑하는,',
           1000,
-          "Developer 채종원의 포트폴리오입니다.",
+          'Developer 채종원의 포트폴리오입니다.',
           1000,
         ]}
         loop={3}
       />
     ),
-    []
+    [],
   );
 
   // 스크롤 위치에 따른 활성 섹션 계산
   const handleScroll = useCallback(() => {
+    // 프로그래매틱 스크롤 중에는 activeSection을 업데이트하지 않음 (이전 뷰 유지)
+    if (isProgrammaticScroll) {
+      return;
+    }
+
     const scrollY = window.scrollY;
     const sectionHeight = window.innerHeight;
     let newActiveSection = 0;
-    
+
     if (isMobile) {
       // 모바일: 사이더 높이 + 100px 이후부터 섹션 계산
       const introThreshold = sidebarHeight + 100;
@@ -426,19 +431,58 @@ function PageIndex() {
       const maxSection = 1 + project.length;
       newActiveSection = Math.min(currentSection, maxSection);
     }
-    
-    setActiveSection(prev => {
+
+    setActiveSection((prev) => {
       // 이전 섹션과 다를 때만 업데이트하여 중복 활성화 방지
       if (newActiveSection !== prev) {
         return newActiveSection;
       }
       return prev;
     });
-  }, [isMobile, sidebarHeight, project.length]);
+  }, [isMobile, sidebarHeight, project.length, isProgrammaticScroll]);
 
   useEffect(() => {
     // 스크롤 이벤트를 throttling하여 중복 호출 방지
     let ticking = false;
+    let lastScrollY = window.scrollY;
+    let checkFrame: number | null = null;
+
+    const checkScrollComplete = () => {
+      const currentScrollY = window.scrollY;
+
+      // 스크롤 위치가 변하지 않았으면 스크롤 완료로 간주
+      if (Math.abs(currentScrollY - lastScrollY) < 1) {
+        setIsProgrammaticScroll(false);
+
+        // 스크롤 완료 후 현재 위치에 맞는 섹션으로 업데이트
+        const sectionHeight = window.innerHeight;
+        let newActiveSection = 0;
+
+        if (isMobile) {
+          const introThreshold = sidebarHeight + 100;
+          if (currentScrollY < introThreshold) {
+            newActiveSection = -1;
+          } else {
+            const adjustedScrollY = currentScrollY - introThreshold;
+            const currentSection = Math.floor(adjustedScrollY / sectionHeight);
+            const maxSection = 1 + project.length;
+            newActiveSection = Math.min(Math.max(currentSection, 0), maxSection);
+          }
+        } else {
+          const currentSection = Math.floor(currentScrollY / sectionHeight);
+          const maxSection = 1 + project.length;
+          newActiveSection = Math.min(currentSection, maxSection);
+        }
+
+        setActiveSection(newActiveSection);
+        checkFrame = null;
+      } else {
+        lastScrollY = currentScrollY;
+        // 계속 스크롤 중이면 다음 프레임에서 다시 확인
+        checkFrame = requestAnimationFrame(checkScrollComplete);
+      }
+    };
+
     const throttledHandleScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
@@ -447,13 +491,28 @@ function PageIndex() {
         });
         ticking = true;
       }
+
+      // 프로그래매틱 스크롤 중일 때, 스크롤 위치 변화를 추적하여 스크롤 완료 감지
+      if (isProgrammaticScroll) {
+        if (checkFrame !== null) {
+          cancelAnimationFrame(checkFrame);
+        }
+        checkFrame = requestAnimationFrame(checkScrollComplete);
+      } else {
+        lastScrollY = window.scrollY;
+      }
     };
 
     window.addEventListener('scroll', throttledHandleScroll);
     handleScroll(); // 초기 실행
 
-    return () => window.removeEventListener('scroll', throttledHandleScroll);
-  }, [handleScroll]);
+    return () => {
+      window.removeEventListener('scroll', throttledHandleScroll);
+      if (checkFrame !== null) {
+        cancelAnimationFrame(checkFrame);
+      }
+    };
+  }, [handleScroll, isProgrammaticScroll, isMobile, sidebarHeight, project.length]);
 
   // 사이더 높이 측정
   useEffect(() => {
@@ -487,60 +546,61 @@ function PageIndex() {
             : undefined
         }
       >
-        
-        <PrograssStyle
-          isDesktop={isDesktop}
-          style={{ scaleX: scrollYProgress }}
-        />
-        
+        <PrograssStyle isDesktop={isDesktop} style={{ scaleX: scrollYProgress }} />
+
         {/* 페이지 인디케이터 - 모바일에서는 Home 활성화 시에만 표시 */}
         {(activeSection >= 0 || !isMobile) && (
           <PageIndicator isDesktop={isDesktop} isTablet={isTablet}>
-          {/* Home */}
-          <DotGroup>
-            <DotLabel>Home</DotLabel>
-            <PageDot
-              isActive={activeSection === 0}
-              onClick={() => {
-                const targetScroll = isMobile ? sidebarHeight + 100 : 0 * window.innerHeight;
-                window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-              }}
-            />
-          </DotGroup>
-          
-          {/* Intro */}
-          <DotGroup>
-            <DotLabel>Intro</DotLabel>
-            <PageDot
-              isActive={activeSection === 1}
-              onClick={() => {
-                const targetScroll = isMobile ? sidebarHeight + 100 + window.innerHeight : 1 * window.innerHeight;
-                window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-              }}
-            />
-          </DotGroup>
-          
-          {/* Projects */}
-          <DotGroup>
-            <DotLabel>Projects</DotLabel>
-            {project.map((_, idx) => (
+            {/* Home */}
+            <DotGroup>
+              <DotLabel>Home</DotLabel>
               <PageDot
-                key={idx}
-                isActive={activeSection === idx + 2}
+                isActive={activeSection === 0}
                 onClick={() => {
-                  const targetScroll = isMobile 
-                    ? sidebarHeight + 100 + (idx + 2) * window.innerHeight
-                    : (idx + 2) * window.innerHeight;
+                  setIsProgrammaticScroll(true);
+                  const targetScroll = isMobile ? sidebarHeight + 100 : 0 * window.innerHeight;
                   window.scrollTo({ top: targetScroll, behavior: 'smooth' });
                 }}
               />
-            ))}
-          </DotGroup>
-        </PageIndicator>
+            </DotGroup>
+
+            {/* Intro */}
+            <DotGroup>
+              <DotLabel>Intro</DotLabel>
+              <PageDot
+                isActive={activeSection === 1}
+                onClick={() => {
+                  setIsProgrammaticScroll(true);
+                  const targetScroll = isMobile
+                    ? sidebarHeight + 100 + window.innerHeight
+                    : 1 * window.innerHeight;
+                  window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+                }}
+              />
+            </DotGroup>
+
+            {/* Projects */}
+            <DotGroup>
+              <DotLabel>Projects</DotLabel>
+              {project.map((_, idx) => (
+                <PageDot
+                  key={idx}
+                  isActive={activeSection === idx + 2}
+                  onClick={() => {
+                    setIsProgrammaticScroll(true);
+                    const targetScroll = isMobile
+                      ? sidebarHeight + 100 + (idx + 2) * window.innerHeight
+                      : (idx + 2) * window.innerHeight;
+                    window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+                  }}
+                />
+              ))}
+            </DotGroup>
+          </PageIndicator>
         )}
         {/* 섹션 0: TypingWrapper */}
-        <SectionContainer 
-          isActive={activeSection === 0}
+        <SectionContainer
+          isActive={!isProgrammaticScroll && activeSection === 0}
           isDesktop={isDesktop}
           isTablet={isTablet}
         >
@@ -549,16 +609,16 @@ function PageIndex() {
             <img
               alt="backgroundImage"
               src={backgroundImage}
-              width={"100%"}
-              height={"100%"}
-              style={{borderRadius: '10px'}}
+              width={'100%'}
+              height={'100%'}
+              style={{ borderRadius: '10px' }}
             />
           </TypingWrapper>
         </SectionContainer>
 
         {/* 섹션 1: Invitation */}
-        <SectionContainer 
-          isActive={activeSection === 1}
+        <SectionContainer
+          isActive={!isProgrammaticScroll && activeSection === 1}
           isDesktop={isDesktop}
           isTablet={isTablet}
         >
@@ -566,15 +626,14 @@ function PageIndex() {
             <div>
               시작은 주변의 권유로 시작하게 되었습니다.
               <br />
-              <span>"처음에는 나의 뜻이 아니었다."</span> 말할 수 있는 이유는,
-              이제는 제가 원하기 때문입니다.
+              <span>"처음에는 나의 뜻이 아니었다."</span> 말할 수 있는 이유는, 이제는 제가 원하기
+              때문입니다.
               <br />
               <br />
-              직접 코드를 짜면서 구상한대로 화면에 그려질 때의{" "}
-              <span>성취감</span>
+              직접 코드를 짜면서 구상한대로 화면에 그려질 때의 <span>성취감</span>
               과<br />
-              지속적으로 의사소통 하며 팀원들과 퍼즐 맞추듯이 만들어가는
-              과정에서 느껴지는 <span>재미</span>,<br />
+              지속적으로 의사소통 하며 팀원들과 퍼즐 맞추듯이 만들어가는 과정에서 느껴지는{' '}
+              <span>재미</span>,<br />
               또한 제가 구현한 서비스를 사용자가 유용해 하며 즐거워할 때 오는
               <span>뿌듯함</span>에제가 개발자인 것이 좋습니다.
               <br />
@@ -589,9 +648,9 @@ function PageIndex() {
 
         {/* 섹션 2~N: 각 프로젝트 */}
         {project.map((v, idx) => (
-          <SectionContainer 
-            key={v.title} 
-            isActive={activeSection === idx + 2}
+          <SectionContainer
+            key={v.title}
+            isActive={!isProgrammaticScroll && activeSection === idx + 2}
             isDesktop={isDesktop}
             isTablet={isTablet}
           >
@@ -600,7 +659,7 @@ function PageIndex() {
               isTablet={isTablet}
               isMobile={isMobile}
               whileHover={{ scale: 1.1 }}
-              style={{ transition: "all 0.1s ease" }}
+              style={{ transition: 'all 0.1s ease' }}
             >
               <LineOne isDesktop={isDesktop}>
                 <h2>프로젝트명 : {v.title}</h2>
@@ -621,41 +680,40 @@ function PageIndex() {
                 </ExperienceWrapper>
               </div>
               <CardIconWrapper>
-                {[...v.stack]
-                  .map((item) => (
-                    <motion.div 
-                      key={item.name}
-                      whileHover={{ 
-                        scale: 1.1
-                      }}
-                      style={{ 
-                        display: "flex", 
-                        alignItems: "center", 
-                        gap: "2px", 
-                        whiteSpace: "nowrap",
-                        cursor: "pointer",
-                        transition: "all 0.3s ease"
-                      }}
-                    >
-                      <span>{item.icon}</span>
-                      <span>{item.name}</span>
-                    </motion.div>
-                  ))}
+                {[...v.stack].map((item) => (
+                  <motion.div
+                    key={item.name}
+                    whileHover={{
+                      scale: 1.1,
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '2px',
+                      whiteSpace: 'nowrap',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                    }}
+                  >
+                    <span>{item.icon}</span>
+                    <span>{item.name}</span>
+                  </motion.div>
+                ))}
               </CardIconWrapper>
               {v.link?.map((item) => (
                 <div key={item.name}>
-                  <span>{item.name}</span> :{" "}
-                  <motion.a 
-                    href={item.url} 
-                    target="_blank" 
+                  <span>{item.name}</span> :{' '}
+                  <motion.a
+                    href={item.url}
+                    target="_blank"
                     rel="noreferrer"
-                      whileHover={{ 
-                        color: "#ff0055",
-                        fontWeight: "bold"
-                      }}
-                    style={{ 
-                      transition: "all 0.1s ease",
-                      display: "inline-block"
+                    whileHover={{
+                      color: '#ff0055',
+                      fontWeight: 'bold',
+                    }}
+                    style={{
+                      transition: 'all 0.1s ease',
+                      display: 'inline-block',
                     }}
                   >
                     {item.url}
@@ -670,12 +728,11 @@ function PageIndex() {
         <GlobalScrollHint
           isMobile={isMobile}
           onClick={() => {
+            setIsProgrammaticScroll(true);
             const next = Math.min(activeSection + 1, 1 + project.length);
             const vh = window.innerHeight;
-            const top = isMobile
-              ? sidebarHeight + 100 + next * vh
-              : next * vh;
-            window.scrollTo({ top, behavior: "smooth" });
+            const top = isMobile ? sidebarHeight + 100 + next * vh : next * vh;
+            window.scrollTo({ top, behavior: 'smooth' });
           }}
         >
           <FaChevronDown />
@@ -688,23 +745,21 @@ function PageIndex() {
 export default PageIndex;
 
 const Container = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
-  margin-left: ${({ isDesktop, isTablet }) =>
-    isDesktop || isTablet ? "320px" : "0"};
+  margin-left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '320px' : '0')};
 `;
 
 const Wrap = styled.div<{ totalSections: number }>`
   height: ${({ totalSections }) => totalSections * 100}vh; /* 100vh * 섹션 수 */
 `;
 
-const SectionContainer = styled(motion.div)<{ 
-  isActive: boolean; 
-  isDesktop?: boolean; 
-  isTablet?: boolean; 
+const SectionContainer = styled(motion.div)<{
+  isActive: boolean;
+  isDesktop?: boolean;
+  isTablet?: boolean;
 }>`
   position: fixed;
   top: 0;
-  left: ${({ isDesktop, isTablet }) =>
-    isDesktop || isTablet ? "320px" : "0"};
+  left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '320px' : '0')};
   right: 0;
   bottom: 0;
   display: flex;
@@ -712,8 +767,8 @@ const SectionContainer = styled(motion.div)<{
   justify-content: center;
   padding: 20px;
   box-sizing: border-box;
-  z-index: ${({ isActive }) => isActive ? 10 : 1};
-  opacity: ${({ isActive }) => isActive ? 1 : 0};
+  z-index: ${({ isActive }) => (isActive ? 10 : 1)};
+  opacity: ${({ isActive }) => (isActive ? 1 : 0)};
   transition: opacity 0.5s ease-in-out;
 `;
 
@@ -721,29 +776,23 @@ const TypingWrapper = styled.div<{
   isDesktop: boolean;
   isTablet: boolean;
 }>`
-  position: ${({ isDesktop, isTablet }) =>
-    isDesktop || isTablet ? "relative" : "absolute"};
-  top: ${({ isDesktop, isTablet }) =>
-    isDesktop || isTablet ? "0" : "50%"};
-  transform: ${({ isDesktop, isTablet }) =>
-    isDesktop || isTablet ? "none" : "translateY(-50%)"};
+  position: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? 'relative' : 'absolute')};
+  top: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '0' : '50%')};
+  transform: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? 'none' : 'translateY(-50%)')};
   bottom: 0;
   left: 0;
   right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: ${({ isDesktop, isTablet }) =>
-    isDesktop ? "450px" : isTablet ? "350px" : "250px"};
+  height: ${({ isDesktop, isTablet }) => (isDesktop ? '450px' : isTablet ? '350px' : '250px')};
   & :first-child {
     position: absolute;
     color: #d4cbcb;
     z-index: 3;
-    font-size: ${({ isDesktop, isTablet }) =>
-      isDesktop ? "2vw" : isTablet ? "2vw" : "4vw"};
+    font-size: ${({ isDesktop, isTablet }) => (isDesktop ? '2vw' : isTablet ? '2vw' : '4vw')};
   }
-  padding: ${({ isDesktop, isTablet }) =>
-    isDesktop || isTablet ? "0" : "0 50px"};
+  padding: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '0' : '0 50px')};
 `;
 
 const Invitation = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
@@ -756,8 +805,7 @@ const Invitation = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  font-size: ${({ isDesktop, isTablet }) =>
-    isDesktop ? "14px" : isTablet ? "12px" : "11px"};
+  font-size: ${({ isDesktop, isTablet }) => (isDesktop ? '14px' : isTablet ? '12px' : '11px')};
   padding: 20px;
 `;
 
@@ -770,9 +818,8 @@ const PrograssStyle = styled(motion.div)<{ isDesktop: boolean }>`
   background: #ff0055;
   transform-origin: 0%;
   z-index: 3;
-  margin-left: ${({ isDesktop }) => (isDesktop ? "320px" : "0")};
+  margin-left: ${({ isDesktop }) => (isDesktop ? '320px' : '0')};
 `;
-
 
 const CardWrapper = styled(motion.div)<{
   isDesktop: boolean;
@@ -809,7 +856,7 @@ const CardWrapper = styled(motion.div)<{
 
   h2,
   h4 {
-    margin: ${({ isDesktop }) => (isDesktop ? "10px 0" : "5px auto")};
+    margin: ${({ isDesktop }) => (isDesktop ? '10px 0' : '5px auto')};
   }
 
   & > div {
@@ -852,7 +899,7 @@ const ExperienceWrapper = styled.div`
 
 const LineOne = styled.div<{ isDesktop: boolean }>`
   display: flex;
-  flex-direction: ${({ isDesktop }) => (isDesktop ? "row" : "column")};
+  flex-direction: ${({ isDesktop }) => (isDesktop ? 'row' : 'column')};
   justify-content: space-between;
 `;
 
@@ -886,11 +933,11 @@ const PageDot = styled.div<{ isActive: boolean }>`
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background-color: ${({ isActive }) => isActive ? "#ff0055" : "rgba(255, 255, 255, 0.5)"};
+  background-color: ${({ isActive }) => (isActive ? '#ff0055' : 'rgba(255, 255, 255, 0.5)')};
   cursor: pointer;
   transition: all 0.3s ease;
-  transform: scale(${({ isActive }) => isActive ? 1.2 : 1});
-  
+  transform: scale(${({ isActive }) => (isActive ? 1.2 : 1)});
+
   &:hover {
     background-color: #ff0055;
     transform: scale(1.3);
@@ -899,7 +946,7 @@ const PageDot = styled.div<{ isActive: boolean }>`
 
 const GlobalScrollHint = styled.div<{ isMobile: boolean }>`
   position: fixed;
-  left: ${({ isMobile }) => isMobile ? "50%" : "calc(50% + 160px)"};
+  left: ${({ isMobile }) => (isMobile ? '50%' : 'calc(50% + 160px)')};
   transform: translateX(-50%);
   bottom: 24px;
   display: flex;
@@ -915,7 +962,12 @@ const GlobalScrollHint = styled.div<{ isMobile: boolean }>`
   animation: bounce 1.2s infinite;
 
   @keyframes bounce {
-    0%, 100% { transform: translate(-50%, 0); }
-    50% { transform: translate(-50%, 4px); }
+    0%,
+    100% {
+      transform: translate(-50%, 0);
+    }
+    50% {
+      transform: translate(-50%, 4px);
+    }
   }
 `;
