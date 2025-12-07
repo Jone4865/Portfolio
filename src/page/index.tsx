@@ -44,6 +44,7 @@ function PageIndex() {
   const [activeSection, setActiveSection] = useState<number>(0);
   const [sidebarHeight, setSidebarHeight] = useState<number>(0);
   const [isProgrammaticScroll, setIsProgrammaticScroll] = useState<boolean>(false);
+  const [showLoader, setShowLoader] = useState<boolean>(false);
 
   const [project] = useState<Data[]>([
     {
@@ -453,6 +454,7 @@ function PageIndex() {
       // 스크롤 위치가 변하지 않았으면 스크롤 완료로 간주
       if (Math.abs(currentScrollY - lastScrollY) < 1) {
         setIsProgrammaticScroll(false);
+        setShowLoader(false);
 
         // 스크롤 완료 후 현재 위치에 맞는 섹션으로 업데이트
         const sectionHeight = window.innerHeight;
@@ -558,6 +560,7 @@ function PageIndex() {
                 isActive={activeSection === 0}
                 onClick={() => {
                   setIsProgrammaticScroll(true);
+                  setShowLoader(true);
                   const targetScroll = isMobile ? sidebarHeight + 100 : 0 * window.innerHeight;
                   window.scrollTo({ top: targetScroll, behavior: 'smooth' });
                 }}
@@ -571,6 +574,7 @@ function PageIndex() {
                 isActive={activeSection === 1}
                 onClick={() => {
                   setIsProgrammaticScroll(true);
+                  setShowLoader(true);
                   const targetScroll = isMobile
                     ? sidebarHeight + 100 + window.innerHeight
                     : 1 * window.innerHeight;
@@ -588,6 +592,7 @@ function PageIndex() {
                   isActive={activeSection === idx + 2}
                   onClick={() => {
                     setIsProgrammaticScroll(true);
+                    setShowLoader(true);
                     const targetScroll = isMobile
                       ? sidebarHeight + 100 + (idx + 2) * window.innerHeight
                       : (idx + 2) * window.innerHeight;
@@ -600,7 +605,7 @@ function PageIndex() {
         )}
 
         {/* 스크롤 중 로딩 뷰 */}
-        {isProgrammaticScroll && (
+        {isProgrammaticScroll && showLoader && (
           <ScrollLoadingContainer isDesktop={isDesktop} isTablet={isTablet}>
             <LoadingContent>
               <LoadingSpinner>
@@ -744,6 +749,7 @@ function PageIndex() {
           isMobile={isMobile}
           onClick={() => {
             setIsProgrammaticScroll(true);
+            setShowLoader(false);
             const next = Math.min(activeSection + 1, 1 + project.length);
             const vh = window.innerHeight;
             const top = isMobile ? sidebarHeight + 100 + next * vh : next * vh;
