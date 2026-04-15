@@ -7,6 +7,17 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  html {
+    color-scheme: ${(p) => p.theme.colorScheme};
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   body {
     margin: 0;
     min-height: 100vh;
@@ -15,6 +26,9 @@ export const GlobalStyle = createGlobalStyle`
     font-family: ${(p) => p.theme.fontSans};
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    transition:
+      background-color 0.35s ease,
+      color 0.25s ease;
   }
 
   #root {
