@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import styled from "styled-components";
+import { useContext, useState } from 'react';
+import styled from 'styled-components';
 
 import {
   FaHeartbeat,
@@ -13,7 +13,7 @@ import {
   FaGithub,
   FaSourcetree,
   FaFigma,
-} from "react-icons/fa";
+} from 'react-icons/fa';
 import {
   SiNextdotjs,
   SiTypescript,
@@ -36,15 +36,15 @@ import {
   SiAndroidstudio,
   SiVisualstudio,
   SiAdobexd,
-} from "react-icons/si";
-import { LuMessagesSquare, LuBookOpenCheck } from "react-icons/lu";
-import { TbBrandRedux, TbBrandReactNative } from "react-icons/tb";
-import { MdOutlineLightMode, MdOutlineNightlightRound } from "react-icons/md";
-import { GrRun } from "react-icons/gr";
+} from 'react-icons/si';
+import { LuMessagesSquare, LuBookOpenCheck } from 'react-icons/lu';
+import { TbBrandRedux, TbBrandReactNative } from 'react-icons/tb';
+import { MdOutlineLightMode, MdOutlineNightlightRound } from 'react-icons/md';
+import { GrRun } from 'react-icons/gr';
 
-import profileImage from "../../assets/image/profile.png";
-import useResponsive from "../../hooks/useResponsive";
-import { ThemeContext } from "../../contexts/ThemeContext";
+import profileImage from '../../assets/image/profile.png';
+import useResponsive from '../../hooks/useResponsive';
+import { ThemeContext } from '../../contexts/ThemeContext';
 
 const Sider = () => {
   const { isDesktop, isTablet } = useResponsive();
@@ -52,49 +52,49 @@ const Sider = () => {
   const [experienceVisible, setExperienceVisible] = useState(true);
 
   const techArr = [
-    { name: "React", icon: <FaReact /> },
-    { name: "Next.js", icon: <SiNextdotjs /> },
-    { name: "Typescript", icon: <SiTypescript /> },
-    { name: "Recoil", icon: <SiRecoil /> },
-    { name: "Styledcomponent", icon: <SiStyledcomponents /> },
-    { name: "Sass", icon: <SiSass /> },
-    { name: "AntDesign", icon: <SiAntdesign /> },
-    { name: "Mui", icon: <SiMui /> },
-    { name: "ReactQuery", icon: <SiReactquery /> },
-    { name: "Apollographql", icon: <SiApollographql /> },
-    { name: "Socket.io", icon: <SiSocketdotio /> },
-    { name: "Axios", icon: <SiAxios /> },
-    { name: "VisualStudio", icon: <SiVisualstudio /> },
-    { name: "Github", icon: <FaGithub /> },
-    { name: "Sourcetree", icon: <FaSourcetree /> },
-    { name: "Figma", icon: <FaFigma /> },
-    { name: "AdobeXD", icon: <SiAdobexd /> },
+    { name: 'React', icon: <FaReact /> },
+    { name: 'Next.js', icon: <SiNextdotjs /> },
+    { name: 'Typescript', icon: <SiTypescript /> },
+    { name: 'Recoil', icon: <SiRecoil /> },
+    { name: 'Styledcomponent', icon: <SiStyledcomponents /> },
+    { name: 'Sass', icon: <SiSass /> },
+    { name: 'AntDesign', icon: <SiAntdesign /> },
+    { name: 'Mui', icon: <SiMui /> },
+    { name: 'ReactQuery', icon: <SiReactquery /> },
+    { name: 'Apollographql', icon: <SiApollographql /> },
+    { name: 'Socket.io', icon: <SiSocketdotio /> },
+    { name: 'Axios', icon: <SiAxios /> },
+    { name: 'VisualStudio', icon: <SiVisualstudio /> },
+    { name: 'Github', icon: <FaGithub /> },
+    { name: 'Sourcetree', icon: <FaSourcetree /> },
+    { name: 'Figma', icon: <FaFigma /> },
+    { name: 'AdobeXD', icon: <SiAdobexd /> },
     // { name: "Css3", icon: <SiCss3 /> },
     // { name: "Html5", icon: <SiHtml5 /> },
   ];
 
   const experienceTechArr = [
-    { name: "AmazonAws", icon: <FaAws /> },
-    { name: "Vercel", icon: <SiVercel /> },
-    { name: "AmazonS3", icon: <SiAmazons3 /> },
-    { name: "ReactNative", icon: <TbBrandReactNative /> },
-    { name: "Flutter", icon: <SiFlutter /> },
-    { name: "XCode", icon: <SiXcode /> },
-    { name: "Android Studio", icon: <SiAndroidstudio /> },
-    { name: "ReduxToolkit", icon: <TbBrandRedux /> },
-    { name: "StoryBook", icon: <SiStorybook /> },
+    { name: 'AmazonAws', icon: <FaAws /> },
+    { name: 'Vercel', icon: <SiVercel /> },
+    { name: 'AmazonS3', icon: <SiAmazons3 /> },
+    { name: 'ReactNative', icon: <TbBrandReactNative /> },
+    { name: 'Flutter', icon: <SiFlutter /> },
+    { name: 'XCode', icon: <SiXcode /> },
+    { name: 'Android Studio', icon: <SiAndroidstudio /> },
+    { name: 'ReduxToolkit', icon: <TbBrandRedux /> },
+    { name: 'StoryBook', icon: <SiStorybook /> },
   ];
 
   const { toggleTheme, isDarkMode } = useContext(ThemeContext);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText("cowhddnjsdl0@naver.com").then(() => {
-      alert("이메일 주소가 복사되었습니다.");
+    navigator.clipboard.writeText('cowhddnjsdl0@naver.com').then(() => {
+      alert('이메일 주소가 복사되었습니다.');
     });
   };
 
   const handlePhoneCall = () => {
-    window.location.href = `tel:${"010-5705-4865"}`;
+    window.location.href = `tel:${'010-5705-4865'}`;
   };
 
   return (
@@ -103,7 +103,7 @@ const Sider = () => {
         {isDarkMode ? (
           <MdOutlineLightMode />
         ) : (
-          <MdOutlineNightlightRound style={{ rotate: "-30deg" }} />
+          <MdOutlineNightlightRound style={{ rotate: '-30deg' }} />
         )}
       </LightModeButtonWrapper>
       <TopWrapper>
@@ -157,13 +157,10 @@ const Sider = () => {
         </div>
       </MeritIconWrapper>
       <Line />
-      <TitleStyle
-        onClick={() => setStackVisible((prev) => !prev)}
-        visible={stackVisible}
-      >
+      <TitleStyle onClick={() => setStackVisible((prev) => !prev)} visible={stackVisible}>
         <FaFeather size={25} />
         <div>Tech Stack</div>
-        <div>{">"}</div>
+        <div>{'>'}</div>
       </TitleStyle>
       <TechWrapper visible={stackVisible}>
         {techArr.map((v) => (
@@ -174,13 +171,10 @@ const Sider = () => {
         ))}
       </TechWrapper>
       <Line />
-      <TitleStyle
-        onClick={() => setExperienceVisible((prev) => !prev)}
-        visible={experienceVisible}
-      >
+      <TitleStyle onClick={() => setExperienceVisible((prev) => !prev)} visible={experienceVisible}>
         <FaFeather size={25} />
         <div>Experience Tech</div>
-        <div>{">"}</div>
+        <div>{'>'}</div>
       </TitleStyle>
       <TechWrapper visible={experienceVisible}>
         {experienceTechArr.map((v) => (
@@ -214,10 +208,10 @@ export default Sider;
 
 const Container = styled.div<{ isBig: boolean }>`
   transition: all 0.1s linear;
-  width: ${({ isBig }) => (isBig ? "300px" : "auto")};
+  width: ${({ isBig }) => (isBig ? '300px' : 'auto')};
   background-color: ${({ theme }) => theme.siderBackGround};
   height: 100%;
-  position: ${({ isBig }) => (!isBig ? "reletive" : "fixed")};
+  position: ${({ isBig }) => (!isBig ? 'reletive' : 'fixed')};
   padding: 10px;
   overflow: scroll;
   z-index: 2;
@@ -291,23 +285,23 @@ const TitleStyle = styled.div<{ visible?: boolean; unActiveHover?: boolean }>`
   border-radius: 8px;
   & > :last-child {
     margin: 0 0 auto auto;
-    rotate: ${({ visible }) => (visible ? "90deg" : "180deg")};
+    rotate: ${({ visible }) => (visible ? '90deg' : '180deg')};
     font-size: 18px;
     transition: all 0.1s linear;
   }
-  cursor: ${({ unActiveHover }) => (unActiveHover ? "default" : "pointer")};
+  cursor: ${({ unActiveHover }) => (unActiveHover ? 'default' : 'pointer')};
   &:hover {
     background-color: ${({ theme, unActiveHover }) =>
-      !unActiveHover ? theme.siderArrowColor : ""};
+      !unActiveHover ? theme.siderArrowColor : ''};
   }
 `;
 
 const TechWrapper = styled.div<{ visible: boolean }>`
-  padding: ${({ visible }) => (visible ? "10px 15px" : "0")};
+  padding: ${({ visible }) => (visible ? '10px 15px' : '0')};
   display: flex;
   flex-direction: column;
   gap: 5px;
-  max-height: ${({ visible }) => (visible ? "500px" : "0")};
+  max-height: ${({ visible }) => (visible ? '500px' : '0')};
   opacity: ${({ visible }) => (visible ? 1 : 0)};
   transition: all 0.1s ease;
   overflow: hidden;
@@ -353,8 +347,8 @@ const MeritIconWrapper = styled.div`
     cursor: pointer;
     transition: transform 0.1s ease;
     &:hover {
-    transform: scale(1.1);
-  }
+      transform: scale(1.1);
+    }
     :nth-child(2) {
       margin-top: 5px;
     }
