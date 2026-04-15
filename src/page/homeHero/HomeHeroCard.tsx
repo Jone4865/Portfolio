@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import styled, { css } from 'styled-components';
 
 type Props = {
@@ -11,11 +11,22 @@ const springSoft = { type: 'spring' as const, stiffness: 280, damping: 30 };
 
 /** 홈 히어로 — 에디토리얼(D): 하단 그라데이션 + 좌하단 타이포 */
 export default function HomeHeroCard({ typicalContent, backgroundSrc }: Props) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <HeroVisualFrame
       initial={{ opacity: 0, scale: 0.94, y: 16 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={springSoft}
+      whileHover={
+        reduceMotion
+          ? undefined
+          : {
+              y: -5,
+              scale: 1.008,
+              transition: { type: 'spring', stiffness: 420, damping: 28 },
+            }
+      }
     >
       <HeroImageShell>
         <HeroImageKen
@@ -97,6 +108,24 @@ const HeroVisualFrame = styled(motion.div)`
   overflow: hidden;
   box-shadow: ${({ theme }) => theme.shadowElevated};
   border: 1px solid ${({ theme }) => theme.heroGlassBorder};
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.accentMuted};
+    box-shadow:
+      ${({ theme }) => theme.shadowElevated},
+      0 0 0 1px ${({ theme }) => theme.accentMuted},
+      0 28px 56px rgba(0, 0, 0, 0.35);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:hover {
+      border-color: ${({ theme }) => theme.heroGlassBorder};
+      box-shadow: ${({ theme }) => theme.shadowElevated};
+    }
+  }
 `;
 
 const HeroImageShell = styled.div`

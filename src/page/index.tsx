@@ -756,9 +756,7 @@ function PageIndex() {
               isMobile={isMobile}
               initial={false}
               variants={cardRevealVariants}
-              animate={
-                !isProgrammaticScroll && activeSection === idx + 2 ? 'on' : 'off'
-              }
+              animate={!isProgrammaticScroll && activeSection === idx + 2 ? 'on' : 'off'}
               whileHover={{ y: -4, transition: { duration: 0.22, ease: easeOutExpo } }}
             >
               <CardHeader>
@@ -788,9 +786,7 @@ function PageIndex() {
                 aria-label="기술 스택"
                 initial={false}
                 variants={stackParentVariants}
-                animate={
-                  !isProgrammaticScroll && activeSection === idx + 2 ? 'on' : 'off'
-                }
+                animate={!isProgrammaticScroll && activeSection === idx + 2 ? 'on' : 'off'}
               >
                 {v.stack.map((item) => (
                   <StackChip
@@ -864,8 +860,7 @@ export default PageIndex;
 const SIDER_RAIL = 320;
 
 const Container = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
-  margin-left: ${({ isDesktop, isTablet }) =>
-    isDesktop || isTablet ? `${SIDER_RAIL}px` : '0'};
+  margin-left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? `${SIDER_RAIL}px` : '0')};
 `;
 
 const Wrap = styled.div<{ totalSections: number }>`
@@ -880,8 +875,7 @@ const SectionContainer = styled(motion.div)<{
 }>`
   position: fixed;
   top: 0;
-  left: ${({ isDesktop, isTablet }) =>
-    isDesktop || isTablet ? `${SIDER_RAIL}px` : '0'};
+  left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? `${SIDER_RAIL}px` : '0')};
   right: 0;
   bottom: 0;
   display: flex;
@@ -919,8 +913,7 @@ const TypingWrapper = styled.div<{
 }>`
   position: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? 'relative' : 'absolute')};
   top: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '0' : '50%')};
-  transform: ${({ isDesktop, isTablet }) =>
-    isDesktop || isTablet ? 'none' : 'translateY(-50%)'};
+  transform: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? 'none' : 'translateY(-50%)')};
   left: 0;
   right: 0;
   display: flex;
@@ -929,7 +922,8 @@ const TypingWrapper = styled.div<{
   width: 100%;
   max-width: min(920px, 94vw);
   margin: 0 auto;
-  height: ${({ isDesktop, isTablet }) => (isDesktop ? 'min(52vh, 520px)' : isTablet ? '420px' : '280px')};
+  height: ${({ isDesktop, isTablet }) =>
+    isDesktop ? 'min(52vh, 520px)' : isTablet ? '420px' : '280px'};
   padding: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '0' : '0 20px')};
 `;
 
@@ -1185,10 +1179,8 @@ const PageDot = styled.div<{ isActive: boolean }>`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${({ isActive, theme }) =>
-    isActive ? theme.accent : theme.indicatorDot};
-  box-shadow: ${({ isActive, theme }) =>
-    isActive ? `0 0 0 3px ${theme.accentMuted}` : 'none'};
+  background-color: ${({ isActive, theme }) => (isActive ? theme.accent : theme.indicatorDot)};
+  box-shadow: ${({ isActive, theme }) => (isActive ? `0 0 0 3px ${theme.accentMuted}` : 'none')};
   cursor: pointer;
   transition:
     transform 0.25s ease,
@@ -1204,8 +1196,7 @@ const PageDot = styled.div<{ isActive: boolean }>`
 
 const GlobalScrollHint = styled(motion.div)<{ isMobile: boolean }>`
   position: fixed;
-  left: ${({ isMobile }) =>
-    isMobile ? '50%' : `calc(50% + ${SIDER_RAIL / 2}px)`};
+  left: ${({ isMobile }) => (isMobile ? '50%' : `calc(50% + ${SIDER_RAIL / 2}px)`)};
   translate: -50% 0;
   bottom: 28px;
   display: flex;
@@ -1230,8 +1221,7 @@ const GlobalScrollHint = styled(motion.div)<{ isMobile: boolean }>`
 const ScrollLoadingContainer = styled.div<{ isDesktop?: boolean; isTablet?: boolean }>`
   position: fixed;
   top: 0;
-  left: ${({ isDesktop, isTablet }) =>
-    isDesktop || isTablet ? `${SIDER_RAIL}px` : '0'};
+  left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? `${SIDER_RAIL}px` : '0')};
   right: 0;
   bottom: 0;
   display: flex;

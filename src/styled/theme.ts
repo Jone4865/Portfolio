@@ -1,4 +1,6 @@
 export type AppTheme = {
+  /** `color-scheme` — 스크롤바·폼 컨트롤 등 UA 톤 */
+  colorScheme: "light" | "dark";
   background: string;
   canvasGradient: string;
   text: string;
@@ -35,6 +37,7 @@ export type AppTheme = {
 };
 
 export const lightTheme: AppTheme = {
+  colorScheme: "light",
   background: "#ede8e3",
   canvasGradient: `
     radial-gradient(1200px 800px at 85% 10%, rgba(184, 50, 83, 0.09), transparent 55%),
@@ -75,6 +78,7 @@ export const lightTheme: AppTheme = {
 };
 
 export const darkTheme: AppTheme = {
+  colorScheme: "dark",
   background: "#0c0e12",
   canvasGradient: `
     radial-gradient(1000px 700px at 90% 0%, rgba(251, 113, 133, 0.12), transparent 50%),
