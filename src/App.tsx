@@ -10,7 +10,8 @@ import { GlobalStyle } from './styled/globalStyles';
 
 function AppContent() {
   const location = useLocation();
-  const is404Page = location.pathname !== '/' && location.pathname !== '/common';
+  const is404Page =
+    location.pathname !== '/' && location.pathname !== '/test';
 
   return (
     <div className="App">
