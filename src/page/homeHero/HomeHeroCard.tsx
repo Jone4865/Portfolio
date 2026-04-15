@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { motion } from 'framer-motion';
 import styled, { css } from 'styled-components';
 
 type Props = {
@@ -6,15 +7,57 @@ type Props = {
   backgroundSrc: string;
 };
 
+const springSoft = { type: 'spring' as const, stiffness: 280, damping: 30 };
+
 /** 홈 히어로 — 에디토리얼(D): 하단 그라데이션 + 좌하단 타이포 */
 export default function HomeHeroCard({ typicalContent, backgroundSrc }: Props) {
   return (
-    <HeroVisualFrame>
-      <HeroImage alt="" src={backgroundSrc} loading="eager" decoding="async" />
-      <EditorialScrim aria-hidden />
+    <HeroVisualFrame
+      initial={{ opacity: 0, scale: 0.94, y: 16 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={springSoft}
+    >
+      <HeroImageShell>
+        <HeroImageKen
+          animate={{ scale: [1, 1.055, 1] }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        >
+          <img alt="" src={backgroundSrc} loading="eager" decoding="async" />
+        </HeroImageKen>
+      </HeroImageShell>
+      <EditorialScrim
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.65, ease: 'easeOut' }}
+        aria-hidden
+      />
       <EditorialTyping $high>
-        <div className="hero-typical-root">{typicalContent}</div>
-        <HeroAccentLine aria-hidden />
+        <TypingMotion
+          initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{
+            delay: 0.32,
+            duration: 0.68,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
+          <div className="hero-typical-root">{typicalContent}</div>
+        </TypingMotion>
+        <AccentMotion
+          initial={{ scaleX: 0, opacity: 0 }}
+          animate={{ scaleX: 1, opacity: 1 }}
+          transition={{
+            delay: 0.72,
+            duration: 0.55,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          style={{ transformOrigin: 'left center' }}
+          aria-hidden
+        />
       </EditorialTyping>
     </HeroVisualFrame>
   );
@@ -45,7 +88,7 @@ function heroTypicalContrast(highContrastShadow: boolean) {
   `;
 }
 
-const HeroVisualFrame = styled.div`
+const HeroVisualFrame = styled(motion.div)`
   position: relative;
   width: 100%;
   height: 100%;
@@ -56,15 +99,28 @@ const HeroVisualFrame = styled.div`
   border: 1px solid ${({ theme }) => theme.heroGlassBorder};
 `;
 
-const HeroImage = styled.img`
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: saturate(1.05) contrast(1.02);
+const HeroImageShell = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
 `;
 
-const EditorialScrim = styled.div`
+const HeroImageKen = styled(motion.div)`
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(1.06) contrast(1.03);
+  }
+`;
+
+const EditorialScrim = styled(motion.div)`
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -100,7 +156,12 @@ const EditorialTyping = styled.div<{ $high: boolean }>`
   ${({ $high }) => heroTypicalContrast($high)}
 `;
 
-const HeroAccentLine = styled.div`
+const TypingMotion = styled(motion.div)`
+  width: 100%;
+  max-width: min(36ch, 92%);
+`;
+
+const AccentMotion = styled(motion.div)`
   width: min(120px, 40%);
   height: 3px;
   border-radius: 999px;

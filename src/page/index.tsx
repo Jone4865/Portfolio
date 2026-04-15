@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useMemo, useState, useCallback } from 'react';
-import { motion, useScroll } from 'framer-motion';
+import { motion, useScroll, type Transition } from 'framer-motion';
 import styled, { css } from 'styled-components';
 import Typical from 'react-typical';
 
@@ -36,6 +36,54 @@ type Data = {
   people: string;
   experience: string[];
   link?: { url: string; name: string }[];
+};
+
+const easeOutExpo: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+const sectionTransition: Transition = {
+  duration: 0.52,
+  ease: easeOutExpo,
+};
+
+const cardRevealVariants = {
+  off: {
+    opacity: 0,
+    y: 36,
+    scale: 0.96,
+    filter: 'blur(5px)',
+  },
+  on: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: 'blur(0px)',
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 30,
+      mass: 0.88,
+    },
+  },
+};
+
+const stackParentVariants = {
+  off: {},
+  on: {
+    transition: {
+      staggerChildren: 0.055,
+      delayChildren: 0.18,
+    },
+  },
+};
+
+const stackChipVariants = {
+  off: { opacity: 0, y: 10, scale: 0.94 },
+  on: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.38, ease: easeOutExpo },
+  },
 };
 
 function PageIndex() {
@@ -623,6 +671,12 @@ function PageIndex() {
           isActive={!isProgrammaticScroll && activeSection === 0}
           isDesktop={isDesktop}
           isTablet={isTablet}
+          initial={false}
+          animate={{
+            opacity: !isProgrammaticScroll && activeSection === 0 ? 1 : 0,
+            y: !isProgrammaticScroll && activeSection === 0 ? 0 : 16,
+          }}
+          transition={sectionTransition}
         >
           <TypingWrapper isDesktop={isDesktop} isTablet={isTablet}>
             <HomeHeroCard
@@ -637,8 +691,28 @@ function PageIndex() {
           isActive={!isProgrammaticScroll && activeSection === 1}
           isDesktop={isDesktop}
           isTablet={isTablet}
+          initial={false}
+          animate={{
+            opacity: !isProgrammaticScroll && activeSection === 1 ? 1 : 0,
+            y: !isProgrammaticScroll && activeSection === 1 ? 0 : 16,
+          }}
+          transition={sectionTransition}
         >
-          <Invitation isDesktop={isDesktop} isTablet={isTablet}>
+          <Invitation
+            isDesktop={isDesktop}
+            isTablet={isTablet}
+            initial={false}
+            animate={
+              !isProgrammaticScroll && activeSection === 1
+                ? { opacity: 1, y: 0, scale: 1 }
+                : { opacity: 0, y: 20, scale: 0.98 }
+            }
+            transition={{
+              duration: 0.55,
+              delay: !isProgrammaticScroll && activeSection === 1 ? 0.1 : 0,
+              ease: easeOutExpo,
+            }}
+          >
             <div>
               시작은 주변의 권유로 시작하게 되었습니다.
               <br />
@@ -669,8 +743,24 @@ function PageIndex() {
             isActive={!isProgrammaticScroll && activeSection === idx + 2}
             isDesktop={isDesktop}
             isTablet={isTablet}
+            initial={false}
+            animate={{
+              opacity: !isProgrammaticScroll && activeSection === idx + 2 ? 1 : 0,
+              y: !isProgrammaticScroll && activeSection === idx + 2 ? 0 : 16,
+            }}
+            transition={sectionTransition}
           >
-            <CardWrapper isDesktop={isDesktop} isTablet={isTablet} isMobile={isMobile}>
+            <CardWrapper
+              isDesktop={isDesktop}
+              isTablet={isTablet}
+              isMobile={isMobile}
+              initial={false}
+              variants={cardRevealVariants}
+              animate={
+                !isProgrammaticScroll && activeSection === idx + 2 ? 'on' : 'off'
+              }
+              whileHover={{ y: -4, transition: { duration: 0.22, ease: easeOutExpo } }}
+            >
               <CardHeader>
                 <OrgPill>{v.key}</OrgPill>
                 <LineOne isDesktop={isDesktop}>
@@ -694,9 +784,22 @@ function PageIndex() {
                   ))}
                 </ExperienceList>
               </MetaBlock>
-              <StackRow aria-label="기술 스택">
+              <StackRow
+                aria-label="기술 스택"
+                initial={false}
+                variants={stackParentVariants}
+                animate={
+                  !isProgrammaticScroll && activeSection === idx + 2 ? 'on' : 'off'
+                }
+              >
                 {v.stack.map((item) => (
-                  <StackChip key={item.name} whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
+                  <StackChip
+                    key={item.name}
+                    variants={stackChipVariants}
+                    whileHover={{ y: -3, scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+                  >
                     <span className="ico">{item.icon}</span>
                     <span className="lbl">{item.name}</span>
                   </StackChip>
@@ -736,8 +839,20 @@ function PageIndex() {
             const top = isMobile ? sidebarHeight + 100 + next * vh : next * vh;
             window.scrollTo({ top, behavior: 'smooth' });
           }}
+          whileHover={{ scale: 1.06 }}
+          whileTap={{ scale: 0.94 }}
         >
-          <FaChevronDown />
+          <motion.span
+            animate={{ y: [0, 5, 0] }}
+            transition={{
+              duration: 1.45,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+            style={{ display: 'flex' }}
+          >
+            <FaChevronDown />
+          </motion.span>
         </GlobalScrollHint>
       )}
     </Container>
@@ -775,9 +890,7 @@ const SectionContainer = styled(motion.div)<{
   padding: clamp(16px, 4vw, 32px);
   box-sizing: border-box;
   z-index: ${({ isActive }) => (isActive ? 10 : 1)};
-  opacity: ${({ isActive }) => (isActive ? 1 : 0)};
   pointer-events: ${({ isActive }) => (isActive ? 'auto' : 'none')};
-  transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
 
   &::before {
     content: '';
@@ -820,7 +933,7 @@ const TypingWrapper = styled.div<{
   padding: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '0' : '0 20px')};
 `;
 
-const Invitation = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
+const Invitation = styled(motion.div)<{ isDesktop: boolean; isTablet: boolean }>`
   width: min(640px, 92%);
   margin: 0 auto;
   padding: clamp(24px, 4vw, 40px);
@@ -879,12 +992,9 @@ const CardWrapper = styled(motion.div)<{
   flex-direction: column;
   gap: 18px;
 
-  transition:
-    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.35s ease;
+  transition: box-shadow 0.3s ease;
 
   &:hover {
-    transform: translateY(-4px);
     box-shadow: ${({ theme }) => theme.shadowElevated};
   }
 
@@ -978,7 +1088,7 @@ const ExperienceList = styled.ul`
   }
 `;
 
-const StackRow = styled.div`
+const StackRow = styled(motion.div)`
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -1092,11 +1202,11 @@ const PageDot = styled.div<{ isActive: boolean }>`
   }
 `;
 
-const GlobalScrollHint = styled.div<{ isMobile: boolean }>`
+const GlobalScrollHint = styled(motion.div)<{ isMobile: boolean }>`
   position: fixed;
   left: ${({ isMobile }) =>
     isMobile ? '50%' : `calc(50% + ${SIDER_RAIL / 2}px)`};
-  transform: translateX(-50%);
+  translate: -50% 0;
   bottom: 28px;
   display: flex;
   align-items: center;
@@ -1114,18 +1224,6 @@ const GlobalScrollHint = styled.div<{ isMobile: boolean }>`
 
   &:hover {
     box-shadow: ${({ theme }) => theme.shadowElevated};
-  }
-
-  animation: bounceHint 1.35s ease-in-out infinite;
-
-  @keyframes bounceHint {
-    0%,
-    100% {
-      transform: translate(-50%, 0);
-    }
-    50% {
-      transform: translate(-50%, 5px);
-    }
   }
 `;
 
