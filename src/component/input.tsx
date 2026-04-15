@@ -12,22 +12,37 @@ const Input: React.FC<InputProps> = ({ children, width, error, ...rest }) => {
 export default Input;
 
 const Container = styled.input<InputProps>`
-  padding: 10px 20px;
-  border-radius: 10px;
-  font-size: 16px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: inherit;
   outline: none;
-  transition: all 0.3s;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 
   width: ${({ width }) => (width ? `${width}px` : "auto")};
-  border: solid 1px ${({ error }) => (error ? "#F84D61" : "#e8e5e5")};
+  background: ${({ theme }) => theme.inputBg};
+  color: ${({ theme }) => theme.text};
+  border: 1px solid
+    ${({ error, theme }) => (error ? theme.accent : theme.inputBorder)};
+
+  &::placeholder {
+    color: ${({ theme }) => theme.textMuted};
+  }
 
   &:disabled {
-    background-color: #e8e5e5;
+    background-color: ${({ theme }) => theme.inputDisabledBg};
+    color: ${({ theme }) => theme.textMuted};
     cursor: not-allowed;
   }
 
-  &:hover {
-    border: solid 1px ${({ disabled }) => (disabled ? "none" : "#009ade")};
+  &:hover:not(:disabled) {
+    border-color: ${({ theme }) => theme.inputBorderHover};
   }
-  color: ${({ disabled }) => (disabled ? "#817d7d" : "#333")};
+
+  &:focus:not(:disabled) {
+    border-color: ${({ theme }) => theme.accent};
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.accentMuted};
+  }
 `;

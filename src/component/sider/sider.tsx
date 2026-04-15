@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import {
   FaHeartbeat,
@@ -20,8 +20,6 @@ import {
   SiSass,
   SiStyledcomponents,
   SiAntdesign,
-  // SiCss3,
-  // SiHtml5,
   SiApollographql,
   SiSocketdotio,
   SiAxios,
@@ -69,8 +67,6 @@ const Sider = () => {
     { name: 'Sourcetree', icon: <FaSourcetree /> },
     { name: 'Figma', icon: <FaFigma /> },
     { name: 'AdobeXD', icon: <SiAdobexd /> },
-    // { name: "Css3", icon: <SiCss3 /> },
-    // { name: "Html5", icon: <SiHtml5 /> },
   ];
 
   const experienceTechArr = [
@@ -94,38 +90,42 @@ const Sider = () => {
   };
 
   const handlePhoneCall = () => {
-    window.location.href = `tel:${'010-5705-4865'}`;
+    window.location.href = 'tel:010-5705-4865';
   };
 
   return (
     <Container isBig={isDesktop || isTablet} data-sider="true">
-      <LightModeButtonWrapper onClick={toggleTheme}>
+      <ThemeToggle
+        type="button"
+        aria-label={isDarkMode ? '라이트 모드' : '다크 모드'}
+        onClick={toggleTheme}
+      >
         {isDarkMode ? (
           <MdOutlineLightMode />
         ) : (
           <MdOutlineNightlightRound style={{ rotate: '-30deg' }} />
         )}
-      </LightModeButtonWrapper>
+      </ThemeToggle>
       <TopWrapper>
         <PictureWrapper>
-          <img src={profileImage} alt="profile" />
+          <img src={profileImage} alt="프로필" />
         </PictureWrapper>
         <NameWrapper>
-          <div>채종원</div>
-          <div>Frontend Developer</div>
+          <div className="name">채종원</div>
+          <div className="role">Frontend Developer</div>
         </NameWrapper>
       </TopWrapper>
       <InfoWrapper>
-        <div>
-          <FaHeartbeat />
+        <div className="row static">
+          <FaHeartbeat aria-hidden />
           <div>1994.03.30 / 서울 성북구 돈암2동</div>
         </div>
-        <HoverInfo onClick={handleCopy}>
-          <FaEnvelope />
+        <HoverInfo type="button" onClick={handleCopy}>
+          <FaEnvelope aria-hidden />
           <div>cowhddnjsdl0@naver.com</div>
         </HoverInfo>
-        <HoverInfo onClick={handlePhoneCall}>
-          <FaPhoneAlt />
+        <HoverInfo type="button" onClick={handlePhoneCall}>
+          <FaPhoneAlt aria-hidden />
           <div>010-5705-4865</div>
         </HoverInfo>
       </InfoWrapper>
@@ -133,62 +133,74 @@ const Sider = () => {
       <MeritIconWrapper>
         <div>
           <MeritIconItem>
-            <LuMessagesSquare />
+            <LuMessagesSquare aria-hidden />
           </MeritIconItem>
           <div>의사소통</div>
         </div>
         <div>
           <MeritIconItem>
-            <FaGrinBeam />
+            <FaGrinBeam aria-hidden />
           </MeritIconItem>
           <div>차분함</div>
         </div>
         <div>
           <MeritIconItem>
-            <GrRun />
+            <GrRun aria-hidden />
           </MeritIconItem>
           <div>도전정신</div>
         </div>
         <div>
           <MeritIconItem>
-            <LuBookOpenCheck />
+            <LuBookOpenCheck aria-hidden />
           </MeritIconItem>
           <div>꼼꼼함</div>
         </div>
       </MeritIconWrapper>
       <Line />
-      <TitleStyle onClick={() => setStackVisible((prev) => !prev)} visible={stackVisible}>
-        <FaFeather size={25} />
+      <TitleStyle
+        type="button"
+        onClick={() => setStackVisible((prev) => !prev)}
+        visible={stackVisible}
+      >
+        <FaFeather size={22} aria-hidden />
         <div>Tech Stack</div>
-        <div>{'>'}</div>
+        <Chevron aria-hidden visible={stackVisible}>
+          ›
+        </Chevron>
       </TitleStyle>
       <TechWrapper visible={stackVisible}>
         {techArr.map((v) => (
           <TechStyle key={v.name}>
-            <div>{v.icon}</div>
-            <div>{v.name}</div>
+            <span className="ico">{v.icon}</span>
+            <span className="lbl">{v.name}</span>
           </TechStyle>
         ))}
       </TechWrapper>
       <Line />
-      <TitleStyle onClick={() => setExperienceVisible((prev) => !prev)} visible={experienceVisible}>
-        <FaFeather size={25} />
+      <TitleStyle
+        type="button"
+        onClick={() => setExperienceVisible((prev) => !prev)}
+        visible={experienceVisible}
+      >
+        <FaFeather size={22} aria-hidden />
         <div>Experience Tech</div>
-        <div>{'>'}</div>
+        <Chevron aria-hidden visible={experienceVisible}>
+          ›
+        </Chevron>
       </TitleStyle>
       <TechWrapper visible={experienceVisible}>
         {experienceTechArr.map((v) => (
-          <TechStyle>
-            <div>{v.icon}</div>
-            <div>{v.name}</div>
+          <TechStyle key={v.name}>
+            <span className="ico">{v.icon}</span>
+            <span className="lbl">{v.name}</span>
           </TechStyle>
         ))}
       </TechWrapper>
       <Line />
-      <TitleStyle unActiveHover>
-        <FaGraduationCap size={25} />
+      <TitleStyle as="div" unActiveHover>
+        <FaGraduationCap size={22} aria-hidden />
         <div>Education</div>
-        <div />
+        <span />
       </TitleStyle>
       <EducationWrapper>
         <div>
@@ -207,177 +219,332 @@ const Sider = () => {
 export default Sider;
 
 const Container = styled.div<{ isBig: boolean }>`
-  transition: all 0.1s linear;
+  transition: background 0.25s ease;
   width: ${({ isBig }) => (isBig ? '300px' : 'auto')};
-  background-color: ${({ theme }) => theme.siderBackGround};
-  height: 100%;
-  position: ${({ isBig }) => (!isBig ? 'reletive' : 'fixed')};
-  padding: 10px;
-  overflow: scroll;
+  background: ${({ theme }) => theme.siderBackGround};
+  border-right: ${({ isBig, theme }) =>
+    isBig ? `1px solid ${theme.siderBorder}` : 'none'};
+  backdrop-filter: blur(16px);
+  padding: 16px 12px 24px;
+  z-index: 12;
+
+  ${({ isBig }) =>
+    isBig
+      ? css`
+          position: fixed;
+          top: 0;
+          left: 0;
+          /* 뷰포트 높이에 맞춰 고정 → 넘치는 콘텐츠는 이 영역 안에서 스크롤 */
+          height: 100vh;
+          max-height: 100dvh;
+          overflow-y: auto;
+          overflow-x: hidden;
+          overscroll-behavior: contain;
+          -webkit-overflow-scrolling: touch;
+        `
+      : css`
+          position: relative;
+          min-height: auto;
+          overflow-x: hidden;
+        `}
+`;
+
+const ThemeToggle = styled.button`
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid ${({ theme }) => theme.siderBorder};
+  background: ${({ theme }) => theme.siderArrowColor};
+  color: ${({ theme }) => theme.text};
+  font-size: 20px;
+  cursor: pointer;
   z-index: 2;
+  padding: 0;
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.accentMuted};
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
 `;
 
 const TopWrapper = styled.div`
-  gap: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  gap: 16px;
+  padding-top: 8px;
 `;
 
 const PictureWrapper = styled.div`
+  padding: 4px;
   border-radius: 100%;
-  width: 170px;
-  height: 170px;
+  background: linear-gradient(
+    135deg,
+    ${({ theme }) => theme.accent},
+    ${({ theme }) => theme.accentMuted}
+  );
+  box-shadow: 0 8px 28px ${({ theme }) => theme.accentMuted};
+
   img {
+    display: block;
     border-radius: 100%;
-    width: 100%;
-    height: 100%;
+    width: 156px;
+    height: 156px;
+    object-fit: cover;
+    border: 3px solid ${({ theme }) => theme.siderBackGround};
   }
 `;
 
 const NameWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-weight: 600;
-  & :first-child {
-    font-size: 20px;
-    font-weight: 700;
+  text-align: center;
+
+  .name {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: ${({ theme }) => theme.text};
+  }
+
+  .role {
+    margin-top: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: ${({ theme }) => theme.textMuted};
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 `;
 
 const InfoWrapper = styled.div`
-  margin-top: 15px;
+  margin-top: 18px;
   display: flex;
   flex-direction: column;
-  > div {
+  gap: 4px;
+
+  .row {
     display: flex;
-    gap: 7px;
-    cursor: pointer;
-    padding: 4px 15px;
-    border-radius: 7px;
-  }
-  > :first-child {
-    cursor: default;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: ${({ theme }) => theme.text};
+
+    &.static {
+      cursor: default;
+      color: ${({ theme }) => theme.textMuted};
+    }
+
+    svg {
+      flex-shrink: 0;
+      margin-top: 2px;
+      opacity: 0.85;
+      color: ${({ theme }) => theme.accent};
+    }
   }
 `;
 
-const HoverInfo = styled.div`
+const HoverInfo = styled.button`
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  width: 100%;
+  margin: 0;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  color: ${({ theme }) => theme.text};
+  font-size: 13px;
+  line-height: 1.45;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: ${({ theme }) => theme.accent};
+  }
+
   &:hover {
-    background-color: ${({ theme }) => theme.siderArrowColor};
+    background: ${({ theme }) => theme.siderArrowColor};
   }
 `;
 
 const Line = styled.div`
   width: 100%;
-  margin: 13px 0;
+  margin: 16px 0;
   height: 1px;
-  background-color: #333;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    ${({ theme }) => theme.siderBorder},
+    transparent
+  );
 `;
 
-const TitleStyle = styled.div<{ visible?: boolean; unActiveHover?: boolean }>`
+const Chevron = styled.span<{ visible?: boolean }>`
+  margin-left: auto;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1;
+  transform: rotate(${({ visible }) => (visible ? '90deg' : '0deg')});
+  transition: transform 0.2s ease;
+  color: ${({ theme }) => theme.textMuted};
+`;
+
+const TitleStyle = styled.button<{ visible?: boolean; unActiveHover?: boolean }>`
   display: flex;
-  font-weight: bold;
-  gap: 6px;
   align-items: center;
-  padding: 5px;
-  border-radius: 8px;
-  & > :last-child {
-    margin: 0 0 auto auto;
-    rotate: ${({ visible }) => (visible ? '90deg' : '180deg')};
-    font-size: 18px;
-    transition: all 0.1s linear;
-  }
+  gap: 10px;
+  width: 100%;
+  margin: 0;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  color: ${({ theme }) => theme.text};
+  text-align: left;
   cursor: ${({ unActiveHover }) => (unActiveHover ? 'default' : 'pointer')};
+  transition: background 0.15s ease;
+
   &:hover {
-    background-color: ${({ theme, unActiveHover }) =>
-      !unActiveHover ? theme.siderArrowColor : ''};
+    background: ${({ theme, unActiveHover }) =>
+      unActiveHover ? 'transparent' : theme.siderArrowColor};
+  }
+
+  svg {
+    color: ${({ theme }) => theme.accent};
+    flex-shrink: 0;
   }
 `;
 
 const TechWrapper = styled.div<{ visible: boolean }>`
-  padding: ${({ visible }) => (visible ? '10px 15px' : '0')};
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  max-height: ${({ visible }) => (visible ? '500px' : '0')};
+  gap: 6px;
+  max-height: ${({ visible }) => (visible ? '520px' : '0')};
+  padding: ${({ visible }) => (visible ? '8px 4px 12px 8px' : '0')};
   opacity: ${({ visible }) => (visible ? 1 : 0)};
-  transition: all 0.1s ease;
   overflow: hidden;
-  opacity: 0.8;
+  transition:
+    max-height 0.28s ease,
+    opacity 0.22s ease,
+    padding 0.22s ease;
 `;
 
 const TechStyle = styled.div`
   display: flex;
-  gap: 6px;
-  transition: transform 0.1s ease;
-  cursor: pointer;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.text};
+  transition: background 0.15s ease;
+
+  .ico {
+    display: flex;
+    font-size: 17px;
+    opacity: 0.92;
+    color: ${({ theme }) => theme.accent};
+  }
+
+  .lbl {
+    letter-spacing: -0.02em;
+  }
+
   &:hover {
-    transform: scale(1.1);
+    background: ${({ theme }) => theme.siderArrowColor};
   }
 `;
 
 const EducationWrapper = styled.div`
-  padding: 10px 15px;
+  padding: 8px 12px 12px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  & > div {
-    :first-child {
-      font-weight: 500;
-    }
-    :nth-child(2) {
-      font-size: 14px;
-    }
+  gap: 14px;
+
+  > div {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid ${({ theme }) => theme.siderBorder};
+
+    &:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    :first-child {
+      font-weight: 600;
+      font-size: 14px;
+      color: ${({ theme }) => theme.text};
+    }
+
+    :nth-child(2) {
+      font-size: 12px;
+      color: ${({ theme }) => theme.textMuted};
+    }
   }
-  margin-bottom: 10px;
 `;
 
 const MeritIconWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 0 15px;
+  align-items: flex-start;
+  padding: 4px 8px 8px;
   text-align: center;
-  & > div {
-    cursor: pointer;
-    transition: transform 0.1s ease;
-    &:hover {
-      transform: scale(1.1);
-    }
-    :nth-child(2) {
-      margin-top: 5px;
-    }
+  gap: 8px;
+
+  > div {
+    flex: 1;
+    min-width: 0;
+    font-size: 11px;
+    font-weight: 600;
+    color: ${({ theme }) => theme.textMuted};
+    line-height: 1.3;
   }
 `;
 
 const MeritIconItem = styled.div`
-  border: solid 1px #333;
+  border: 1px solid ${({ theme }) => theme.siderBorder};
   border-radius: 100%;
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 25px;
-  margin: 0 auto;
-`;
+  font-size: 22px;
+  margin: 0 auto 6px;
+  color: ${({ theme }) => theme.accent};
+  background: ${({ theme }) => theme.siderArrowColor};
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease;
 
-const LightModeButtonWrapper = styled.div`
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 25px;
-  border-radius: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  z-index: 2;
+  &:hover {
+    transform: translateY(-2px);
+    border-color: ${({ theme }) => theme.accentMuted};
+  }
 `;

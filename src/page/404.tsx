@@ -76,26 +76,31 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  background: ${({ theme }) => theme.canvasGradient};
+  padding: 24px;
 `;
 
 const ContentWrapper = styled.div`
   text-align: center;
-  color: white;
-  max-width: 600px;
+  max-width: 560px;
   width: 100%;
+  padding: 40px 36px;
+  border-radius: 24px;
+  border: 1px solid ${({ theme }) => theme.cardBorder};
+  background: ${({ theme }) => theme.cardColor};
+  box-shadow: ${({ theme }) => theme.shadowElevated};
+  backdrop-filter: blur(16px);
 `;
 
 const ErrorCode = styled(motion.h1)`
-  font-size: 8rem;
+  font-size: clamp(4.5rem, 18vw, 7.5rem);
   font-weight: 900;
   margin: 0;
-  background: linear-gradient(45deg, #fff, #f0f0f0);
+  letter-spacing: -0.06em;
+  background: ${({ theme }) => theme.progressGradient};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
   
   @media (max-width: 768px) {
     font-size: 6rem;
@@ -107,10 +112,11 @@ const ErrorCode = styled(motion.h1)`
 `;
 
 const ErrorMessage = styled(motion.h2)`
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 20px 0;
-  color: #fff;
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
+  font-weight: 700;
+  margin: 20px 0 12px;
+  color: ${({ theme }) => theme.text};
+  letter-spacing: -0.03em;
   
   @media (max-width: 768px) {
     font-size: 1.5rem;
@@ -122,10 +128,10 @@ const ErrorMessage = styled(motion.h2)`
 `;
 
 const ErrorDescription = styled(motion.p)`
-  font-size: 1.1rem;
-  margin: 20px 0 40px;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.6;
+  font-size: 1rem;
+  margin: 0 0 36px;
+  color: ${({ theme }) => theme.textMuted};
+  line-height: 1.65;
   
   @media (max-width: 768px) {
     font-size: 1rem;
@@ -147,21 +153,23 @@ const HomeButton = styled(motion.button)`
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 15px 30px;
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50px;
-  color: white;
-  font-size: 1rem;
+  padding: 14px 26px;
+  background: ${({ theme }) => theme.accent};
+  border: 1px solid transparent;
+  border-radius: 14px;
+  color: ${({ theme }) => theme.accentContrast};
+  font-size: 0.95rem;
   font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  
+  box-shadow: 0 6px 24px ${({ theme }) => theme.accentMuted};
+  transition:
+    filter 0.2s ease,
+    box-shadow 0.2s ease;
+
   &:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.06);
+    box-shadow: ${({ theme }) => theme.shadowElevated};
   }
   
   @media (max-width: 480px) {
@@ -174,21 +182,22 @@ const BackButton = styled(motion.button)`
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 15px 30px;
+  padding: 14px 26px;
   background: transparent;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-radius: 50px;
-  color: white;
-  font-size: 1rem;
+  border: 1px solid ${({ theme }) => theme.cardBorder};
+  border-radius: 14px;
+  color: ${({ theme }) => theme.text};
+  font-size: 0.95rem;
   font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    background: ${({ theme }) => theme.siderArrowColor};
+    border-color: ${({ theme }) => theme.accentMuted};
   }
   
   @media (max-width: 480px) {

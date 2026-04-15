@@ -25,6 +25,7 @@ import { TbBrandRedux } from 'react-icons/tb';
 import backgroundImage from '../../src/assets/image/background.jpg';
 
 import useResponsive from '../hooks/useResponsive';
+import HomeHeroCard from './homeHero/HomeHeroCard';
 
 type Data = {
   key: string;
@@ -45,7 +46,6 @@ function PageIndex() {
   const [sidebarHeight, setSidebarHeight] = useState<number>(0);
   const [isProgrammaticScroll, setIsProgrammaticScroll] = useState<boolean>(false);
   const [showLoader, setShowLoader] = useState<boolean>(false);
-
   const [project] = useState<Data[]>([
     {
       key: 'Boundary',
@@ -625,13 +625,9 @@ function PageIndex() {
           isTablet={isTablet}
         >
           <TypingWrapper isDesktop={isDesktop} isTablet={isTablet}>
-            {typicalComponent}
-            <img
-              alt="backgroundImage"
-              src={backgroundImage}
-              width={'100%'}
-              height={'100%'}
-              style={{ borderRadius: '10px' }}
+            <HomeHeroCard
+              typicalContent={typicalComponent}
+              backgroundSrc={String(backgroundImage)}
             />
           </TypingWrapper>
         </SectionContainer>
@@ -669,77 +665,62 @@ function PageIndex() {
         {/* 섹션 2~N: 각 프로젝트 */}
         {project.map((v, idx) => (
           <SectionContainer
-            key={v.title}
+            key={`${v.title}-${v.date}`}
             isActive={!isProgrammaticScroll && activeSection === idx + 2}
             isDesktop={isDesktop}
             isTablet={isTablet}
           >
-            <CardWrapper
-              isDesktop={isDesktop}
-              isTablet={isTablet}
-              isMobile={isMobile}
-              whileHover={{ scale: 1.1 }}
-              style={{ transition: 'all 0.1s ease' }}
-            >
-              <LineOne isDesktop={isDesktop}>
-                <h2>프로젝트명 : {v.title}</h2>
-                <h4>기간 : {v.date}</h4>
-              </LineOne>
-              <div>
-                <span>목적</span> : {v.subTitle}
-              </div>
-              <div>
-                <span>인원</span> : {v.people}
-              </div>
-              <div>
-                <span>경험</span>
-                <ExperienceWrapper>
+            <CardWrapper isDesktop={isDesktop} isTablet={isTablet} isMobile={isMobile}>
+              <CardHeader>
+                <OrgPill>{v.key}</OrgPill>
+                <LineOne isDesktop={isDesktop}>
+                  <CardTitle>{v.title}</CardTitle>
+                  <CardMeta>{v.date}</CardMeta>
+                </LineOne>
+              </CardHeader>
+              <MetaBlock>
+                <MetaLabel>목적</MetaLabel>
+                <MetaValue>{v.subTitle}</MetaValue>
+              </MetaBlock>
+              <MetaBlock>
+                <MetaLabel>인원</MetaLabel>
+                <MetaValue>{v.people}</MetaValue>
+              </MetaBlock>
+              <MetaBlock>
+                <MetaLabel>경험</MetaLabel>
+                <ExperienceList>
                   {v.experience.map((item) => (
-                    <div key={item}>&nbsp; - {item}</div>
+                    <li key={item}>{item}</li>
                   ))}
-                </ExperienceWrapper>
-              </div>
-              <CardIconWrapper>
-                {[...v.stack].map((item) => (
-                  <motion.div
-                    key={item.name}
-                    whileHover={{
-                      scale: 1.1,
-                    }}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '2px',
-                      whiteSpace: 'nowrap',
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                    }}
-                  >
-                    <span>{item.icon}</span>
-                    <span>{item.name}</span>
-                  </motion.div>
+                </ExperienceList>
+              </MetaBlock>
+              <StackRow aria-label="기술 스택">
+                {v.stack.map((item) => (
+                  <StackChip key={item.name} whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
+                    <span className="ico">{item.icon}</span>
+                    <span className="lbl">{item.name}</span>
+                  </StackChip>
                 ))}
-              </CardIconWrapper>
-              {v.link?.map((item) => (
-                <div key={item.name}>
-                  <span>{item.name}</span> :{' '}
-                  <motion.a
-                    href={item.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    whileHover={{
-                      color: '#ff0055',
-                      fontWeight: 'bold',
-                    }}
-                    style={{
-                      transition: 'all 0.1s ease',
-                      display: 'inline-block',
-                    }}
-                  >
-                    {item.url}
-                  </motion.a>
-                </div>
-              ))}
+              </StackRow>
+              {v.link && v.link.length > 0 && (
+                <LinkBlock>
+                  {v.link.map((item) => (
+                    <ExternalLink
+                      key={item.name}
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span className="lbl">{item.name}</span>
+                      <span className="arrow" aria-hidden>
+                        ↗
+                      </span>
+                    </ExternalLink>
+                  ))}
+                </LinkBlock>
+              )}
             </CardWrapper>
           </SectionContainer>
         ))}
@@ -765,12 +746,16 @@ function PageIndex() {
 
 export default PageIndex;
 
+const SIDER_RAIL = 320;
+
 const Container = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
-  margin-left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '320px' : '0')};
+  margin-left: ${({ isDesktop, isTablet }) =>
+    isDesktop || isTablet ? `${SIDER_RAIL}px` : '0'};
 `;
 
 const Wrap = styled.div<{ totalSections: number }>`
-  height: ${({ totalSections }) => totalSections * 100}vh; /* 100vh * 섹션 수 */
+  height: ${({ totalSections }) => totalSections * 100}vh;
+  background: ${({ theme }) => theme.canvasGradient};
 `;
 
 const SectionContainer = styled(motion.div)<{
@@ -780,17 +765,39 @@ const SectionContainer = styled(motion.div)<{
 }>`
   position: fixed;
   top: 0;
-  left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '320px' : '0')};
+  left: ${({ isDesktop, isTablet }) =>
+    isDesktop || isTablet ? `${SIDER_RAIL}px` : '0'};
   right: 0;
   bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: clamp(16px, 4vw, 32px);
   box-sizing: border-box;
   z-index: ${({ isActive }) => (isActive ? 10 : 1)};
   opacity: ${({ isActive }) => (isActive ? 1 : 0)};
-  transition: opacity 0.5s ease-in-out;
+  pointer-events: ${({ isActive }) => (isActive ? 'auto' : 'none')};
+  transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: ${({ isActive }) => (isActive ? 1 : 0)};
+    transition: opacity 0.6s ease;
+    background: radial-gradient(
+      ellipse 85% 65% at 50% 38%,
+      ${({ theme }) => theme.accentMuted},
+      transparent 68%
+    );
+    pointer-events: none;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
 `;
 
 const TypingWrapper = styled.div<{
@@ -799,35 +806,39 @@ const TypingWrapper = styled.div<{
 }>`
   position: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? 'relative' : 'absolute')};
   top: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '0' : '50%')};
-  transform: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? 'none' : 'translateY(-50%)')};
-  bottom: 0;
+  transform: ${({ isDesktop, isTablet }) =>
+    isDesktop || isTablet ? 'none' : 'translateY(-50%)'};
   left: 0;
   right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: ${({ isDesktop, isTablet }) => (isDesktop ? '450px' : isTablet ? '350px' : '250px')};
-  & :first-child {
-    position: absolute;
-    color: #d4cbcb;
-    z-index: 3;
-    font-size: ${({ isDesktop, isTablet }) => (isDesktop ? '2vw' : isTablet ? '2vw' : '4vw')};
-  }
-  padding: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '0' : '0 50px')};
+  width: 100%;
+  max-width: min(920px, 94vw);
+  margin: 0 auto;
+  height: ${({ isDesktop, isTablet }) => (isDesktop ? 'min(52vh, 520px)' : isTablet ? '420px' : '280px')};
+  padding: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '0' : '0 20px')};
 `;
 
 const Invitation = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
-  min-height: 200px;
-  width: 60%;
-  margin: 50px 20px;
-  background-color: ${(props) => props.theme.siderBackGround};
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  font-size: ${({ isDesktop, isTablet }) => (isDesktop ? '14px' : isTablet ? '12px' : '11px')};
-  padding: 20px;
+  width: min(640px, 92%);
+  margin: 0 auto;
+  padding: clamp(24px, 4vw, 40px);
+  border-radius: 20px;
+  background: ${({ theme }) => theme.cardColor};
+  color: ${({ theme }) => theme.cardText};
+  border: 1px solid ${({ theme }) => theme.cardBorder};
+  box-shadow: ${({ theme }) => theme.shadowCard};
+  backdrop-filter: blur(12px);
+  font-weight: 500;
+  font-size: ${({ isDesktop, isTablet }) => (isDesktop ? '15px' : isTablet ? '14px' : '13px')};
+  line-height: 1.75;
+  letter-spacing: -0.01em;
+
+  span {
+    color: ${({ theme }) => theme.accent};
+    font-weight: 700;
+  }
 `;
 
 const PrograssStyle = styled(motion.div)<{ isDesktop: boolean }>`
@@ -835,11 +846,12 @@ const PrograssStyle = styled(motion.div)<{ isDesktop: boolean }>`
   bottom: 0;
   left: 0;
   right: 0;
-  height: 10px;
-  background: #ff0055;
+  height: 3px;
+  background: ${({ theme }) => theme.progressGradient};
   transform-origin: 0%;
   z-index: 3;
-  margin-left: ${({ isDesktop }) => (isDesktop ? '320px' : '0')};
+  margin-left: ${({ isDesktop }) => (isDesktop ? `${SIDER_RAIL}px` : '0')};
+  box-shadow: 0 -4px 20px ${({ theme }) => theme.accentMuted};
 `;
 
 const CardWrapper = styled(motion.div)<{
@@ -847,148 +859,272 @@ const CardWrapper = styled(motion.div)<{
   isTablet: boolean;
   isMobile: boolean;
 }>`
-  background-color: ${(props) => props.theme.cardColor};
-  color: ${(props) => props.theme.cardText};
-  width: 60%;
-  max-height: calc(100vh - 200px);
+  width: min(720px, 94%);
+  max-height: calc(100vh - 120px);
   overflow-y: auto;
-
-  margin: 70px auto;
-  border-radius: 20px;
-  padding: 20px;
+  margin: 0 auto;
+  padding: clamp(22px, 3vw, 32px);
+  border-radius: 22px;
   font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+
+  background: ${({ theme }) => theme.cardColor};
+  color: ${({ theme }) => theme.cardText};
+  border: 1px solid ${({ theme }) => theme.cardBorder};
+  box-shadow: ${({ theme }) => theme.shadowCard};
+  backdrop-filter: blur(14px);
 
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 18px;
 
-  a {
-    color: ${(props) => props.theme.cardText};
-    word-break: break-all;
-    cursor: pointer;
-  }
+  transition:
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.35s ease;
 
-  h2,
-  h4,
-  span {
-    font-weight: bold;
-    color: ${(props) => props.theme.cardText};
-  }
-
-  h2,
-  h4 {
-    margin: ${({ isDesktop }) => (isDesktop ? '10px 0' : '5px auto')};
-  }
-
-  & > div {
-    opacity: 0.8;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: ${({ theme }) => theme.shadowElevated};
   }
 
   ${({ isMobile }) =>
     isMobile &&
     css`
-      h2 {
-        font-size: 16px;
-      }
-      font-size: 12px;
-
-      a {
-        font-size: 11px;
-      }
+      font-size: 13px;
+      padding: 18px;
     `}
 `;
 
-const CardIconWrapper = styled.div`
+const CardHeader = styled.header`
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  border: solid 1px ${(props) => props.theme.cardText};
-  border-left: none;
-  border-right: none;
-  padding: 8px 0 8px 5px;
-  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid ${({ theme }) => theme.cardBorder};
 `;
 
-const ExperienceWrapper = styled.div`
-  line-height: 1.3;
-  margin-top: 2px;
+const OrgPill = styled.span`
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.accent};
+  background: ${({ theme }) => theme.chipBg};
+  border: 1px solid ${({ theme }) => theme.chipBorder};
+`;
 
-  div {
-    word-break: keep-all;
-  }
+const CardTitle = styled.h2`
+  margin: 0;
+  font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: ${({ theme }) => theme.cardText};
+  line-height: 1.25;
+`;
+
+const CardMeta = styled.time`
+  font-size: 13px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.cardTextMuted};
+  white-space: nowrap;
 `;
 
 const LineOne = styled.div<{ isDesktop: boolean }>`
   display: flex;
   flex-direction: ${({ isDesktop }) => (isDesktop ? 'row' : 'column')};
+  align-items: ${({ isDesktop }) => (isDesktop ? 'flex-end' : 'flex-start')};
   justify-content: space-between;
+  gap: ${({ isDesktop }) => (isDesktop ? '16px' : '8px')};
+`;
+
+const MetaBlock = styled.div`
+  display: grid;
+  gap: 6px;
+`;
+
+const MetaLabel = styled.span`
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.accent};
+`;
+
+const MetaValue = styled.p`
+  margin: 0;
+  color: ${({ theme }) => theme.cardTextMuted};
+  font-size: 14px;
+  word-break: keep-all;
+`;
+
+const ExperienceList = styled.ul`
+  margin: 0;
+  padding-left: 1.15rem;
+  color: ${({ theme }) => theme.cardTextMuted};
+  font-size: 14px;
+
+  li {
+    margin-bottom: 8px;
+    padding-left: 4px;
+    word-break: keep-all;
+  }
+
+  li:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+const StackRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+`;
+
+const StackChip = styled(motion.span)`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.cardText};
+  background: ${({ theme }) => theme.chipBg};
+  border: 1px solid ${({ theme }) => theme.chipBorder};
+  cursor: default;
+  white-space: nowrap;
+
+  .ico {
+    display: flex;
+    font-size: 16px;
+    opacity: 0.95;
+  }
+
+  .lbl {
+    letter-spacing: -0.01em;
+  }
+`;
+
+const LinkBlock = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+`;
+
+const ExternalLink = styled(motion.a)`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  color: ${({ theme }) => theme.accentContrast};
+  background: ${({ theme }) => theme.accent};
+  border: 1px solid transparent;
+  box-shadow: 0 4px 16px ${({ theme }) => theme.accentMuted};
+
+  .arrow {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+
+  &:hover {
+    filter: brightness(1.05);
+  }
 `;
 
 const PageIndicator = styled.div<{ isDesktop?: boolean; isTablet?: boolean }>`
   position: fixed;
-  right: 5px;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
   z-index: 1000;
+  padding: 14px 10px;
+  border-radius: 999px;
+  background: ${({ theme }) => theme.indicatorRail};
+  border: 1px solid ${({ theme }) => theme.siderBorder};
+  backdrop-filter: blur(12px);
 `;
 
 const DotGroup = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 `;
 
 const DotLabel = styled.div`
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 12px;
-  font-weight: bold;
+  color: ${({ theme }) => theme.textMuted};
+  font-size: 10px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.12em;
 `;
 
 const PageDot = styled.div<{ isActive: boolean }>`
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background-color: ${({ isActive }) => (isActive ? '#ff0055' : 'rgba(255, 255, 255, 0.5)')};
+  background-color: ${({ isActive, theme }) =>
+    isActive ? theme.accent : theme.indicatorDot};
+  box-shadow: ${({ isActive, theme }) =>
+    isActive ? `0 0 0 3px ${theme.accentMuted}` : 'none'};
   cursor: pointer;
-  transition: all 0.3s ease;
-  transform: scale(${({ isActive }) => (isActive ? 1.2 : 1)});
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+  transform: scale(${({ isActive }) => (isActive ? 1.15 : 1)});
 
   &:hover {
-    background-color: #ff0055;
-    transform: scale(1.3);
+    background-color: ${({ theme }) => theme.accent};
+    transform: scale(1.25);
   }
 `;
 
 const GlobalScrollHint = styled.div<{ isMobile: boolean }>`
   position: fixed;
-  left: ${({ isMobile }) => (isMobile ? '50%' : 'calc(50% + 160px)')};
+  left: ${({ isMobile }) =>
+    isMobile ? '50%' : `calc(50% + ${SIDER_RAIL / 2}px)`};
   transform: translateX(-50%);
-  bottom: 24px;
+  bottom: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 9999px;
-  background: rgba(0, 0, 0, 0.45);
-  color: #fff;
+  background: ${({ theme }) => theme.cardColor};
+  color: ${({ theme }) => theme.accent};
+  border: 1px solid ${({ theme }) => theme.cardBorder};
+  box-shadow: ${({ theme }) => theme.shadowCard};
   cursor: pointer;
   z-index: 1001;
-  animation: bounce 1.2s infinite;
+  transition: box-shadow 0.2s ease;
 
-  @keyframes bounce {
+  &:hover {
+    box-shadow: ${({ theme }) => theme.shadowElevated};
+  }
+
+  animation: bounceHint 1.35s ease-in-out infinite;
+
+  @keyframes bounceHint {
     0%,
     100% {
       transform: translate(-50%, 0);
     }
     50% {
-      transform: translate(-50%, 4px);
+      transform: translate(-50%, 5px);
     }
   }
 `;
@@ -996,25 +1132,24 @@ const GlobalScrollHint = styled.div<{ isMobile: boolean }>`
 const ScrollLoadingContainer = styled.div<{ isDesktop?: boolean; isTablet?: boolean }>`
   position: fixed;
   top: 0;
-  left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '320px' : '0')};
+  left: ${({ isDesktop, isTablet }) =>
+    isDesktop || isTablet ? `${SIDER_RAIL}px` : '0'};
   right: 0;
   bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(20, 20, 30, 0.9) 100%);
-  backdrop-filter: blur(20px);
+  background: linear-gradient(145deg, rgba(6, 8, 12, 0.92) 0%, rgba(18, 22, 32, 0.94) 100%);
+  backdrop-filter: blur(24px);
   z-index: 100;
   animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
   @keyframes fadeIn {
     from {
       opacity: 0;
-      backdrop-filter: blur(0px);
     }
     to {
       opacity: 1;
-      backdrop-filter: blur(20px);
     }
   }
 `;
@@ -1023,12 +1158,12 @@ const LoadingContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
-  padding: 40px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  gap: 28px;
+  padding: 36px 44px;
+  border-radius: 20px;
+  background: ${({ theme }) => theme.cardColor};
+  border: 1px solid ${({ theme }) => theme.cardBorder};
+  box-shadow: ${({ theme }) => theme.shadowElevated};
 `;
 
 const LoadingSpinner = styled.div`
@@ -1045,13 +1180,13 @@ const SpinnerCircle = styled.div`
   width: 100%;
   height: 100%;
   border: 3px solid transparent;
-  border-top-color: #ff0055;
+  border-top-color: ${({ theme }) => theme.accent};
   border-radius: 50%;
   animation: spin 1s linear infinite;
 
   &:nth-child(1) {
     animation-duration: 1s;
-    border-top-color: #ff0055;
+    border-top-color: ${({ theme }) => theme.accent};
   }
 
   &:nth-child(2) {
@@ -1059,14 +1194,14 @@ const SpinnerCircle = styled.div`
     height: 80%;
     animation-duration: 1.2s;
     animation-direction: reverse;
-    border-top-color: rgba(255, 0, 85, 0.6);
+    border-top-color: ${({ theme }) => theme.accentMuted};
   }
 
   &:nth-child(3) {
     width: 60%;
     height: 60%;
     animation-duration: 0.8s;
-    border-top-color: rgba(255, 0, 85, 0.4);
+    border-top-color: ${({ theme }) => theme.accentMuted};
   }
 
   @keyframes spin {
@@ -1080,22 +1215,23 @@ const SpinnerCircle = styled.div`
 `;
 
 const LoadingText = styled.div`
-  color: #fff;
-  font-size: 18px;
-  font-weight: 300;
-  letter-spacing: 4px;
+  color: ${({ theme }) => theme.cardText};
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   position: relative;
 
   &::after {
     content: '';
     position: absolute;
-    bottom: -8px;
+    bottom: -10px;
     left: 50%;
     transform: translateX(-50%);
     width: 0;
     height: 2px;
-    background: linear-gradient(90deg, transparent, #ff0055, transparent);
+    border-radius: 2px;
+    background: ${({ theme }) => theme.progressGradient};
     animation: expand 1.5s ease-in-out infinite;
   }
 
