@@ -9,16 +9,22 @@ import {
   SiAntdesign,
   SiApollographql,
   SiAxios,
+  SiMysql,
+  SiNestjs,
   SiNextdotjs,
+  SiPostgresql,
   SiReacthookform,
   SiReactquery,
   SiRecoil,
+  SiRedis,
   SiSass,
   SiSocketdotio,
   SiStorybook,
   SiStyledcomponents,
   SiTailwindcss,
   SiTypescript,
+  SiVite,
+  SiVuedotjs,
 } from 'react-icons/si';
 import { TbBrandRedux } from 'react-icons/tb';
 
@@ -95,6 +101,66 @@ function PageIndex() {
   const [isProgrammaticScroll, setIsProgrammaticScroll] = useState<boolean>(false);
   const [showLoader, setShowLoader] = useState<boolean>(false);
   const [project] = useState<Data[]>([
+    {
+      key: 'FastPace',
+      date: '2026.05 - 현재',
+      experience: [
+        'Toast UI Editor/Viewer 테마 적용 및 CSS 우선순위 정리 → 라이트/다크·OS 테마 환경에서 계약 본문 미표시 문제 해결',
+        '계약/사규/공지/템플릿 에디터·뷰어 스타일 공통화 및 스코프 분리 → 문서 UI와 앱 UI 요구사항 동시 충족',
+        '문서 종이 미리보기 컨테이너 스코프 분리 → 전역 스타일 영향 차단 및 미리보기 품질 안정화',
+        '공지 작성 UX 개선(textarea → 리치 에디터, 목록 접힘/펼침) → HTML/마크다운 혼재 시 sanitize 처리 보완',
+        '미리보기 영역 내부 스크롤 제거 및 템플릿 인라인 스타일 깨짐 대응 → 페이지 단 스크롤로 가독성 개선',
+        '전자결재 API 404 원인 진단(dist vs dev 실행 방식 구분) → 포트/엔드포인트 확인으로 신속 원인 좁힘',
+        'pnpm 모노레포 필터 기반 빌드/테스트 표준화 → pnpm --filter web/api 분리 실행 체계 정립',
+      ],
+      people: '개발 3',
+      stack: [
+        { name: 'Vue 3', icon: <SiVuedotjs /> },
+        { name: 'TypeScript', icon: <SiTypescript /> },
+        { name: 'Vite', icon: <SiVite /> },
+        { name: 'NestJS', icon: <SiNestjs /> },
+        { name: 'PostgreSQL', icon: <SiPostgresql /> },
+      ],
+      subTitle: '인사/문서/전자계약/전자결재 통합 HR 시스템',
+      title: 'HR System',
+      link: [
+        {
+          name: '서비스 링크',
+          url: 'https://ai-hub.kr/hrsystem/v2/login',
+        },
+      ],
+    },
+    {
+      key: 'FastPace',
+      date: '2025.12 - 현재',
+      experience: [
+        '영업/유지보수 데이터 기반 정산관리(청구·입금·지연·상태) 화면 구현 → 운영 이슈 대응',
+        '정산 목록/필터/정렬/엑셀 다운로드 UX 개선 및 성능 튜닝 → 필터 조건 정리, 서버 조회 로직 보강',
+        'parent_kind(sales/maintenance) 기준 정산/조회 로직 일관화 → 유지보수 도메인 분리 설계 반영',
+        '거래처/파트너 경로 표시 규칙 정리 및 응답 구조 개선 → 도메인 의미 보존 + 화면 로직 단순화',
+        '운영 데이터 불일치/중복 이슈 추적 → 원인-수정-배포 신속 처리',
+        '백엔드 join + 파생 필드 표준화 → 정산/리포트/대시보드 화면의 프론트 중복 로직 최소화',
+        'sales vs maintenance 응답 스키마 분리/확장 → 필드 의미 혼재 방지 및 장기 유지보수성 확보',
+      ],
+      people: '개발 3',
+      stack: [
+        { name: 'Vue 3', icon: <SiVuedotjs /> },
+        { name: 'TypeScript', icon: <SiTypescript /> },
+        { name: 'Vite', icon: <SiVite /> },
+        { name: 'NestJS', icon: <SiNestjs /> },
+        { name: 'SCSS', icon: <SiSass /> },
+        { name: 'MySQL', icon: <SiMysql /> },
+        { name: 'Redis', icon: <SiRedis /> },
+      ],
+      subTitle: '영업·유지보수·정산 통합 관리 시스템 (Web Admin)',
+      title: 'Saleser',
+      link: [
+        {
+          name: '서비스 링크',
+          url: 'https://saleser.ai/',
+        },
+      ],
+    },
     {
       key: 'Boundary',
       date: '2024.10 - 2025.10',
