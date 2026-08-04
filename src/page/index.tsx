@@ -99,7 +99,7 @@ function PageIndex() {
   const [project] = useState<Data[]>([
     {
       key: 'FastPace',
-      date: '2026.05 - 현재',
+      date: '2026.06 - 현재',
       experience: [
         'Vue 3 + TypeScript + Vite + Naive UI 기반 HR 웹 애플리케이션 구현 → 인사·문서·전자계약·전자결재 업무 통합',
         'pnpm 모노레포 기반 웹 패키지 및 빌드·배포 흐름 정립 → 개발·운영 작업 흐름 표준화',
@@ -125,9 +125,9 @@ function PageIndex() {
     },
     {
       key: 'FastPace',
-      date: '2025.12 - 현재',
+      date: '2025.10 - 현재',
       experience: [
-        'Vue 3 + TypeScript + Vite + SCSS 기반 Web Admin 구현 → 영업·유지보수·정산 업무 통합 관리',
+        'Vue 3 + TypeScript + Vite + SCSS 기반 웹 애플리케이션 구현 → 영업·유지보수·정산 업무 통합 관리',
         '영업/유지보수 데이터 기반 정산관리(청구·입금·지연·상태) 기능 구현 → 운영 정산 업무 효율화',
         '정산 목록 조회·필터·정렬·엑셀 다운로드 UX 최적화 → 대용량 데이터 탐색 효율 향상',
         '영업·유지보수 화면 도메인 분리 및 공통 조회 UI 패턴 적용 → 필터/정렬/표시 규칙 일관성 확보',
@@ -159,7 +159,7 @@ function PageIndex() {
         'Google Maps API 기반 지도 컴포넌트 → 사용자 친화적 위치 정보 제공',
         'Tailwind CSS 기반 UI 개발 → 생산성 향상과 일관된 스타일',
       ],
-      people: '기획1, 디자인 3, 프론트엔드 2, 백엔드 2, 세일즈 포스 1',
+      people: '기획 1, 디자인 2, 프론트엔드 2, 백엔드 2, Salesforce 1',
       stack: [
         { name: 'Next.js', icon: <SiNextdotjs /> },
         { name: 'TypeScript', icon: <SiTypescript /> },
@@ -186,7 +186,7 @@ function PageIndex() {
         'React PDF 기반 PDF 생성/다운로드 → 사용자 편의성과 문서 자동화',
         'MUI·Ant Design·styled-components 기반 UI 개발 → 일관된 디자인과 생산성 향상',
       ],
-      people: '기획&디자인 2, 프론트엔드 5, 백엔드 6',
+      people: '기획 1, 디자인 1, 프론트엔드 3, 백엔드 3',
       stack: [
         { name: 'React.js', icon: <FaReact /> },
         { name: 'TypeScript', icon: <SiTypescript /> },
