@@ -56,7 +56,7 @@ import { ThemeContext } from '../../contexts/ThemeContext';
 const Sider = () => {
   const { isDesktop, isTablet } = useResponsive();
   const [stackVisible, setStackVisible] = useState(true);
-  const [experienceVisible, setExperienceVisible] = useState(true);
+  const [experienceVisible, setExperienceVisible] = useState(false);
 
   const techArr = [
     { name: 'React', icon: <FaReact /> },
@@ -79,10 +79,6 @@ const Sider = () => {
   ];
 
   const experienceTechArr = [
-    { name: 'NestJS', icon: <SiNestjs /> },
-    { name: 'PostgreSQL', icon: <SiPostgresql /> },
-    { name: 'MySQL', icon: <SiMysql /> },
-    { name: 'Redis', icon: <SiRedis /> },
     { name: 'Socket.IO', icon: <SiSocketdotio /> },
     { name: 'AWS', icon: <FaAws /> },
     { name: 'Vercel', icon: <SiVercel /> },
@@ -98,6 +94,10 @@ const Sider = () => {
     { name: 'Sourcetree', icon: <FaSourcetree /> },
     { name: 'Figma', icon: <FaFigma /> },
     { name: 'Adobe XD', icon: <SiAdobexd /> },
+    { name: 'NestJS', icon: <SiNestjs /> },
+    { name: 'PostgreSQL', icon: <SiPostgresql /> },
+    { name: 'MySQL', icon: <SiMysql /> },
+    { name: 'Redis', icon: <SiRedis /> },
   ];
 
   const { toggleTheme, isDarkMode } = useContext(ThemeContext);
