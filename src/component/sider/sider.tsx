@@ -13,6 +13,7 @@ import {
   FaGithub,
   FaSourcetree,
   FaFigma,
+  FaEdit,
 } from 'react-icons/fa';
 import {
   SiNextdotjs,
@@ -63,6 +64,8 @@ const Sider = () => {
     { name: 'Vue 3', icon: <SiVuedotjs /> },
     { name: 'TypeScript', icon: <SiTypescript /> },
     { name: 'Vite', icon: <SiVite /> },
+    { name: 'Naive UI', icon: <SiVuedotjs /> },
+    { name: 'Toast UI Editor', icon: <FaEdit /> },
     { name: 'React Query', icon: <SiReactquery /> },
     { name: 'React Hook Form', icon: <SiReacthookform /> },
     { name: 'Recoil', icon: <SiRecoil /> },
