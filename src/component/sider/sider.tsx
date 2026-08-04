@@ -59,23 +59,23 @@ const Sider = () => {
   const [experienceVisible, setExperienceVisible] = useState(false);
 
   const techArr = [
+    { name: 'TypeScript', icon: <SiTypescript /> },
     { name: 'React', icon: <FaReact /> },
     { name: 'Next.js', icon: <SiNextdotjs /> },
     { name: 'Vue 3', icon: <SiVuedotjs /> },
-    { name: 'TypeScript', icon: <SiTypescript /> },
     { name: 'Vite', icon: <SiVite /> },
-    { name: 'Naive UI', icon: <SiVuedotjs /> },
-    { name: 'Toast UI Editor', icon: <FaEdit /> },
     { name: 'React Query', icon: <SiReactquery /> },
-    { name: 'React Hook Form', icon: <SiReacthookform /> },
-    { name: 'Recoil', icon: <SiRecoil /> },
     { name: 'Apollo GraphQL', icon: <SiApollographql /> },
+    { name: 'Axios', icon: <SiAxios /> },
+    { name: 'Recoil', icon: <SiRecoil /> },
+    { name: 'React Hook Form', icon: <SiReacthookform /> },
     { name: 'styled-components', icon: <SiStyledcomponents /> },
-    { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
     { name: 'Sass / SCSS', icon: <SiSass /> },
+    { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
     { name: 'Ant Design', icon: <SiAntdesign /> },
     { name: 'MUI', icon: <SiMui /> },
-    { name: 'Axios', icon: <SiAxios /> },
+    { name: 'Naive UI', icon: <SiVuedotjs /> },
+    { name: 'Toast UI Editor', icon: <FaEdit /> },
   ];
 
   const experienceTechArr = [
