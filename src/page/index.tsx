@@ -140,7 +140,7 @@ function PageIndex() {
         { name: 'Vite', icon: <SiVite /> },
         { name: 'SCSS', icon: <SiSass /> },
       ],
-      subTitle: '영업·유지보수·정산 통합 관리 시스템 (Web Admin)',
+      subTitle: '영업·유지보수·정산 통합 관리 시스템',
       title: 'Saleser',
       link: [
         {
