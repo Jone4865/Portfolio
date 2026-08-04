@@ -240,7 +240,7 @@ export default Sider;
 const Container = styled.div<{ isBig: boolean }>`
   transition: background 0.25s ease;
   width: ${({ isBig }) => (isBig ? '300px' : 'auto')};
-  background: ${({ theme }) => theme.siderBackGround};
+  background: ${({ theme }) => theme.siderGradient};
   border-right: ${({ isBig, theme }) => (isBig ? `1px solid ${theme.siderBorder}` : 'none')};
   backdrop-filter: blur(16px);
   padding: 16px 12px 24px;
