@@ -910,7 +910,7 @@ function PageIndex() {
 
 export default PageIndex;
 
-const SIDER_RAIL = 320;
+const SIDER_RAIL = 300;
 
 const Container = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
   margin-left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? `${SIDER_RAIL}px` : '0')};
