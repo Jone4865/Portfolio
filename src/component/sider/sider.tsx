@@ -17,16 +17,24 @@ import {
 import {
   SiNextdotjs,
   SiTypescript,
+  SiVuedotjs,
+  SiVite,
   SiSass,
   SiStyledcomponents,
+  SiTailwindcss,
   SiAntdesign,
   SiApollographql,
   SiSocketdotio,
   SiAxios,
   SiMui,
   SiReactquery,
+  SiReacthookform,
   SiRecoil,
   SiStorybook,
+  SiNestjs,
+  SiPostgresql,
+  SiMysql,
+  SiRedis,
   SiFlutter,
   SiVercel,
   SiAmazons3,
@@ -52,33 +60,41 @@ const Sider = () => {
   const techArr = [
     { name: 'React', icon: <FaReact /> },
     { name: 'Next.js', icon: <SiNextdotjs /> },
-    { name: 'Typescript', icon: <SiTypescript /> },
+    { name: 'Vue 3', icon: <SiVuedotjs /> },
+    { name: 'TypeScript', icon: <SiTypescript /> },
+    { name: 'Vite', icon: <SiVite /> },
+    { name: 'React Query', icon: <SiReactquery /> },
+    { name: 'React Hook Form', icon: <SiReacthookform /> },
     { name: 'Recoil', icon: <SiRecoil /> },
-    { name: 'Styledcomponent', icon: <SiStyledcomponents /> },
-    { name: 'Sass', icon: <SiSass /> },
-    { name: 'AntDesign', icon: <SiAntdesign /> },
-    { name: 'Mui', icon: <SiMui /> },
-    { name: 'ReactQuery', icon: <SiReactquery /> },
-    { name: 'Apollographql', icon: <SiApollographql /> },
-    { name: 'Socket.io', icon: <SiSocketdotio /> },
+    { name: 'Apollo GraphQL', icon: <SiApollographql /> },
+    { name: 'styled-components', icon: <SiStyledcomponents /> },
+    { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
+    { name: 'Sass / SCSS', icon: <SiSass /> },
+    { name: 'Ant Design', icon: <SiAntdesign /> },
+    { name: 'MUI', icon: <SiMui /> },
     { name: 'Axios', icon: <SiAxios /> },
-    { name: 'VisualStudio', icon: <SiVisualstudio /> },
-    { name: 'Github', icon: <FaGithub /> },
-    { name: 'Sourcetree', icon: <FaSourcetree /> },
-    { name: 'Figma', icon: <FaFigma /> },
-    { name: 'AdobeXD', icon: <SiAdobexd /> },
   ];
 
   const experienceTechArr = [
-    { name: 'AmazonAws', icon: <FaAws /> },
+    { name: 'NestJS', icon: <SiNestjs /> },
+    { name: 'PostgreSQL', icon: <SiPostgresql /> },
+    { name: 'MySQL', icon: <SiMysql /> },
+    { name: 'Redis', icon: <SiRedis /> },
+    { name: 'Socket.IO', icon: <SiSocketdotio /> },
+    { name: 'AWS', icon: <FaAws /> },
     { name: 'Vercel', icon: <SiVercel /> },
-    { name: 'AmazonS3', icon: <SiAmazons3 /> },
-    { name: 'ReactNative', icon: <TbBrandReactNative /> },
+    { name: 'Amazon S3', icon: <SiAmazons3 /> },
+    { name: 'React Native', icon: <TbBrandReactNative /> },
     { name: 'Flutter', icon: <SiFlutter /> },
-    { name: 'XCode', icon: <SiXcode /> },
+    { name: 'Xcode', icon: <SiXcode /> },
     { name: 'Android Studio', icon: <SiAndroidstudio /> },
-    { name: 'ReduxToolkit', icon: <TbBrandRedux /> },
-    { name: 'StoryBook', icon: <SiStorybook /> },
+    { name: 'Redux Toolkit', icon: <TbBrandRedux /> },
+    { name: 'Storybook', icon: <SiStorybook /> },
+    { name: 'Visual Studio', icon: <SiVisualstudio /> },
+    { name: 'GitHub', icon: <FaGithub /> },
+    { name: 'Sourcetree', icon: <FaSourcetree /> },
+    { name: 'Figma', icon: <FaFigma /> },
+    { name: 'Adobe XD', icon: <SiAdobexd /> },
   ];
 
   const { toggleTheme, isDarkMode } = useContext(ThemeContext);
@@ -222,8 +238,7 @@ const Container = styled.div<{ isBig: boolean }>`
   transition: background 0.25s ease;
   width: ${({ isBig }) => (isBig ? '300px' : 'auto')};
   background: ${({ theme }) => theme.siderBackGround};
-  border-right: ${({ isBig, theme }) =>
-    isBig ? `1px solid ${theme.siderBorder}` : 'none'};
+  border-right: ${({ isBig, theme }) => (isBig ? `1px solid ${theme.siderBorder}` : 'none')};
   backdrop-filter: blur(16px);
   padding: 16px 12px 24px;
   z-index: 12;
@@ -390,12 +405,7 @@ const Line = styled.div`
   width: 100%;
   margin: 16px 0;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    ${({ theme }) => theme.siderBorder},
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, ${({ theme }) => theme.siderBorder}, transparent);
 `;
 
 const Chevron = styled.span<{ visible?: boolean }>`
@@ -441,7 +451,7 @@ const TechWrapper = styled.div<{ visible: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 6px;
-  max-height: ${({ visible }) => (visible ? '520px' : '0')};
+  max-height: ${({ visible }) => (visible ? '800px' : '0')};
   padding: ${({ visible }) => (visible ? '8px 4px 12px 8px' : '0')};
   opacity: ${({ visible }) => (visible ? 1 : 0)};
   overflow: hidden;
