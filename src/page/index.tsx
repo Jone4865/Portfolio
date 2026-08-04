@@ -651,8 +651,8 @@ function PageIndex() {
       >
         <PrograssStyle isDesktop={isDesktop} style={{ scaleX: scrollYProgress }} />
 
-        {/* 페이지 인디케이터 - 모바일에서는 Home 활성화 시에만 표시 */}
-        {(activeSection >= 0 || !isMobile) && (
+        {/* 카드와 겹치지 않도록 충분한 너비의 데스크톱에서만 표시 */}
+        {isDesktop && (
           <PageIndicator isDesktop={isDesktop} isTablet={isTablet}>
             {/* Home */}
             <DotGroup>
