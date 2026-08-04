@@ -125,7 +125,7 @@ function PageIndex() {
     },
     {
       key: 'FastPace',
-      date: '2025.10 - 현재',
+      date: '2025.12 - 현재',
       experience: [
         'Vue 3 + TypeScript + Vite + SCSS 기반 웹 애플리케이션 구현 → 영업·유지보수·정산 업무 통합 관리',
         '영업/유지보수 데이터 기반 정산관리(청구·입금·지연·상태) 기능 구현 → 운영 정산 업무 효율화',
