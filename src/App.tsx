@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 
 import PageIndex from './page';
 import PageCommonComponent from './page/pageCommonComponent';
@@ -22,6 +23,7 @@ function AppContent() {
           <Route path="/test" element={<PageCommonComponent />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
+        <Analytics />
       </CustomThemeProvider>
     </div>
   );
