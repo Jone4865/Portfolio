@@ -13,7 +13,7 @@ type Props = {
 
 const springSoft = { type: 'spring' as const, stiffness: 280, damping: 30 };
 
-/** 홈 히어로 — 에디토리얼(D): 하단 그라데이션 + 좌하단 타이포 */
+/** 홈 히어로 — 사진 메인 + Three 배경 */
 export default function HomeHeroCard({ typicalContent, backgroundSrc }: Props) {
   const reduceMotion = useReducedMotion();
   const theme = useTheme();
@@ -35,32 +35,24 @@ export default function HomeHeroCard({ typicalContent, backgroundSrc }: Props) {
             }
       }
     >
-      {enableThree ? (
-        <Suspense
-          fallback={
-            <HeroImageShell>
-              <HeroFallbackImg alt="" src={backgroundSrc} loading="eager" decoding="async" />
-            </HeroImageShell>
-          }
-        >
+      {enableThree && (
+        <Suspense fallback={null}>
           <HeroScene enabled accent={theme.accent} />
         </Suspense>
-      ) : (
-        <HeroImageShell>
-          <HeroImageKen
-            animate={reduceMotion ? undefined : { scale: [1, 1.055, 1] }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          >
-            <img alt="" src={backgroundSrc} loading="eager" decoding="async" />
-          </HeroImageKen>
-        </HeroImageShell>
       )}
+      <HeroImageShell $overThree={enableThree}>
+        <HeroImageKen
+          animate={reduceMotion ? undefined : { scale: [1, 1.055, 1] }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        >
+          <img alt="" src={backgroundSrc} loading="eager" decoding="async" />
+        </HeroImageKen>
+      </HeroImageShell>
       <EditorialScrim
-        $soft={enableThree}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.65, ease: 'easeOut' }}
@@ -128,6 +120,7 @@ const HeroVisualFrame = styled(motion.div)`
   overflow: hidden;
   box-shadow: ${({ theme }) => theme.shadowElevated};
   border: 1px solid ${({ theme }) => theme.heroGlassBorder};
+  background: #0e1218;
   transition:
     border-color 0.35s ease,
     box-shadow 0.35s ease;
@@ -148,11 +141,13 @@ const HeroVisualFrame = styled(motion.div)`
   }
 `;
 
-const HeroImageShell = styled.div`
+const HeroImageShell = styled.div<{ $overThree?: boolean }>`
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   overflow: hidden;
+  /* Three가 뒤에서 살짝 비치도록 */
+  opacity: ${({ $overThree }) => ($overThree ? 0.86 : 1)};
 `;
 
 const HeroImageKen = styled(motion.div)`
@@ -169,34 +164,18 @@ const HeroImageKen = styled(motion.div)`
   }
 `;
 
-const HeroFallbackImg = styled.img`
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
-
-const EditorialScrim = styled(motion.div)<{ $soft?: boolean }>`
+const EditorialScrim = styled(motion.div)`
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
-  background: ${({ $soft }) =>
-    $soft
-      ? `linear-gradient(
-    to top,
-    rgba(2, 4, 8, 0.78) 0%,
-    rgba(2, 4, 8, 0.28) 36%,
-    rgba(2, 4, 8, 0.06) 62%,
-    rgba(2, 4, 8, 0.02) 100%
-  )`
-      : `linear-gradient(
+  background: linear-gradient(
     to top,
     rgba(2, 4, 8, 0.9) 0%,
     rgba(2, 4, 8, 0.42) 34%,
     rgba(2, 4, 8, 0.12) 58%,
     rgba(2, 4, 8, 0.04) 100%
-  )`};
+  );
 `;
 
 const EditorialTyping = styled.div<{ $high: boolean }>`

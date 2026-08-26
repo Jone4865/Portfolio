@@ -3,7 +3,7 @@ import { motion, useScroll, type Transition } from 'framer-motion';
 import styled, { css } from 'styled-components';
 import Typical from 'react-typical';
 
-//icon들
+// icon들 — FaAmazon/FaAws/SiSocketdotio/SiStorybook/TbBrandRedux 는 주석 처리된 프로젝트 복원용
 import { FaAmazon, FaAws, FaReact, FaChevronDown } from 'react-icons/fa';
 import {
   SiAntdesign,
@@ -30,6 +30,16 @@ import useResponsive from '../hooks/useResponsive';
 import HomeHeroCard from './homeHero/HomeHeroCard';
 import SkillInsight from '../component/charts/SkillInsight';
 import { animate, stagger } from 'animejs';
+
+/* 주석 처리된 프로젝트 복원용 아이콘 — 삭제하지 않음 */
+const _commentedProjectIcons = {
+  FaAmazon,
+  FaAws,
+  SiSocketdotio,
+  SiStorybook,
+  TbBrandRedux,
+};
+void _commentedProjectIcons;
 
 type Data = {
   key: string;
@@ -259,6 +269,7 @@ function PageIndex() {
         },
       ],
     },
+    /* 자사 쇼핑몰 CMS 템플릿 이하 — 임시 숨김 (삭제하지 않음)
     {
       key: 'Lawdians',
       date: '2023.04 - 2023.05',
@@ -492,6 +503,7 @@ function PageIndex() {
         },
       ],
     },
+    */
   ]);
 
   const typicalComponent = useMemo(
