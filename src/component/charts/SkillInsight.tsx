@@ -17,14 +17,6 @@ const skillRadar = [
   { label: 'Architecture', value: 80 },
 ];
 
-const careerTrend = [
-  { year: '22', projects: 4 },
-  { year: '23', projects: 7 },
-  { year: '24', projects: 5 },
-  { year: '25', projects: 4 },
-  { year: '26', projects: 3 },
-];
-
 function polarToCartesian(cx: number, cy: number, radius: number, angle: number) {
   const rad = ((angle - 90) * Math.PI) / 180;
   return {
@@ -51,8 +43,6 @@ function buildRadarPath(values: number[], size: number) {
 export default function SkillInsight({ active, isDesktop, isTablet }: Props) {
   const rootRef = useRef<HTMLDivElement>(null);
   const radarPathRef = useRef<SVGPathElement>(null);
-  const areaPathRef = useRef<SVGPathElement>(null);
-  const areaFillRef = useRef<SVGPathElement>(null);
 
   const radarOutline = useMemo(
     () =>
@@ -73,29 +63,10 @@ export default function SkillInsight({ active, isDesktop, isTablet }: Props) {
     [],
   );
 
-  const area = useMemo(() => {
-    const width = 360;
-    const height = 180;
-    const padX = 24;
-    const padY = 24;
-    const max = Math.max(...careerTrend.map((d) => d.projects));
-    const points = careerTrend.map((d, i) => {
-      const x = padX + (i / (careerTrend.length - 1)) * (width - padX * 2);
-      const y = height - padY - (d.projects / max) * (height - padY * 2);
-      return { x, y, ...d };
-    });
-    const line = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
-    const fill = `${line} L ${points[points.length - 1].x} ${height - padY} L ${points[0].x} ${
-      height - padY
-    } Z`;
-    return { width, height, points, line, fill };
-  }, []);
-
   useEffect(() => {
     if (!active || !rootRef.current) return;
 
     const cards = rootRef.current.querySelectorAll('[data-insight-card]');
-    const dots = rootRef.current.querySelectorAll('[data-area-dot]');
     const labels = rootRef.current.querySelectorAll('[data-radar-label]');
 
     animate(cards, {
@@ -126,30 +97,6 @@ export default function SkillInsight({ active, isDesktop, isTablet }: Props) {
       });
     }
 
-    if (areaPathRef.current && areaFillRef.current) {
-      const lineDrawable = svg.createDrawable(areaPathRef.current);
-      animate(lineDrawable, {
-        draw: ['0 0', '0 1'],
-        duration: 1100,
-        delay: 180,
-        ease: 'inOutCubic',
-      });
-      animate(areaFillRef.current, {
-        opacity: [0, 0.35],
-        duration: 900,
-        delay: 380,
-        ease: 'outQuad',
-      });
-    }
-
-    animate(dots, {
-      scale: [0, 1],
-      opacity: [0, 1],
-      delay: stagger(80, { start: 520 }),
-      duration: 450,
-      ease: 'outBack',
-    });
-
     const counters = rootRef.current.querySelectorAll<HTMLElement>('[data-count]');
     counters.forEach((el) => {
       const target = Number(el.dataset.count || 0);
@@ -171,7 +118,7 @@ export default function SkillInsight({ active, isDesktop, isTablet }: Props) {
       <Header>
         <Eyebrow>Insight</Eyebrow>
         <Title>스킬·커리어 한눈에</Title>
-        <Desc>Anime.js 모션과 레이더·트렌드 차트로 강점과 프로젝트 흐름을 정리했습니다.</Desc>
+        <Desc>핵심 스킬 레이더와 경력 지표로 강점을 정리했습니다.</Desc>
       </Header>
 
       <StatsRow>
@@ -195,107 +142,60 @@ export default function SkillInsight({ active, isDesktop, isTablet }: Props) {
         </StatCard>
       </StatsRow>
 
-      <ChartsGrid>
-        <ChartCard data-insight-card>
-          <ChartTitle>Core Skill Radar</ChartTitle>
-          <RadarWrap>
-            <svg
-              viewBox="0 0 280 280"
-              width="100%"
-              height="100%"
-              role="img"
-              aria-label="스킬 레이더"
-            >
-              {radarGuides.map((d) => (
-                <path key={d} d={d} fill="none" stroke="currentColor" strokeOpacity="0.18" />
-              ))}
-              {skillRadar.map((skill, index) => {
-                const angle = (360 / skillRadar.length) * index;
-                const tip = polarToCartesian(140, 140, 108, angle);
-                const label = polarToCartesian(140, 140, 124, angle);
-                return (
-                  <g key={skill.label}>
-                    <line
-                      x1="140"
-                      y1="140"
-                      x2={tip.x}
-                      y2={tip.y}
-                      stroke="currentColor"
-                      strokeOpacity="0.2"
-                    />
-                    <text
-                      data-radar-label
-                      x={label.x}
-                      y={label.y}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                      fontSize="11"
-                      fill="currentColor"
-                      opacity="0"
-                    >
-                      {skill.label}
-                    </text>
-                  </g>
-                );
-              })}
-              <path
-                ref={radarPathRef}
-                d={radarOutline}
-                fill="currentColor"
-                fillOpacity="0.16"
-                stroke="currentColor"
-                strokeWidth="2"
-                opacity="0"
-              />
-            </svg>
-          </RadarWrap>
-        </ChartCard>
-
-        <ChartCard data-insight-card>
-          <ChartTitle>Project Trend</ChartTitle>
-          <AreaWrap>
-            <svg
-              viewBox={`0 0 ${area.width} ${area.height}`}
-              width="100%"
-              height="100%"
-              role="img"
-              aria-label="연도별 프로젝트 추이"
-            >
-              <path ref={areaFillRef} d={area.fill} fill="currentColor" opacity="0" />
-              <path
-                ref={areaPathRef}
-                d={area.line}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              {area.points.map((p) => (
-                <g key={p.year}>
-                  <circle data-area-dot cx={p.x} cy={p.y} r="4.5" fill="currentColor" opacity="0" />
+      <ChartCard data-insight-card>
+        <ChartTitle>Core Skill Radar</ChartTitle>
+        <RadarWrap>
+          <svg viewBox="0 0 280 280" width="100%" height="100%" role="img" aria-label="스킬 레이더">
+            {radarGuides.map((d) => (
+              <path key={d} d={d} fill="none" stroke="currentColor" strokeOpacity="0.18" />
+            ))}
+            {skillRadar.map((skill, index) => {
+              const angle = (360 / skillRadar.length) * index;
+              const tip = polarToCartesian(140, 140, 108, angle);
+              const label = polarToCartesian(140, 140, 124, angle);
+              return (
+                <g key={skill.label}>
+                  <line
+                    x1="140"
+                    y1="140"
+                    x2={tip.x}
+                    y2={tip.y}
+                    stroke="currentColor"
+                    strokeOpacity="0.2"
+                  />
                   <text
-                    x={p.x}
-                    y={area.height - 6}
+                    data-radar-label
+                    x={label.x}
+                    y={label.y}
                     textAnchor="middle"
+                    dominantBaseline="middle"
                     fontSize="11"
                     fill="currentColor"
-                    opacity="0.65"
+                    opacity="0"
                   >
-                    ‘{p.year}
+                    {skill.label}
                   </text>
                 </g>
-              ))}
-            </svg>
-          </AreaWrap>
-        </ChartCard>
-      </ChartsGrid>
+              );
+            })}
+            <path
+              ref={radarPathRef}
+              d={radarOutline}
+              fill="currentColor"
+              fillOpacity="0.16"
+              stroke="currentColor"
+              strokeWidth="2"
+              opacity="0"
+            />
+          </svg>
+        </RadarWrap>
+      </ChartCard>
     </Panel>
   );
 }
 
 const Panel = styled.div<{ $desktop: boolean; $tablet: boolean }>`
-  width: min(920px, 94%);
+  width: min(720px, 94%);
   max-height: calc(100vh - 120px);
   overflow-y: auto;
   margin: 0 auto;
@@ -368,16 +268,6 @@ const StatLabel = styled.div`
   color: ${({ theme }) => theme.cardTextMuted};
 `;
 
-const ChartsGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1.05fr 1fr;
-  gap: 12px;
-
-  @media (max-width: 860px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
 const ChartCard = styled.div`
   opacity: 0;
   padding: 14px;
@@ -395,11 +285,7 @@ const ChartTitle = styled.h3`
 `;
 
 const RadarWrap = styled.div`
-  height: 250px;
-`;
-
-const AreaWrap = styled.div`
-  height: 250px;
-  display: flex;
-  align-items: center;
+  height: min(280px, 48vh);
+  max-width: 360px;
+  margin: 0 auto;
 `;
