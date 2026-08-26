@@ -1,24 +1,44 @@
-import { Suspense, useRef } from 'react';
+import { Suspense, useMemo, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { ContactShadows, Environment, Float, useGLTF } from '@react-three/drei';
+import { Center, ContactShadows, Environment, Float, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import styled from 'styled-components';
 
-const HELMET_PATH = '/models/DamagedHelmet.glb';
+/** CC-BY-4.0 — jackbaeten MacBook Pro M3 (via wistant/landing-macbook) */
+const MACBOOK_PATH = '/models/macbook.glb';
 
-function HelmetModel() {
-  const { scene } = useGLTF(HELMET_PATH);
+function MacbookModel() {
+  const { scene } = useGLTF(MACBOOK_PATH);
   const group = useRef<THREE.Group>(null);
 
-  useFrame((_, delta) => {
+  const prepared = useMemo(() => {
+    const next = scene.clone(true);
+    next.traverse((obj) => {
+      const mesh = obj as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      const mat = mesh.material as THREE.MeshStandardMaterial;
+      if (mat && 'roughness' in mat) {
+        mat.envMapIntensity = 0.85;
+      }
+    });
+    return next;
+  }, [scene]);
+
+  useFrame((state) => {
     if (!group.current) return;
-    group.current.rotation.y += delta * 0.22;
+    const t = state.clock.elapsedTime;
+    group.current.rotation.y = -0.35 + Math.sin(t * 0.18) * 0.08;
+    group.current.rotation.x = 0.12 + Math.cos(t * 0.14) * 0.03;
   });
 
   return (
-    <Float speed={1.2} rotationIntensity={0.25} floatIntensity={0.35}>
-      <group ref={group} position={[0, 0.15, 0]} scale={1.35}>
-        <primitive object={scene} />
+    <Float speed={0.95} rotationIntensity={0.12} floatIntensity={0.22}>
+      <group ref={group} position={[1.35, -0.15, 0]} scale={0.085}>
+        <Center>
+          <primitive object={prepared} />
+        </Center>
       </group>
     </Float>
   );
@@ -27,47 +47,39 @@ function HelmetModel() {
 function SceneContent({ accent }: { accent: string }) {
   return (
     <>
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[3, 4, 2]} intensity={1.6} color="#ffffff" />
-      <spotLight
-        position={[-2, 3, 2]}
-        intensity={1.1}
-        angle={0.55}
-        penumbra={0.6}
-        color={accent}
-      />
-      <HelmetModel />
+      <ambientLight intensity={0.55} />
+      <directionalLight position={[4, 5, 3]} intensity={1.35} color="#fff8f2" />
+      <directionalLight position={[-3, 2, -1]} intensity={0.35} color="#d7e4ff" />
+      <pointLight position={[2.2, 1.4, 1.6]} intensity={0.55} color={accent} />
+      <MacbookModel />
       <ContactShadows
-        position={[0, -0.85, 0]}
-        opacity={0.45}
-        scale={6}
-        blur={2.2}
-        far={3}
-        color="#1a1216"
+        position={[1.2, -0.95, 0]}
+        opacity={0.28}
+        scale={8}
+        blur={2.6}
+        far={4}
+        color="#2a1a20"
       />
-      <Environment preset="city" />
+      <Environment preset="apartment" />
     </>
   );
 }
 
-useGLTF.preload(HELMET_PATH);
+useGLTF.preload(MACBOOK_PATH);
 
 type Props = {
   enabled?: boolean;
   accent?: string;
 };
 
-/**
- * body 여백(우하단)용 고퀄 PBR 모델.
- * Polyfork 저폴리곤이 아니라 Khronos DamagedHelmet(텍스처·메탈릭 포함) 사용.
- */
-export default function BodyScene({ enabled = true, accent = '#fb7185' }: Props) {
+/** body 뒤 배경 — FE 포트폴리오 톤에 맞는 MacBook */
+export default function BodyScene({ enabled = true, accent = '#b83253' }: Props) {
   if (!enabled) return null;
 
   return (
     <CanvasHost aria-hidden>
       <Canvas
-        dpr={[1, 1.75]}
+        dpr={[1, 1.6]}
         gl={{
           antialias: true,
           alpha: true,
@@ -75,7 +87,7 @@ export default function BodyScene({ enabled = true, accent = '#fb7185' }: Props)
           toneMapping: THREE.ACESFilmicToneMapping,
           outputColorSpace: THREE.SRGBColorSpace,
         }}
-        camera={{ position: [0.4, 0.35, 3.2], fov: 35, near: 0.1, far: 40 }}
+        camera={{ position: [0.2, 0.55, 4.2], fov: 32, near: 0.1, far: 50 }}
       >
         <Suspense fallback={null}>
           <SceneContent accent={accent} />
@@ -87,11 +99,8 @@ export default function BodyScene({ enabled = true, accent = '#fb7185' }: Props)
 
 const CanvasHost = styled.div`
   position: fixed;
-  right: clamp(8px, 2vw, 28px);
-  bottom: clamp(8px, 2vh, 24px);
-  width: min(42vw, 520px);
-  height: min(48vh, 460px);
-  z-index: 3;
+  inset: 0;
+  z-index: 0;
   pointer-events: none;
-  opacity: 1;
+  opacity: 0.78;
 `;
