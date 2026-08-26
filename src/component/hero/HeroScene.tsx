@@ -14,25 +14,27 @@ function AccentMesh({ color }: AccentMeshProps) {
     () =>
       new THREE.MeshStandardMaterial({
         color,
-        metalness: 0.55,
-        roughness: 0.18,
+        metalness: 0.65,
+        roughness: 0.12,
         wireframe: true,
         transparent: true,
-        opacity: 0.92,
+        opacity: 1,
+        emissive: color,
+        emissiveIntensity: 0.55,
       }),
     [color],
   );
 
   useFrame((_, delta) => {
     if (!meshRef.current) return;
-    meshRef.current.rotation.x += delta * 0.22;
-    meshRef.current.rotation.y += delta * 0.34;
+    meshRef.current.rotation.x += delta * 0.28;
+    meshRef.current.rotation.y += delta * 0.42;
   });
 
   return (
-    <Float speed={1.6} rotationIntensity={0.7} floatIntensity={1.1}>
-      <mesh ref={meshRef} position={[1.35, 0.15, 0.2]} material={material}>
-        <icosahedronGeometry args={[1.45, 1]} />
+    <Float speed={1.8} rotationIntensity={0.85} floatIntensity={1.25}>
+      <mesh ref={meshRef} position={[1.75, 0.05, 0.55]} material={material} scale={1.25}>
+        <icosahedronGeometry args={[1.55, 1]} />
       </mesh>
     </Float>
   );
@@ -49,16 +51,16 @@ function SoftOrb({ color }: AccentMeshProps) {
   });
 
   return (
-    <mesh ref={meshRef} position={[-1.55, -0.15, -0.2]}>
-      <sphereGeometry args={[0.78, 32, 32]} />
+    <mesh ref={meshRef} position={[-1.85, -0.25, -0.45]}>
+      <sphereGeometry args={[0.62, 32, 32]} />
       <meshStandardMaterial
         color={color}
         transparent
-        opacity={0.48}
-        roughness={0.45}
-        metalness={0.2}
+        opacity={0.28}
+        roughness={0.5}
+        metalness={0.15}
         emissive={color}
-        emissiveIntensity={0.35}
+        emissiveIntensity={0.18}
       />
     </mesh>
   );
@@ -92,14 +94,14 @@ function Ring({ color }: AccentMeshProps) {
 function SceneContent({ accent }: { accent: string }) {
   return (
     <>
-      <ambientLight intensity={0.75} />
-      <directionalLight position={[4, 3, 2]} intensity={1.35} color="#ffffff" />
-      <pointLight position={[-3, -1, 2]} intensity={1.4} color={accent} />
-      <pointLight position={[2, 2, 3]} intensity={0.7} color="#ffffff" />
+      <ambientLight intensity={0.9} />
+      <directionalLight position={[5, 3, 4]} intensity={1.7} color="#ffffff" />
+      <pointLight position={[2.4, 0.8, 3.2]} intensity={2.1} color={accent} />
+      <pointLight position={[-2, -1, 2]} intensity={0.9} color={accent} />
       <AccentMesh color={accent} />
       <SoftOrb color={accent} />
       <Ring color={accent} />
-      <Stars radius={50} depth={36} count={900} factor={3.2} saturation={0} fade speed={0.7} />
+      <Stars radius={50} depth={36} count={700} factor={2.8} saturation={0} fade speed={0.7} />
     </>
   );
 }
@@ -117,7 +119,7 @@ export default function HeroScene({ enabled = true, accent }: Props) {
       <Canvas
         dpr={[1, 1.75]}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-        camera={{ position: [0, 0, 4.0], fov: 42 }}
+        camera={{ position: [0.35, 0, 3.6], fov: 40 }}
       >
         <Suspense fallback={null}>
           <SceneContent accent={accent} />
