@@ -47,16 +47,16 @@ function MacbookModel() {
 function SceneContent({ accent }: { accent: string }) {
   return (
     <>
-      <ambientLight intensity={0.55} />
-      <directionalLight position={[4, 5, 3]} intensity={1.35} color="#fff8f2" />
-      <directionalLight position={[-3, 2, -1]} intensity={0.35} color="#d7e4ff" />
-      <pointLight position={[2.2, 1.4, 1.6]} intensity={0.55} color={accent} />
+      <ambientLight intensity={0.45} />
+      <directionalLight position={[4, 5, 3]} intensity={0.95} color="#fff8f2" />
+      <directionalLight position={[-3, 2, -1]} intensity={0.22} color="#d7e4ff" />
+      <pointLight position={[2.2, 1.4, 1.6]} intensity={0.28} color={accent} />
       <MacbookModel />
       <ContactShadows
         position={[1.2, -0.95, 0]}
-        opacity={0.28}
+        opacity={0.14}
         scale={8}
-        blur={2.6}
+        blur={3.2}
         far={4}
         color="#2a1a20"
       />
@@ -102,5 +102,6 @@ const CanvasHost = styled.div`
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.78;
+  opacity: 0.32;
+  filter: saturate(0.85) blur(0.2px);
 `;
