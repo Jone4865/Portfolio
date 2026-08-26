@@ -1,6 +1,10 @@
 import type { ReactNode } from 'react';
+import { lazy, Suspense } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import styled, { css } from 'styled-components';
+import styled, { css, useTheme } from 'styled-components';
+import useResponsive from '../../hooks/useResponsive';
+
+const HeroScene = lazy(() => import('../../component/hero/HeroScene'));
 
 type Props = {
   typicalContent: ReactNode;
@@ -12,6 +16,9 @@ const springSoft = { type: 'spring' as const, stiffness: 280, damping: 30 };
 /** 홈 히어로 — 에디토리얼(D): 하단 그라데이션 + 좌하단 타이포 */
 export default function HomeHeroCard({ typicalContent, backgroundSrc }: Props) {
   const reduceMotion = useReducedMotion();
+  const theme = useTheme();
+  const { isMobile } = useResponsive();
+  const enableThree = !reduceMotion && !isMobile;
 
   return (
     <HeroVisualFrame
@@ -30,7 +37,7 @@ export default function HomeHeroCard({ typicalContent, backgroundSrc }: Props) {
     >
       <HeroImageShell>
         <HeroImageKen
-          animate={{ scale: [1, 1.055, 1] }}
+          animate={reduceMotion ? undefined : { scale: [1, 1.055, 1] }}
           transition={{
             duration: 20,
             repeat: Infinity,
@@ -40,6 +47,11 @@ export default function HomeHeroCard({ typicalContent, backgroundSrc }: Props) {
           <img alt="" src={backgroundSrc} loading="eager" decoding="async" />
         </HeroImageKen>
       </HeroImageShell>
+      {enableThree && (
+        <Suspense fallback={null}>
+          <HeroScene enabled accent={theme.accent} />
+        </Suspense>
+      )}
       <EditorialScrim
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -152,7 +164,7 @@ const HeroImageKen = styled(motion.div)`
 const EditorialScrim = styled(motion.div)`
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
   background: linear-gradient(
     to top,
@@ -166,14 +178,13 @@ const EditorialScrim = styled(motion.div)`
 const EditorialTyping = styled.div<{ $high: boolean }>`
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-end;
   text-align: left;
-  padding: clamp(22px, 4vw, 40px) clamp(22px, 4vw, 44px)
-    clamp(26px, 5vw, 48px);
+  padding: clamp(22px, 4vw, 40px) clamp(22px, 4vw, 44px) clamp(26px, 5vw, 48px);
   max-width: 100%;
   pointer-events: none;
 
