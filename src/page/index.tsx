@@ -988,13 +988,18 @@ export default PageIndex;
 
 const SIDER_RAIL = 300;
 
-const Container = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
-  margin-left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? `${SIDER_RAIL}px` : '0')};
-`;
-
 const Wrap = styled.div<{ totalSections: number }>`
+  position: relative;
+  z-index: 1;
   height: ${({ totalSections }) => totalSections * 100}vh;
   background: ${({ theme }) => theme.canvasGradient};
+  background-color: transparent;
+`;
+
+const Container = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
+  position: relative;
+  z-index: 1;
+  margin-left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? `${SIDER_RAIL}px` : '0')};
 `;
 
 const SectionContainer = styled(motion.div)<{

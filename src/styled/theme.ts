@@ -43,7 +43,7 @@ export const lightTheme: AppTheme = {
   canvasGradient: `
     radial-gradient(1200px 800px at 85% 10%, rgba(184, 50, 83, 0.09), transparent 55%),
     radial-gradient(900px 600px at 0% 100%, rgba(59, 130, 246, 0.06), transparent 50%),
-    linear-gradient(180deg, #f5f1ed 0%, #e8e2dc 100%)
+    linear-gradient(180deg, rgba(245, 241, 237, 0.78) 0%, rgba(232, 226, 220, 0.62) 100%)
   `,
   text: '#14161c',
   textMuted: 'rgba(20, 22, 28, 0.55)',
@@ -89,7 +89,7 @@ export const darkTheme: AppTheme = {
   canvasGradient: `
     radial-gradient(1000px 700px at 90% 0%, rgba(251, 113, 133, 0.12), transparent 50%),
     radial-gradient(800px 500px at 0% 90%, rgba(56, 189, 248, 0.08), transparent 45%),
-    linear-gradient(165deg, #0f1117 0%, #12151c 50%, #0c0e12 100%)
+    linear-gradient(165deg, rgba(15, 17, 23, 0.72) 0%, rgba(18, 21, 28, 0.68) 50%, rgba(12, 14, 18, 0.7) 100%)
   `,
   text: '#ececf0',
   textMuted: 'rgba(236, 236, 240, 0.55)',
