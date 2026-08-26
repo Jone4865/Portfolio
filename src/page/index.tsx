@@ -990,15 +990,14 @@ const SIDER_RAIL = 300;
 
 const Wrap = styled.div<{ totalSections: number }>`
   position: relative;
-  z-index: 1;
+  z-index: 2;
   height: ${({ totalSections }) => totalSections * 100}vh;
   background: ${({ theme }) => theme.canvasGradient};
-  background-color: transparent;
 `;
 
 const Container = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
   position: relative;
-  z-index: 1;
+  z-index: 2;
   margin-left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? `${SIDER_RAIL}px` : '0')};
 `;
 

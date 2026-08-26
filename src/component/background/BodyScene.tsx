@@ -1,71 +1,24 @@
-import { Suspense, useMemo, useRef } from 'react';
+import { Suspense, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Center, Environment, Float, useGLTF } from '@react-three/drei';
+import { ContactShadows, Environment, Float, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import styled from 'styled-components';
 
-type ModelProps = {
-  path: string;
-  position?: [number, number, number];
-  rotation?: [number, number, number];
-  scale?: number;
-};
+const HELMET_PATH = '/models/DamagedHelmet.glb';
 
-function GltfModel({ path, position = [0, 0, 0], rotation = [0, 0, 0], scale = 1 }: ModelProps) {
-  const { scene } = useGLTF(path);
-  const cloned = useMemo(() => {
-    const next = scene.clone(true);
-    next.traverse((obj) => {
-      const mesh = obj as THREE.Mesh;
-      if (mesh.isMesh) {
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
-      }
-    });
-    return next;
-  }, [scene]);
-
-  return <primitive object={cloned} position={position} rotation={rotation} scale={scale} />;
-}
-
-function DeskVignette() {
+function HelmetModel() {
+  const { scene } = useGLTF(HELMET_PATH);
   const group = useRef<THREE.Group>(null);
 
-  useFrame((state) => {
+  useFrame((_, delta) => {
     if (!group.current) return;
-    const t = state.clock.elapsedTime;
-    group.current.rotation.y = -0.55 + Math.sin(t * 0.12) * 0.05;
-    group.current.position.y = -0.35 + Math.sin(t * 0.28) * 0.03;
+    group.current.rotation.y += delta * 0.22;
   });
 
   return (
-    <Float speed={0.9} rotationIntensity={0.1} floatIntensity={0.18}>
-      <group ref={group} position={[1.55, -0.2, -0.2]} rotation={[0.12, -0.7, 0.04]}>
-        <Center top>
-          <GltfModel path="/models/office-desk-021eb3.glb" scale={1.35} />
-        </Center>
-        <GltfModel
-          path="/models/desk-monitor-32cfce.glb"
-          position={[0.05, 0.78, -0.12]}
-          rotation={[0, 0.05, 0]}
-          scale={1.15}
-        />
-        <GltfModel
-          path="/models/table-lamp-e25998.glb"
-          position={[-0.55, 0.78, 0.18]}
-          scale={1}
-        />
-        <GltfModel
-          path="/models/floor-houseplant-8fad17.glb"
-          position={[1.25, 0, 0.5]}
-          scale={1.2}
-        />
-        <GltfModel
-          path="/models/filing-cabinet-f8a251.glb"
-          position={[-1.15, 0, -0.2]}
-          rotation={[0, 0.45, 0]}
-          scale={1}
-        />
+    <Float speed={1.2} rotationIntensity={0.25} floatIntensity={0.35}>
+      <group ref={group} position={[0, 0.15, 0]} scale={1.35}>
+        <primitive object={scene} />
       </group>
     </Float>
   );
@@ -74,37 +27,55 @@ function DeskVignette() {
 function SceneContent({ accent }: { accent: string }) {
   return (
     <>
-      <ambientLight intensity={0.65} />
-      <directionalLight position={[4, 5, 3]} intensity={1.15} color="#fff7f0" />
-      <pointLight position={[-2, 2.2, 1.5]} intensity={0.4} color="#c5d8ff" />
-      <pointLight position={[2.2, 1.6, 1]} intensity={0.5} color={accent} />
-      <DeskVignette />
+      <ambientLight intensity={0.35} />
+      <directionalLight position={[3, 4, 2]} intensity={1.6} color="#ffffff" />
+      <spotLight
+        position={[-2, 3, 2]}
+        intensity={1.1}
+        angle={0.55}
+        penumbra={0.6}
+        color={accent}
+      />
+      <HelmetModel />
+      <ContactShadows
+        position={[0, -0.85, 0]}
+        opacity={0.45}
+        scale={6}
+        blur={2.2}
+        far={3}
+        color="#1a1216"
+      />
       <Environment preset="city" />
     </>
   );
 }
 
-useGLTF.preload('/models/office-desk-021eb3.glb');
-useGLTF.preload('/models/desk-monitor-32cfce.glb');
-useGLTF.preload('/models/table-lamp-e25998.glb');
-useGLTF.preload('/models/floor-houseplant-8fad17.glb');
-useGLTF.preload('/models/filing-cabinet-f8a251.glb');
+useGLTF.preload(HELMET_PATH);
 
 type Props = {
   enabled?: boolean;
   accent?: string;
 };
 
-/** body 고정 배경 — GLB 데스크 비네트 */
+/**
+ * body 여백(우하단)용 고퀄 PBR 모델.
+ * Polyfork 저폴리곤이 아니라 Khronos DamagedHelmet(텍스처·메탈릭 포함) 사용.
+ */
 export default function BodyScene({ enabled = true, accent = '#fb7185' }: Props) {
   if (!enabled) return null;
 
   return (
     <CanvasHost aria-hidden>
       <Canvas
-        dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-        camera={{ position: [2.4, 1.6, 3.4], fov: 34, near: 0.1, far: 40 }}
+        dpr={[1, 1.75]}
+        gl={{
+          antialias: true,
+          alpha: true,
+          powerPreference: 'high-performance',
+          toneMapping: THREE.ACESFilmicToneMapping,
+          outputColorSpace: THREE.SRGBColorSpace,
+        }}
+        camera={{ position: [0.4, 0.35, 3.2], fov: 35, near: 0.1, far: 40 }}
       >
         <Suspense fallback={null}>
           <SceneContent accent={accent} />
@@ -116,8 +87,11 @@ export default function BodyScene({ enabled = true, accent = '#fb7185' }: Props)
 
 const CanvasHost = styled.div`
   position: fixed;
-  inset: 0;
-  z-index: 0;
+  right: clamp(8px, 2vw, 28px);
+  bottom: clamp(8px, 2vh, 24px);
+  width: min(42vw, 520px);
+  height: min(48vh, 460px);
+  z-index: 3;
   pointer-events: none;
-  opacity: 0.55;
+  opacity: 1;
 `;

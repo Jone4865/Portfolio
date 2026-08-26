@@ -1,6 +1,10 @@
 import type { ReactNode } from 'react';
+import { lazy, Suspense } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import styled, { css } from 'styled-components';
+import useResponsive from '../../hooks/useResponsive';
+
+const HeroWireframe = lazy(() => import('../../component/hero/HeroWireframe'));
 
 type Props = {
   typicalContent: ReactNode;
@@ -9,9 +13,11 @@ type Props = {
 
 const springSoft = { type: 'spring' as const, stiffness: 280, damping: 30 };
 
-/** 홈 히어로 — 에디토리얼: 사진 + 하단 타이포 */
+/** 홈 히어로 — 사진 + 우측 회색 wireframe */
 export default function HomeHeroCard({ typicalContent, backgroundSrc }: Props) {
   const reduceMotion = useReducedMotion();
+  const { isMobile } = useResponsive();
+  const enableWire = !reduceMotion && !isMobile;
 
   return (
     <HeroVisualFrame
@@ -40,6 +46,11 @@ export default function HomeHeroCard({ typicalContent, backgroundSrc }: Props) {
           <img alt="" src={backgroundSrc} loading="eager" decoding="async" />
         </HeroImageKen>
       </HeroImageShell>
+      {enableWire && (
+        <Suspense fallback={null}>
+          <HeroWireframe enabled />
+        </Suspense>
+      )}
       <EditorialScrim
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -106,6 +117,8 @@ const HeroVisualFrame = styled(motion.div)`
   min-height: 0;
   border-radius: 24px;
   overflow: hidden;
+  isolation: isolate;
+  background: #0e1218;
   box-shadow: ${({ theme }) => theme.shadowElevated};
   border: 1px solid ${({ theme }) => theme.heroGlassBorder};
   transition:
