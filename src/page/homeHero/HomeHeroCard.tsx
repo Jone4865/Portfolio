@@ -35,24 +35,32 @@ export default function HomeHeroCard({ typicalContent, backgroundSrc }: Props) {
             }
       }
     >
-      <HeroImageShell>
-        <HeroImageKen
-          animate={reduceMotion ? undefined : { scale: [1, 1.055, 1] }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
+      {enableThree ? (
+        <Suspense
+          fallback={
+            <HeroImageShell>
+              <HeroFallbackImg alt="" src={backgroundSrc} loading="eager" decoding="async" />
+            </HeroImageShell>
+          }
         >
-          <img alt="" src={backgroundSrc} loading="eager" decoding="async" />
-        </HeroImageKen>
-      </HeroImageShell>
-      {enableThree && (
-        <Suspense fallback={null}>
           <HeroScene enabled accent={theme.accent} />
         </Suspense>
+      ) : (
+        <HeroImageShell>
+          <HeroImageKen
+            animate={reduceMotion ? undefined : { scale: [1, 1.055, 1] }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+          >
+            <img alt="" src={backgroundSrc} loading="eager" decoding="async" />
+          </HeroImageKen>
+        </HeroImageShell>
       )}
       <EditorialScrim
+        $soft={enableThree}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.65, ease: 'easeOut' }}
@@ -161,18 +169,34 @@ const HeroImageKen = styled(motion.div)`
   }
 `;
 
-const EditorialScrim = styled(motion.div)`
+const HeroFallbackImg = styled.img`
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const EditorialScrim = styled(motion.div)<{ $soft?: boolean }>`
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(
+  background: ${({ $soft }) =>
+    $soft
+      ? `linear-gradient(
+    to top,
+    rgba(2, 4, 8, 0.78) 0%,
+    rgba(2, 4, 8, 0.28) 36%,
+    rgba(2, 4, 8, 0.06) 62%,
+    rgba(2, 4, 8, 0.02) 100%
+  )`
+      : `linear-gradient(
     to top,
     rgba(2, 4, 8, 0.9) 0%,
     rgba(2, 4, 8, 0.42) 34%,
     rgba(2, 4, 8, 0.12) 58%,
     rgba(2, 4, 8, 0.04) 100%
-  );
+  )`};
 `;
 
 const EditorialTyping = styled.div<{ $high: boolean }>`
