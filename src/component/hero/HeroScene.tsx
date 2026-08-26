@@ -14,93 +14,39 @@ function AccentMesh({ color }: AccentMeshProps) {
     () =>
       new THREE.MeshStandardMaterial({
         color,
-        metalness: 0.65,
-        roughness: 0.12,
+        metalness: 0.55,
+        roughness: 0.2,
         wireframe: true,
         transparent: true,
-        opacity: 1,
+        opacity: 0.78,
         emissive: color,
-        emissiveIntensity: 0.55,
+        emissiveIntensity: 0.28,
       }),
     [color],
   );
 
   useFrame((_, delta) => {
     if (!meshRef.current) return;
-    meshRef.current.rotation.x += delta * 0.28;
-    meshRef.current.rotation.y += delta * 0.42;
+    meshRef.current.rotation.x += delta * 0.24;
+    meshRef.current.rotation.y += delta * 0.36;
   });
 
   return (
-    <Float speed={1.8} rotationIntensity={0.85} floatIntensity={1.25}>
-      <mesh ref={meshRef} position={[1.75, 0.05, 0.55]} material={material} scale={1.25}>
-        <icosahedronGeometry args={[1.55, 1]} />
+    <Float speed={1.6} rotationIntensity={0.7} floatIntensity={1.05}>
+      <mesh ref={meshRef} position={[1.55, 0.1, 0.35]} material={material} scale={1.05}>
+        <icosahedronGeometry args={[1.4, 1]} />
       </mesh>
     </Float>
-  );
-}
-
-function SoftOrb({ color }: AccentMeshProps) {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (!meshRef.current) return;
-    const t = state.clock.getElapsedTime();
-    meshRef.current.position.x = -1.55 + Math.sin(t * 0.45) * 0.22;
-    meshRef.current.position.y = -0.15 + Math.cos(t * 0.55) * 0.18;
-  });
-
-  return (
-    <mesh ref={meshRef} position={[-1.85, -0.25, -0.45]}>
-      <sphereGeometry args={[0.62, 32, 32]} />
-      <meshStandardMaterial
-        color={color}
-        transparent
-        opacity={0.28}
-        roughness={0.5}
-        metalness={0.15}
-        emissive={color}
-        emissiveIntensity={0.18}
-      />
-    </mesh>
-  );
-}
-
-function Ring({ color }: AccentMeshProps) {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((_, delta) => {
-    if (!meshRef.current) return;
-    meshRef.current.rotation.z -= delta * 0.18;
-    meshRef.current.rotation.x += delta * 0.08;
-  });
-
-  return (
-    <mesh ref={meshRef} position={[0.2, 0.35, -0.6]} rotation={[0.7, 0.2, 0.1]}>
-      <torusGeometry args={[1.55, 0.035, 16, 80]} />
-      <meshStandardMaterial
-        color={color}
-        transparent
-        opacity={0.7}
-        metalness={0.4}
-        roughness={0.25}
-        emissive={color}
-        emissiveIntensity={0.25}
-      />
-    </mesh>
   );
 }
 
 function SceneContent({ accent }: { accent: string }) {
   return (
     <>
-      <ambientLight intensity={0.9} />
-      <directionalLight position={[5, 3, 4]} intensity={1.7} color="#ffffff" />
-      <pointLight position={[2.4, 0.8, 3.2]} intensity={2.1} color={accent} />
-      <pointLight position={[-2, -1, 2]} intensity={0.9} color={accent} />
+      <ambientLight intensity={0.8} />
+      <directionalLight position={[5, 3, 4]} intensity={1.4} color="#ffffff" />
+      <pointLight position={[2.2, 0.6, 2.8]} intensity={1.5} color={accent} />
       <AccentMesh color={accent} />
-      <SoftOrb color={accent} />
-      <Ring color={accent} />
       <Stars radius={50} depth={36} count={700} factor={2.8} saturation={0} fade speed={0.7} />
     </>
   );
@@ -119,7 +65,7 @@ export default function HeroScene({ enabled = true, accent }: Props) {
       <Canvas
         dpr={[1, 1.75]}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-        camera={{ position: [0.35, 0, 3.6], fov: 40 }}
+        camera={{ position: [0.25, 0, 3.7], fov: 40 }}
       >
         <Suspense fallback={null}>
           <SceneContent accent={accent} />
