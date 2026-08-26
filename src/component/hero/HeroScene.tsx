@@ -4,49 +4,45 @@ import { Float, Stars } from '@react-three/drei';
 import * as THREE from 'three';
 import styled from 'styled-components';
 
-type AccentMeshProps = {
-  color: string;
-};
+const WIRE_GRAY = '#9aa3ad';
 
-function AccentMesh({ color }: AccentMeshProps) {
+function AccentMesh() {
   const meshRef = useRef<THREE.Mesh>(null);
   const material = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
-        color,
-        metalness: 0.55,
-        roughness: 0.2,
+        color: WIRE_GRAY,
+        metalness: 0.45,
+        roughness: 0.28,
         wireframe: true,
         transparent: true,
-        opacity: 0.78,
-        emissive: color,
-        emissiveIntensity: 0.28,
+        opacity: 0.72,
       }),
-    [color],
+    [],
   );
 
   useFrame((_, delta) => {
     if (!meshRef.current) return;
-    meshRef.current.rotation.x += delta * 0.24;
-    meshRef.current.rotation.y += delta * 0.36;
+    meshRef.current.rotation.x += delta * 0.22;
+    meshRef.current.rotation.y += delta * 0.34;
   });
 
   return (
-    <Float speed={1.6} rotationIntensity={0.7} floatIntensity={1.05}>
-      <mesh ref={meshRef} position={[1.55, 0.1, 0.35]} material={material} scale={1.05}>
-        <icosahedronGeometry args={[1.4, 1]} />
+    <Float speed={1.5} rotationIntensity={0.65} floatIntensity={0.95}>
+      <mesh ref={meshRef} position={[1.45, 0.12, 0.25]} material={material}>
+        <icosahedronGeometry args={[1.05, 1]} />
       </mesh>
     </Float>
   );
 }
 
-function SceneContent({ accent }: { accent: string }) {
+function SceneContent() {
   return (
     <>
-      <ambientLight intensity={0.8} />
-      <directionalLight position={[5, 3, 4]} intensity={1.4} color="#ffffff" />
-      <pointLight position={[2.2, 0.6, 2.8]} intensity={1.5} color={accent} />
-      <AccentMesh color={accent} />
+      <ambientLight intensity={0.75} />
+      <directionalLight position={[5, 3, 4]} intensity={1.2} color="#ffffff" />
+      <pointLight position={[2.2, 0.6, 2.8]} intensity={0.9} color="#d7dde4" />
+      <AccentMesh />
       <Stars radius={50} depth={36} count={700} factor={2.8} saturation={0} fade speed={0.7} />
     </>
   );
@@ -57,7 +53,7 @@ type Props = {
   accent: string;
 };
 
-export default function HeroScene({ enabled = true, accent }: Props) {
+export default function HeroScene({ enabled = true }: Props) {
   if (!enabled) return null;
 
   return (
@@ -65,10 +61,10 @@ export default function HeroScene({ enabled = true, accent }: Props) {
       <Canvas
         dpr={[1, 1.75]}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-        camera={{ position: [0.25, 0, 3.7], fov: 40 }}
+        camera={{ position: [0.25, 0, 3.8], fov: 40 }}
       >
         <Suspense fallback={null}>
-          <SceneContent accent={accent} />
+          <SceneContent />
         </Suspense>
       </Canvas>
     </CanvasHost>
