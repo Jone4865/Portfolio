@@ -28,6 +28,8 @@ import backgroundImage from '../../src/assets/image/background.jpg';
 
 import useResponsive from '../hooks/useResponsive';
 import HomeHeroCard from './homeHero/HomeHeroCard';
+import SkillInsight from '../component/charts/SkillInsight';
+import { animate, stagger } from 'animejs';
 
 type Data = {
   key: string;
@@ -41,6 +43,9 @@ type Data = {
 };
 
 const easeOutExpo: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+/** Home + Intro + Skills */
+const SECTION_BASE = 3;
 
 const sectionTransition: Transition = {
   duration: 0.52,
@@ -524,13 +529,13 @@ function PageIndex() {
         const adjustedScrollY = scrollY - introThreshold;
         // 섹션 경계를 더 정확하게 계산 (시작 지점 기준)
         const currentSection = Math.floor(adjustedScrollY / sectionHeight); // Home부터 시작
-        const maxSection = 1 + project.length;
+        const maxSection = 2 + project.length;
         newActiveSection = Math.min(Math.max(currentSection, 0), maxSection);
       }
     } else {
       // 데스크톱: 기존 로직
       const currentSection = Math.floor(scrollY / sectionHeight);
-      const maxSection = 1 + project.length;
+      const maxSection = 2 + project.length;
       newActiveSection = Math.min(currentSection, maxSection);
     }
 
@@ -568,12 +573,12 @@ function PageIndex() {
           } else {
             const adjustedScrollY = currentScrollY - introThreshold;
             const currentSection = Math.floor(adjustedScrollY / sectionHeight);
-            const maxSection = 1 + project.length;
+            const maxSection = 2 + project.length;
             newActiveSection = Math.min(Math.max(currentSection, 0), maxSection);
           }
         } else {
           const currentSection = Math.floor(currentScrollY / sectionHeight);
-          const maxSection = 1 + project.length;
+          const maxSection = 2 + project.length;
           newActiveSection = Math.min(currentSection, maxSection);
         }
 
@@ -639,13 +644,30 @@ function PageIndex() {
     };
   }, [isMobile]);
 
+  useEffect(() => {
+    if (isProgrammaticScroll || activeSection < SECTION_BASE) return;
+    const chips = document.querySelectorAll('[data-stack-chip="active"]');
+    if (!chips.length) return;
+
+    animate(chips, {
+      scale: [0.92, 1],
+      translateY: [10, 0],
+      opacity: [0.35, 1],
+      delay: stagger(45),
+      duration: 420,
+      ease: 'outBack',
+    });
+  }, [activeSection, isProgrammaticScroll]);
+
   return (
     <Container isDesktop={isDesktop} isTablet={isTablet}>
       <Wrap
-        totalSections={2 + project.length}
+        totalSections={SECTION_BASE + project.length}
         style={
           isMobile
-            ? { height: `calc(${2 + project.length} * 100vh + ${sidebarHeight + 100}px)` }
+            ? {
+                height: `calc(${SECTION_BASE + project.length} * 100vh + ${sidebarHeight + 100}px)`,
+              }
             : undefined
         }
       >
@@ -684,19 +706,35 @@ function PageIndex() {
               />
             </DotGroup>
 
+            {/* Skills */}
+            <DotGroup>
+              <DotLabel>Skills</DotLabel>
+              <PageDot
+                isActive={activeSection === 2}
+                onClick={() => {
+                  setIsProgrammaticScroll(true);
+                  setShowLoader(true);
+                  const targetScroll = isMobile
+                    ? sidebarHeight + 100 + 2 * window.innerHeight
+                    : 2 * window.innerHeight;
+                  window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+                }}
+              />
+            </DotGroup>
+
             {/* Projects */}
             <DotGroup>
               <DotLabel>Projects</DotLabel>
               {project.map((_, idx) => (
                 <PageDot
                   key={idx}
-                  isActive={activeSection === idx + 2}
+                  isActive={activeSection === idx + SECTION_BASE}
                   onClick={() => {
                     setIsProgrammaticScroll(true);
                     setShowLoader(true);
                     const targetScroll = isMobile
-                      ? sidebarHeight + 100 + (idx + 2) * window.innerHeight
-                      : (idx + 2) * window.innerHeight;
+                      ? sidebarHeight + 100 + (idx + SECTION_BASE) * window.innerHeight
+                      : (idx + SECTION_BASE) * window.innerHeight;
                     window.scrollTo({ top: targetScroll, behavior: 'smooth' });
                   }}
                 />
@@ -789,17 +827,36 @@ function PageIndex() {
           </Invitation>
         </SectionContainer>
 
-        {/* 섹션 2~N: 각 프로젝트 */}
+        {/* 섹션 2: Skills Insight */}
+        <SectionContainer
+          isActive={!isProgrammaticScroll && activeSection === 2}
+          isDesktop={isDesktop}
+          isTablet={isTablet}
+          initial={false}
+          animate={{
+            opacity: !isProgrammaticScroll && activeSection === 2 ? 1 : 0,
+            y: !isProgrammaticScroll && activeSection === 2 ? 0 : 16,
+          }}
+          transition={sectionTransition}
+        >
+          <SkillInsight
+            active={!isProgrammaticScroll && activeSection === 2}
+            isDesktop={isDesktop}
+            isTablet={isTablet}
+          />
+        </SectionContainer>
+
+        {/* 섹션 3~N: 각 프로젝트 */}
         {project.map((v, idx) => (
           <SectionContainer
             key={`${v.title}-${v.date}`}
-            isActive={!isProgrammaticScroll && activeSection === idx + 2}
+            isActive={!isProgrammaticScroll && activeSection === idx + SECTION_BASE}
             isDesktop={isDesktop}
             isTablet={isTablet}
             initial={false}
             animate={{
-              opacity: !isProgrammaticScroll && activeSection === idx + 2 ? 1 : 0,
-              y: !isProgrammaticScroll && activeSection === idx + 2 ? 0 : 16,
+              opacity: !isProgrammaticScroll && activeSection === idx + SECTION_BASE ? 1 : 0,
+              y: !isProgrammaticScroll && activeSection === idx + SECTION_BASE ? 0 : 16,
             }}
             transition={sectionTransition}
           >
@@ -809,7 +866,7 @@ function PageIndex() {
               isMobile={isMobile}
               initial={false}
               variants={cardRevealVariants}
-              animate={!isProgrammaticScroll && activeSection === idx + 2 ? 'on' : 'off'}
+              animate={!isProgrammaticScroll && activeSection === idx + SECTION_BASE ? 'on' : 'off'}
               whileHover={{ y: -4, transition: { duration: 0.22, ease: easeOutExpo } }}
             >
               <CardHeader>
@@ -839,11 +896,18 @@ function PageIndex() {
                 aria-label="기술 스택"
                 initial={false}
                 variants={stackParentVariants}
-                animate={!isProgrammaticScroll && activeSection === idx + 2 ? 'on' : 'off'}
+                animate={
+                  !isProgrammaticScroll && activeSection === idx + SECTION_BASE ? 'on' : 'off'
+                }
               >
                 {v.stack.map((item) => (
                   <StackChip
                     key={item.name}
+                    data-stack-chip={
+                      !isProgrammaticScroll && activeSection === idx + SECTION_BASE
+                        ? 'active'
+                        : undefined
+                    }
                     variants={stackChipVariants}
                     whileHover={{ y: -3, scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
@@ -877,13 +941,13 @@ function PageIndex() {
           </SectionContainer>
         ))}
       </Wrap>
-      {activeSection >= 0 && activeSection < 1 + project.length && (
+      {activeSection >= 0 && activeSection < 2 + project.length && (
         <GlobalScrollHint
           isMobile={isMobile}
           onClick={() => {
             setIsProgrammaticScroll(true);
             setShowLoader(false);
-            const next = Math.min(activeSection + 1, 1 + project.length);
+            const next = Math.min(activeSection + 1, 2 + project.length);
             const vh = window.innerHeight;
             const top = isMobile ? sidebarHeight + 100 + next * vh : next * vh;
             window.scrollTo({ top, behavior: 'smooth' });

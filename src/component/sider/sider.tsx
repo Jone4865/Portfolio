@@ -1,5 +1,6 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { animate, stagger } from 'animejs';
 
 import {
   FaHeartbeat,
@@ -102,6 +103,32 @@ const Sider = () => {
 
   const { toggleTheme, isDarkMode } = useContext(ThemeContext);
 
+  useEffect(() => {
+    if (!stackVisible) return;
+    const items = document.querySelectorAll('[data-tech-item="stack"]');
+    if (!items.length) return;
+    animate(items, {
+      opacity: [0, 1],
+      translateX: [-8, 0],
+      delay: stagger(28),
+      duration: 380,
+      ease: 'outQuad',
+    });
+  }, [stackVisible]);
+
+  useEffect(() => {
+    if (!experienceVisible) return;
+    const items = document.querySelectorAll('[data-tech-item="experience"]');
+    if (!items.length) return;
+    animate(items, {
+      opacity: [0, 1],
+      translateX: [-8, 0],
+      delay: stagger(28),
+      duration: 380,
+      ease: 'outQuad',
+    });
+  }, [experienceVisible]);
+
   const handleCopy = () => {
     navigator.clipboard.writeText('cowhddnjsdl0@naver.com').then(() => {
       alert('이메일 주소가 복사되었습니다.');
@@ -189,7 +216,7 @@ const Sider = () => {
       </TitleStyle>
       <TechWrapper visible={stackVisible}>
         {techArr.map((v) => (
-          <TechStyle key={v.name}>
+          <TechStyle key={v.name} data-tech-item="stack">
             <span className="ico">{v.icon}</span>
             <span className="lbl">{v.name}</span>
           </TechStyle>
@@ -209,7 +236,7 @@ const Sider = () => {
       </TitleStyle>
       <TechWrapper visible={experienceVisible}>
         {experienceTechArr.map((v) => (
-          <TechStyle key={v.name}>
+          <TechStyle key={v.name} data-tech-item="experience">
             <span className="ico">{v.icon}</span>
             <span className="lbl">{v.name}</span>
           </TechStyle>
