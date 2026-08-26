@@ -164,14 +164,14 @@ const HeroImageKen = styled(motion.div)`
 const EditorialScrim = styled(motion.div)`
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 1;
   pointer-events: none;
   background: linear-gradient(
     to top,
-    rgba(2, 4, 8, 0.92) 0%,
-    rgba(2, 4, 8, 0.55) 38%,
-    rgba(2, 4, 8, 0.15) 62%,
-    transparent 100%
+    rgba(2, 4, 8, 0.9) 0%,
+    rgba(2, 4, 8, 0.42) 34%,
+    rgba(2, 4, 8, 0.12) 58%,
+    rgba(2, 4, 8, 0.04) 100%
   );
 `;
 
