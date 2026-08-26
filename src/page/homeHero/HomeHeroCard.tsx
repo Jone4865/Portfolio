@@ -1,10 +1,6 @@
 import type { ReactNode } from 'react';
-import { lazy, Suspense } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import styled, { css, useTheme } from 'styled-components';
-import useResponsive from '../../hooks/useResponsive';
-
-const HeroScene = lazy(() => import('../../component/hero/HeroScene'));
+import styled, { css } from 'styled-components';
 
 type Props = {
   typicalContent: ReactNode;
@@ -13,12 +9,9 @@ type Props = {
 
 const springSoft = { type: 'spring' as const, stiffness: 280, damping: 30 };
 
-/** 홈 히어로 — 사진 메인 + Three 배경 */
+/** 홈 히어로 — 에디토리얼: 사진 + 하단 타이포 */
 export default function HomeHeroCard({ typicalContent, backgroundSrc }: Props) {
   const reduceMotion = useReducedMotion();
-  const theme = useTheme();
-  const { isMobile } = useResponsive();
-  const enableThree = !reduceMotion && !isMobile;
 
   return (
     <HeroVisualFrame
@@ -35,12 +28,7 @@ export default function HomeHeroCard({ typicalContent, backgroundSrc }: Props) {
             }
       }
     >
-      {enableThree && (
-        <Suspense fallback={null}>
-          <HeroScene enabled accent={theme.accent} />
-        </Suspense>
-      )}
-      <HeroImageShell $overThree={enableThree}>
+      <HeroImageShell>
         <HeroImageKen
           animate={reduceMotion ? undefined : { scale: [1, 1.055, 1] }}
           transition={{
@@ -120,7 +108,6 @@ const HeroVisualFrame = styled(motion.div)`
   overflow: hidden;
   box-shadow: ${({ theme }) => theme.shadowElevated};
   border: 1px solid ${({ theme }) => theme.heroGlassBorder};
-  background: #0e1218;
   transition:
     border-color 0.35s ease,
     box-shadow 0.35s ease;
@@ -141,13 +128,11 @@ const HeroVisualFrame = styled(motion.div)`
   }
 `;
 
-const HeroImageShell = styled.div<{ $overThree?: boolean }>`
+const HeroImageShell = styled.div`
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 0;
   overflow: hidden;
-  /* Three가 뒤에서 살짝 비치도록 */
-  opacity: ${({ $overThree }) => ($overThree ? 0.86 : 1)};
 `;
 
 const HeroImageKen = styled(motion.div)`
@@ -167,7 +152,7 @@ const HeroImageKen = styled(motion.div)`
 const EditorialScrim = styled(motion.div)`
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 1;
   pointer-events: none;
   background: linear-gradient(
     to top,
