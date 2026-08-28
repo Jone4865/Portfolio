@@ -1,6 +1,26 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { animate, svg, stagger } from 'animejs';
-import styled from 'styled-components';
+
+import {
+  buildRadarPath,
+  polarToCartesian,
+  skillRadar,
+  skillStats,
+} from '../../data/skillRadar';
+import {
+  ChartCard,
+  ChartTitle,
+  Desc,
+  Eyebrow,
+  Header,
+  Panel,
+  RadarWrap,
+  StatCard,
+  StatLabel,
+  StatValue,
+  StatsRow,
+  Title,
+} from './SkillInsight.styles';
 
 type Props = {
   active: boolean;
@@ -8,48 +28,12 @@ type Props = {
   isTablet: boolean;
 };
 
-const skillRadar = [
-  { label: 'React', value: 92 },
-  { label: 'Next.js', value: 88 },
-  { label: 'Vue 3', value: 82 },
-  { label: 'TypeScript', value: 90 },
-  { label: 'UI/UX', value: 84 },
-  { label: 'Architecture', value: 80 },
-];
-
-function polarToCartesian(cx: number, cy: number, radius: number, angle: number) {
-  const rad = ((angle - 90) * Math.PI) / 180;
-  return {
-    x: cx + radius * Math.cos(rad),
-    y: cy + radius * Math.sin(rad),
-  };
-}
-
-function buildRadarPath(values: number[], size: number) {
-  const cx = size / 2;
-  const cy = size / 2;
-  const maxR = size * 0.34;
-  const step = 360 / values.length;
-
-  return values
-    .map((value, index) => {
-      const point = polarToCartesian(cx, cy, (value / 100) * maxR, index * step);
-      return `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`;
-    })
-    .join(' ')
-    .concat(' Z');
-}
-
 export default function SkillInsight({ active, isDesktop, isTablet }: Props) {
   const rootRef = useRef<HTMLDivElement>(null);
   const radarPathRef = useRef<SVGPathElement>(null);
 
   const radarOutline = useMemo(
-    () =>
-      buildRadarPath(
-        skillRadar.map((s) => s.value),
-        280,
-      ),
+    () => buildRadarPath(skillRadar.map((s) => s.value), 280),
     [],
   );
   const radarGuides = useMemo(
@@ -124,19 +108,19 @@ export default function SkillInsight({ active, isDesktop, isTablet }: Props) {
       <StatsRow>
         <StatCard data-insight-card>
           <StatValue>
-            <span data-count="44">0</span>+
+            <span data-count={skillStats.months}>0</span>+
           </StatValue>
           <StatLabel>개월 경력</StatLabel>
         </StatCard>
         <StatCard data-insight-card>
           <StatValue>
-            <span data-count="14">0</span>
+            <span data-count={skillStats.projects}>0</span>
           </StatValue>
           <StatLabel>주요 프로젝트</StatLabel>
         </StatCard>
         <StatCard data-insight-card>
           <StatValue>
-            <span data-count="3">0</span>
+            <span data-count={skillStats.coreFrameworks}>0</span>
           </StatValue>
           <StatLabel>코어 프레임워크</StatLabel>
         </StatCard>
@@ -193,99 +177,3 @@ export default function SkillInsight({ active, isDesktop, isTablet }: Props) {
     </Panel>
   );
 }
-
-const Panel = styled.div<{ $desktop: boolean; $tablet: boolean }>`
-  width: min(720px, 94%);
-  max-height: calc(100vh - 120px);
-  overflow-y: auto;
-  margin: 0 auto;
-  padding: clamp(20px, 3vw, 28px);
-  border-radius: 22px;
-  background: ${({ theme }) => theme.cardColor};
-  color: ${({ theme }) => theme.cardText};
-  border: 1px solid ${({ theme }) => theme.cardBorder};
-  box-shadow: ${({ theme }) => theme.shadowCard};
-  backdrop-filter: blur(14px);
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-`;
-
-const Header = styled.header`
-  display: grid;
-  gap: 6px;
-`;
-
-const Eyebrow = styled.span`
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.accent};
-`;
-
-const Title = styled.h2`
-  margin: 0;
-  font-size: clamp(1.2rem, 2.2vw, 1.55rem);
-  letter-spacing: -0.03em;
-`;
-
-const Desc = styled.p`
-  margin: 0;
-  color: ${({ theme }) => theme.cardTextMuted};
-  font-size: 14px;
-  line-height: 1.55;
-`;
-
-const StatsRow = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const StatCard = styled.div`
-  opacity: 0;
-  padding: 14px 16px;
-  border-radius: 16px;
-  background: ${({ theme }) => theme.chipBg};
-  border: 1px solid ${({ theme }) => theme.chipBorder};
-`;
-
-const StatValue = styled.div`
-  font-size: 1.55rem;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  color: ${({ theme }) => theme.accent};
-`;
-
-const StatLabel = styled.div`
-  margin-top: 4px;
-  font-size: 12px;
-  color: ${({ theme }) => theme.cardTextMuted};
-`;
-
-const ChartCard = styled.div`
-  opacity: 0;
-  padding: 14px;
-  border-radius: 18px;
-  border: 1px solid ${({ theme }) => theme.cardBorder};
-  background: ${({ theme }) => theme.siderArrowColor};
-  color: ${({ theme }) => theme.accent};
-`;
-
-const ChartTitle = styled.h3`
-  margin: 0 0 10px;
-  font-size: 13px;
-  font-weight: 700;
-  color: ${({ theme }) => theme.cardText};
-`;
-
-const RadarWrap = styled.div`
-  height: min(280px, 48vh);
-  max-width: 360px;
-  margin: 0 auto;
-`;
