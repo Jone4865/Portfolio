@@ -58,7 +58,7 @@ const easeOutExpo: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const SECTION_BASE = 3;
 
 const sectionTransition: Transition = {
-  duration: 0.52,
+  duration: 0.28,
   ease: easeOutExpo,
 };
 
@@ -563,12 +563,13 @@ function PageIndex() {
   const maxSection = 2 + project.length;
 
   const goToSection = useCallback(
-    (targetSection: number) => {
+    (targetSection: number, opts?: { behavior?: ScrollBehavior }) => {
       const next = Math.min(Math.max(targetSection, isMobile ? -1 : 0), maxSection);
       if (next === activeSection && !isProgrammaticScroll) return;
 
+      const behavior = opts?.behavior ?? 'smooth';
       setIsProgrammaticScroll(true);
-      setShowLoader(true);
+      setShowLoader(false);
       setActiveSection(next);
 
       const vh = window.innerHeight;
@@ -582,7 +583,14 @@ function PageIndex() {
       } else {
         top = next * vh;
       }
-      window.scrollTo({ top, behavior: 'smooth' });
+      window.scrollTo({ top, behavior });
+
+      // instant면 스크롤 완료 대기를 짧게 끝냄
+      if (behavior === 'auto') {
+        requestAnimationFrame(() => {
+          setIsProgrammaticScroll(false);
+        });
+      }
     },
     [activeSection, isMobile, isProgrammaticScroll, maxSection, sidebarHeight],
   );
@@ -610,23 +618,18 @@ function PageIndex() {
         return;
       }
 
-      if (isProgrammaticScroll) {
-        e.preventDefault();
-        return;
-      }
-
       e.preventDefault();
-      // 좌우도 섹션 상하 이동과 동일
+      // 좌우도 섹션 상하 이동과 동일 — 키보드는 즉시 전환
       if (key === 'ArrowDown' || key === 'ArrowRight') {
-        goToSection(activeSection + 1);
+        goToSection(activeSection + 1, { behavior: 'auto' });
       } else {
-        goToSection(activeSection - 1);
+        goToSection(activeSection - 1, { behavior: 'auto' });
       }
     };
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [activeSection, goToSection, isProgrammaticScroll]);
+  }, [activeSection, goToSection]);
 
   useEffect(() => {
     // 스크롤 이벤트를 throttling하여 중복 호출 방지
@@ -804,13 +807,13 @@ function PageIndex() {
 
         {/* 섹션 0: TypingWrapper */}
         <SectionContainer
-          isActive={!isProgrammaticScroll && activeSection === 0}
+          isActive={activeSection === 0}
           isDesktop={isDesktop}
           isTablet={isTablet}
           initial={false}
           animate={{
-            opacity: !isProgrammaticScroll && activeSection === 0 ? 1 : 0,
-            y: !isProgrammaticScroll && activeSection === 0 ? 0 : 16,
+            opacity: activeSection === 0 ? 1 : 0,
+            y: activeSection === 0 ? 0 : 16,
           }}
           transition={sectionTransition}
         >
@@ -824,13 +827,13 @@ function PageIndex() {
 
         {/* 섹션 1: Invitation */}
         <SectionContainer
-          isActive={!isProgrammaticScroll && activeSection === 1}
+          isActive={activeSection === 1}
           isDesktop={isDesktop}
           isTablet={isTablet}
           initial={false}
           animate={{
-            opacity: !isProgrammaticScroll && activeSection === 1 ? 1 : 0,
-            y: !isProgrammaticScroll && activeSection === 1 ? 0 : 16,
+            opacity: activeSection === 1 ? 1 : 0,
+            y: activeSection === 1 ? 0 : 16,
           }}
           transition={sectionTransition}
         >
@@ -839,13 +842,13 @@ function PageIndex() {
             isTablet={isTablet}
             initial={false}
             animate={
-              !isProgrammaticScroll && activeSection === 1
+              activeSection === 1
                 ? { opacity: 1, y: 0, scale: 1 }
                 : { opacity: 0, y: 20, scale: 0.98 }
             }
             transition={{
               duration: 0.55,
-              delay: !isProgrammaticScroll && activeSection === 1 ? 0.1 : 0,
+              delay: activeSection === 1 ? 0.1 : 0,
               ease: easeOutExpo,
             }}
           >
@@ -874,18 +877,18 @@ function PageIndex() {
 
         {/* 섹션 2: Skills Insight */}
         <SectionContainer
-          isActive={!isProgrammaticScroll && activeSection === 2}
+          isActive={activeSection === 2}
           isDesktop={isDesktop}
           isTablet={isTablet}
           initial={false}
           animate={{
-            opacity: !isProgrammaticScroll && activeSection === 2 ? 1 : 0,
-            y: !isProgrammaticScroll && activeSection === 2 ? 0 : 16,
+            opacity: activeSection === 2 ? 1 : 0,
+            y: activeSection === 2 ? 0 : 16,
           }}
           transition={sectionTransition}
         >
           <SkillInsight
-            active={!isProgrammaticScroll && activeSection === 2}
+            active={activeSection === 2}
             isDesktop={isDesktop}
             isTablet={isTablet}
           />
@@ -895,13 +898,13 @@ function PageIndex() {
         {project.map((v, idx) => (
           <SectionContainer
             key={`${v.title}-${v.date}`}
-            isActive={!isProgrammaticScroll && activeSection === idx + SECTION_BASE}
+            isActive={activeSection === idx + SECTION_BASE}
             isDesktop={isDesktop}
             isTablet={isTablet}
             initial={false}
             animate={{
-              opacity: !isProgrammaticScroll && activeSection === idx + SECTION_BASE ? 1 : 0,
-              y: !isProgrammaticScroll && activeSection === idx + SECTION_BASE ? 0 : 16,
+              opacity: activeSection === idx + SECTION_BASE ? 1 : 0,
+              y: activeSection === idx + SECTION_BASE ? 0 : 16,
             }}
             transition={sectionTransition}
           >
@@ -911,7 +914,7 @@ function PageIndex() {
               isMobile={isMobile}
               initial={false}
               variants={cardRevealVariants}
-              animate={!isProgrammaticScroll && activeSection === idx + SECTION_BASE ? 'on' : 'off'}
+              animate={activeSection === idx + SECTION_BASE ? 'on' : 'off'}
               whileHover={{ y: -4, transition: { duration: 0.22, ease: easeOutExpo } }}
             >
               <CardHeader>
@@ -942,14 +945,14 @@ function PageIndex() {
                 initial={false}
                 variants={stackParentVariants}
                 animate={
-                  !isProgrammaticScroll && activeSection === idx + SECTION_BASE ? 'on' : 'off'
+                  activeSection === idx + SECTION_BASE ? 'on' : 'off'
                 }
               >
                 {v.stack.map((item) => (
                   <StackChip
                     key={item.name}
                     data-stack-chip={
-                      !isProgrammaticScroll && activeSection === idx + SECTION_BASE
+                      activeSection === idx + SECTION_BASE
                         ? 'active'
                         : undefined
                     }
