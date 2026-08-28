@@ -59,46 +59,89 @@ const Sider = () => {
   const [stackVisible, setStackVisible] = useState(true);
   const [experienceVisible, setExperienceVisible] = useState(false);
 
-  const techArr = [
-    { name: 'TypeScript', icon: <SiTypescript /> },
-    { name: 'React', icon: <FaReact /> },
-    { name: 'Next.js', icon: <SiNextdotjs /> },
-    { name: 'Vue 3', icon: <SiVuedotjs /> },
-    { name: 'Vite', icon: <SiVite /> },
-    { name: 'React Query', icon: <SiReactquery /> },
-    { name: 'Apollo GraphQL', icon: <SiApollographql /> },
-    { name: 'Axios', icon: <SiAxios /> },
-    { name: 'Recoil', icon: <SiRecoil /> },
-    { name: 'React Hook Form', icon: <SiReacthookform /> },
-    { name: 'styled-components', icon: <SiStyledcomponents /> },
-    { name: 'Sass / SCSS', icon: <SiSass /> },
-    { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
-    { name: 'Ant Design', icon: <SiAntdesign /> },
-    { name: 'MUI', icon: <SiMui /> },
-    { name: 'Naive UI', icon: <SiVuedotjs /> },
-    { name: 'Toast UI Editor', icon: <FaEdit /> },
+  const techGroups = [
+    {
+      label: 'Language',
+      items: [{ name: 'TypeScript', icon: <SiTypescript /> }],
+    },
+    {
+      label: 'Framework',
+      items: [
+        { name: 'React', icon: <FaReact /> },
+        { name: 'Next.js', icon: <SiNextdotjs /> },
+        { name: 'Vue 3', icon: <SiVuedotjs /> },
+        { name: 'Vite', icon: <SiVite /> },
+      ],
+    },
+    {
+      label: 'Data / State',
+      items: [
+        { name: 'React Query', icon: <SiReactquery /> },
+        { name: 'Apollo GraphQL', icon: <SiApollographql /> },
+        { name: 'Axios', icon: <SiAxios /> },
+        { name: 'Recoil', icon: <SiRecoil /> },
+        { name: 'React Hook Form', icon: <SiReacthookform /> },
+      ],
+    },
+    {
+      label: 'Styling / UI',
+      items: [
+        { name: 'styled-components', icon: <SiStyledcomponents /> },
+        { name: 'Sass / SCSS', icon: <SiSass /> },
+        { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
+        { name: 'Ant Design', icon: <SiAntdesign /> },
+        { name: 'MUI', icon: <SiMui /> },
+        { name: 'Naive UI', icon: <SiVuedotjs /> },
+        { name: 'Toast UI Editor', icon: <FaEdit /> },
+      ],
+    },
   ];
 
-  const experienceTechArr = [
-    { name: 'Socket.IO', icon: <SiSocketdotio /> },
-    { name: 'AWS', icon: <FaAws /> },
-    { name: 'Vercel', icon: <SiVercel /> },
-    { name: 'Amazon S3', icon: <SiAmazons3 /> },
-    { name: 'React Native', icon: <TbBrandReactNative /> },
-    { name: 'Flutter', icon: <SiFlutter /> },
-    { name: 'Xcode', icon: <SiXcode /> },
-    { name: 'Android Studio', icon: <SiAndroidstudio /> },
-    { name: 'Redux Toolkit', icon: <TbBrandRedux /> },
-    { name: 'Storybook', icon: <SiStorybook /> },
-    { name: 'Visual Studio', icon: <SiVisualstudio /> },
-    { name: 'GitHub', icon: <FaGithub /> },
-    { name: 'Sourcetree', icon: <FaSourcetree /> },
-    { name: 'Figma', icon: <FaFigma /> },
-    { name: 'Adobe XD', icon: <SiAdobexd /> },
-    { name: 'NestJS', icon: <SiNestjs /> },
-    { name: 'PostgreSQL', icon: <SiPostgresql /> },
-    { name: 'MySQL', icon: <SiMysql /> },
-    { name: 'Redis', icon: <SiRedis /> },
+  const experienceGroups = [
+    {
+      label: 'Realtime / Cloud',
+      items: [
+        { name: 'Socket.IO', icon: <SiSocketdotio /> },
+        { name: 'AWS', icon: <FaAws /> },
+        { name: 'Vercel', icon: <SiVercel /> },
+        { name: 'Amazon S3', icon: <SiAmazons3 /> },
+      ],
+    },
+    {
+      label: 'Mobile',
+      items: [
+        { name: 'React Native', icon: <TbBrandReactNative /> },
+        { name: 'Flutter', icon: <SiFlutter /> },
+        { name: 'Xcode', icon: <SiXcode /> },
+        { name: 'Android Studio', icon: <SiAndroidstudio /> },
+      ],
+    },
+    {
+      label: 'State / Docs',
+      items: [
+        { name: 'Redux Toolkit', icon: <TbBrandRedux /> },
+        { name: 'Storybook', icon: <SiStorybook /> },
+      ],
+    },
+    {
+      label: 'Tools',
+      items: [
+        { name: 'Visual Studio', icon: <SiVisualstudio /> },
+        { name: 'GitHub', icon: <FaGithub /> },
+        { name: 'Sourcetree', icon: <FaSourcetree /> },
+        { name: 'Figma', icon: <FaFigma /> },
+        { name: 'Adobe XD', icon: <SiAdobexd /> },
+      ],
+    },
+    {
+      label: 'Backend',
+      items: [
+        { name: 'NestJS', icon: <SiNestjs /> },
+        { name: 'PostgreSQL', icon: <SiPostgresql /> },
+        { name: 'MySQL', icon: <SiMysql /> },
+        { name: 'Redis', icon: <SiRedis /> },
+      ],
+    },
   ];
 
   const { toggleTheme, isDarkMode } = useContext(ThemeContext);
@@ -215,11 +258,16 @@ const Sider = () => {
         </Chevron>
       </TitleStyle>
       <TechWrapper visible={stackVisible}>
-        {techArr.map((v) => (
-          <TechStyle key={v.name} data-tech-item="stack">
-            <span className="ico">{v.icon}</span>
-            <span className="lbl">{v.name}</span>
-          </TechStyle>
+        {techGroups.map((group) => (
+          <TechGroup key={group.label}>
+            <TechGroupLabel>{group.label}</TechGroupLabel>
+            {group.items.map((v) => (
+              <TechStyle key={v.name} data-tech-item="stack">
+                <span className="ico">{v.icon}</span>
+                <span className="lbl">{v.name}</span>
+              </TechStyle>
+            ))}
+          </TechGroup>
         ))}
       </TechWrapper>
       <Line />
@@ -235,11 +283,16 @@ const Sider = () => {
         </Chevron>
       </TitleStyle>
       <TechWrapper visible={experienceVisible}>
-        {experienceTechArr.map((v) => (
-          <TechStyle key={v.name} data-tech-item="experience">
-            <span className="ico">{v.icon}</span>
-            <span className="lbl">{v.name}</span>
-          </TechStyle>
+        {experienceGroups.map((group) => (
+          <TechGroup key={group.label}>
+            <TechGroupLabel>{group.label}</TechGroupLabel>
+            {group.items.map((v) => (
+              <TechStyle key={v.name} data-tech-item="experience">
+                <span className="ico">{v.icon}</span>
+                <span className="lbl">{v.name}</span>
+              </TechStyle>
+            ))}
+          </TechGroup>
         ))}
       </TechWrapper>
       <Line />
@@ -480,15 +533,30 @@ const TitleStyle = styled.button<{ visible?: boolean; unActiveHover?: boolean }>
 const TechWrapper = styled.div<{ visible: boolean }>`
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  max-height: ${({ visible }) => (visible ? '800px' : '0')};
+  gap: 14px;
+  max-height: ${({ visible }) => (visible ? '2400px' : '0')};
   padding: ${({ visible }) => (visible ? '8px 4px 12px 8px' : '0')};
   opacity: ${({ visible }) => (visible ? 1 : 0)};
   overflow: hidden;
   transition:
-    max-height 0.28s ease,
+    max-height 0.32s ease,
     opacity 0.22s ease,
     padding 0.22s ease;
+`;
+
+const TechGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const TechGroupLabel = styled.div`
+  padding: 4px 10px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.textMuted};
 `;
 
 const TechStyle = styled.div`
