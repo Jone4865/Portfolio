@@ -560,6 +560,74 @@ function PageIndex() {
     });
   }, [isMobile, sidebarHeight, project.length, isProgrammaticScroll]);
 
+  const maxSection = 2 + project.length;
+
+  const goToSection = useCallback(
+    (targetSection: number) => {
+      const next = Math.min(Math.max(targetSection, isMobile ? -1 : 0), maxSection);
+      if (next === activeSection && !isProgrammaticScroll) return;
+
+      setIsProgrammaticScroll(true);
+      setShowLoader(true);
+      setActiveSection(next);
+
+      const vh = window.innerHeight;
+      let top = 0;
+      if (isMobile) {
+        if (next < 0) {
+          top = 0;
+        } else {
+          top = sidebarHeight + 100 + next * vh;
+        }
+      } else {
+        top = next * vh;
+      }
+      window.scrollTo({ top, behavior: 'smooth' });
+    },
+    [activeSection, isMobile, isProgrammaticScroll, maxSection, sidebarHeight],
+  );
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const key = e.key;
+      if (
+        key !== 'ArrowDown' &&
+        key !== 'ArrowUp' &&
+        key !== 'ArrowRight' &&
+        key !== 'ArrowLeft'
+      ) {
+        return;
+      }
+
+      const target = e.target as HTMLElement | null;
+      const tag = target?.tagName;
+      if (
+        tag === 'INPUT' ||
+        tag === 'TEXTAREA' ||
+        tag === 'SELECT' ||
+        target?.isContentEditable
+      ) {
+        return;
+      }
+
+      if (isProgrammaticScroll) {
+        e.preventDefault();
+        return;
+      }
+
+      e.preventDefault();
+      // 좌우도 섹션 상하 이동과 동일
+      if (key === 'ArrowDown' || key === 'ArrowRight') {
+        goToSection(activeSection + 1);
+      } else {
+        goToSection(activeSection - 1);
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [activeSection, goToSection, isProgrammaticScroll]);
+
   useEffect(() => {
     // 스크롤 이벤트를 throttling하여 중복 호출 방지
     let ticking = false;
@@ -957,12 +1025,7 @@ function PageIndex() {
         <GlobalScrollHint
           isMobile={isMobile}
           onClick={() => {
-            setIsProgrammaticScroll(true);
-            setShowLoader(false);
-            const next = Math.min(activeSection + 1, 2 + project.length);
-            const vh = window.innerHeight;
-            const top = isMobile ? sidebarHeight + 100 + next * vh : next * vh;
-            window.scrollTo({ top, behavior: 'smooth' });
+            goToSection(activeSection + 1);
           }}
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.94 }}
