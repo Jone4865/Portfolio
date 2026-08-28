@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-type Options = {
-  isMobile: boolean;
-  projectCount: number;
-  sidebarHeight: number;
-};
+import type { SectionNavigationOptions } from 'types/sectionNavigation';
 
-export function useSectionNavigation({ isMobile, projectCount, sidebarHeight }: Options) {
+export function useSectionNavigation({
+  isMobile,
+  projectCount,
+  sidebarHeight,
+}: SectionNavigationOptions) {
   const [activeSection, setActiveSection] = useState(0);
   const pendingScrollTopRef = useRef<number | null>(null);
   const pendingSectionRef = useRef<number | null>(null);

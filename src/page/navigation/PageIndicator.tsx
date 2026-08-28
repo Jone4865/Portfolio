@@ -1,4 +1,7 @@
 import { SECTION_BASE } from 'constants/layout';
+import { pageIndicatorSections } from 'data/pageIndicator';
+import type { PageIndicatorProps } from 'types/components/pageIndicator';
+
 import {
   DotGroup,
   DotLabel,
@@ -6,37 +9,24 @@ import {
   PageIndicator as PageIndicatorRail,
 } from '../styles/pageLayout.styles';
 
-type Props = {
-  isDesktop: boolean;
-  isTablet: boolean;
-  activeSection: number;
-  projectCount: number;
-  onGoToSection: (section: number) => void;
-};
-
 export default function PageIndicator({
   isDesktop,
   isTablet,
   activeSection,
   projectCount,
   onGoToSection,
-}: Props) {
+}: PageIndicatorProps) {
   return (
     <PageIndicatorRail isDesktop={isDesktop} isTablet={isTablet}>
-      <DotGroup>
-        <DotLabel>Home</DotLabel>
-        <PageDot isActive={activeSection === 0} onClick={() => onGoToSection(0)} />
-      </DotGroup>
-
-      <DotGroup>
-        <DotLabel>Intro</DotLabel>
-        <PageDot isActive={activeSection === 1} onClick={() => onGoToSection(1)} />
-      </DotGroup>
-
-      <DotGroup>
-        <DotLabel>Skills</DotLabel>
-        <PageDot isActive={activeSection === 2} onClick={() => onGoToSection(2)} />
-      </DotGroup>
+      {pageIndicatorSections.map((section) => (
+        <DotGroup key={section.id}>
+          <DotLabel>{section.label}</DotLabel>
+          <PageDot
+            isActive={activeSection === section.index}
+            onClick={() => onGoToSection(section.index)}
+          />
+        </DotGroup>
+      ))}
 
       <DotGroup>
         <DotLabel>Projects</DotLabel>

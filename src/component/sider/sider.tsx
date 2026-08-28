@@ -4,15 +4,13 @@ import {
   FaEnvelope,
   FaFeather,
   FaGraduationCap,
-  FaGrinBeam,
   FaHeartbeat,
   FaPhoneAlt,
 } from 'react-icons/fa';
-import { LuBookOpenCheck, LuMessagesSquare } from 'react-icons/lu';
 import { MdOutlineLightMode, MdOutlineNightlightRound } from 'react-icons/md';
-import { GrRun } from 'react-icons/gr';
 
 import profileImage from 'assets/image/profile.png';
+import { siderMeritIcons } from 'constants/siderMerits';
 import { profile } from 'data/profile';
 import { experienceGroups, techGroups } from 'data/siderTech';
 import { ThemeContext } from 'contexts';
@@ -37,13 +35,6 @@ import {
   TitleStyle,
   TopWrapper,
 } from './sider.styles';
-
-const meritIcons = {
-  communication: LuMessagesSquare,
-  calm: FaGrinBeam,
-  challenge: GrRun,
-  detail: LuBookOpenCheck,
-} as const;
 
 const Sider = () => {
   const { isDesktop, isTablet } = useResponsive();
@@ -126,7 +117,7 @@ const Sider = () => {
       <Line />
       <MeritIconWrapper>
         {profile.merits.map(({ key, label }) => {
-          const Icon = meritIcons[key];
+          const Icon = siderMeritIcons[key];
           return (
             <div key={key}>
               <MeritIconItem>

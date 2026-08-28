@@ -14,6 +14,7 @@ import {
 } from 'component/ui';
 import { useResponsive } from 'hooks';
 
+import { listItem, listParent } from './animations/pageCommonVariants';
 import {
   BackdropGrid,
   BackLink,
@@ -31,25 +32,6 @@ import {
   Surface,
   TwoCol,
 } from './pageCommonComponent.styles';
-
-const easeOut: [number, number, number, number] = [0.22, 1, 0.36, 1];
-
-const listParent = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.055, delayChildren: 0.04 },
-  },
-};
-
-const listItem = {
-  hidden: { opacity: 0, y: 14 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.42, ease: easeOut },
-  },
-};
 
 function PageCommonComponent() {
   const { isDesktop, isTablet } = useResponsive();
