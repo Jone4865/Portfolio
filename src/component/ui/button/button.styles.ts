@@ -1,26 +1,8 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  width?: number;
-  buttonType?: "solid" | "outline";
-};
+import type { ButtonProps } from './button.types';
 
-const Button: React.FC<ButtonProps> = ({
-  children,
-  width,
-  buttonType = "solid",
-  ...rest
-}) => {
-  return (
-    <Container width={width} buttonType={buttonType} {...rest}>
-      {children}
-    </Container>
-  );
-};
-
-export default Button;
-
-const Container = styled.button<ButtonProps>`
+export const ButtonRoot = styled.button<ButtonProps>`
   padding: 11px 22px;
   border-radius: 12px;
   font-size: 15px;
@@ -37,14 +19,14 @@ const Container = styled.button<ButtonProps>`
   border: 1px solid transparent;
 
   background-color: ${({ buttonType, theme }) =>
-    buttonType === "solid" ? theme.accent : "transparent"};
+    buttonType === 'solid' ? theme.accent : 'transparent'};
   color: ${({ buttonType, theme }) =>
-    buttonType === "solid" ? theme.accentContrast : theme.accent};
+    buttonType === 'solid' ? theme.accentContrast : theme.accent};
   border-color: ${({ buttonType, theme }) =>
-    buttonType === "outline" ? theme.accent : "transparent"};
-  width: ${({ width }) => (width ? `${width}px` : "auto")};
+    buttonType === 'outline' ? theme.accent : 'transparent'};
+  width: ${({ width }) => (width ? `${width}px` : 'auto')};
   box-shadow: ${({ buttonType, theme }) =>
-    buttonType === "solid" ? `0 2px 12px ${theme.accentMuted}` : "none"};
+    buttonType === 'solid' ? `0 2px 12px ${theme.accentMuted}` : 'none'};
 
   &:disabled {
     background-color: ${({ theme }) => theme.inputDisabledBg};
@@ -58,7 +40,7 @@ const Container = styled.button<ButtonProps>`
     transform: translateY(-1px);
     box-shadow: ${({ theme }) => theme.shadowElevated};
     ${({ buttonType, theme }) =>
-      buttonType === "solid"
+      buttonType === 'solid'
         ? css`
             filter: brightness(1.06);
           `

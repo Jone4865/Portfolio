@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { SIDER_RAIL } from '../../constants/layout';
+import { SIDER_RAIL } from 'constants/layout';
 
 export const Container = styled.div<{ isBig: boolean }>`
   transition: background 0.25s ease;

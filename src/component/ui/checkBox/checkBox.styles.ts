@@ -1,22 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-type CheckBoxProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  size?: number;
-  error?: boolean;
-};
+import type { CheckBoxProps, CheckBoxStyleProps } from './checkBox.types';
 
-const CheckBox: React.FC<CheckBoxProps> = ({ size = 20, error, ...rest }) => {
-  return (
-    <Label size={size} error={error}>
-      <HiddenCheckBox type="checkbox" {...rest} />
-      <CustomCheckBox size={size} error={error} {...rest} />
-    </Label>
-  );
-};
-
-export default CheckBox;
-
-const Label = styled.label<{ size: number; error?: boolean }>`
+export const Label = styled.label<CheckBoxStyleProps>`
   display: inline-block;
   position: relative;
   width: ${({ size }) => `${size}px`};
@@ -24,7 +10,7 @@ const Label = styled.label<{ size: number; error?: boolean }>`
   cursor: pointer;
 `;
 
-const HiddenCheckBox = styled.input.attrs({ type: "checkbox" })`
+export const HiddenCheckBox = styled.input.attrs({ type: 'checkbox' })`
   position: absolute;
   opacity: 0;
   width: 0;
@@ -33,14 +19,14 @@ const HiddenCheckBox = styled.input.attrs({ type: "checkbox" })`
   pointer-events: none;
 `;
 
-const CustomCheckBox = styled.div<CheckBoxProps>`
+export const CustomCheckBox = styled.div<CheckBoxProps>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
   background-color: white;
-  border: ${({ error }) => (error ? "1px solid #F84D61" : "1px solid #e8e5e5")};
+  border: ${({ error }) => (error ? '1px solid #F84D61' : '1px solid #e8e5e5')};
   border-radius: 4px;
   transition: all 0.3s;
 
@@ -50,7 +36,7 @@ const CustomCheckBox = styled.div<CheckBoxProps>`
   }
 
   ${HiddenCheckBox}:checked + &::after {
-    content: "";
+    content: '';
     display: block;
     width: 70%;
     height: 70%;

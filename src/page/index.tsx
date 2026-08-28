@@ -1,13 +1,17 @@
 import { useMemo } from 'react';
 import Typical from 'react-typical';
+import { useScroll } from 'framer-motion';
 
-import backgroundImage from '../assets/image/background.jpg';
-import { SECTION_BASE } from '../constants/layout';
-import { projects } from '../data/projects';
-import useResponsive from '../hooks/useResponsive';
-import { useSectionNavigation } from '../hooks/useSectionNavigation';
-import { useSidebarHeight } from '../hooks/useSidebarHeight';
-import SkillInsight from '../component/charts/SkillInsight';
+import backgroundImage from 'assets/image/background.jpg';
+import SkillInsight from 'component/charts/SkillInsight';
+import { SECTION_BASE } from 'constants/layout';
+import { projects } from 'data/projects';
+import {
+  useResponsive,
+  useSectionNavigation,
+  useSidebarHeight,
+} from 'hooks';
+
 import HomeHeroCard from './homeHero/HomeHeroCard';
 import GlobalScrollHint from './navigation/GlobalScrollHint';
 import PageIndicator from './navigation/PageIndicator';
@@ -20,7 +24,6 @@ import {
   TypingWrapper,
   Wrap,
 } from './styles/pageLayout.styles';
-import { useScroll } from 'framer-motion';
 
 function PageIndex() {
   const { isDesktop, isTablet, isMobile } = useResponsive();

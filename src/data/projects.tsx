@@ -17,7 +17,7 @@ import {
   SiVuedotjs,
 } from 'react-icons/si';
 import { TbBrandRedux } from 'react-icons/tb';
-import type { Project } from '../types/project';
+import type { Project } from 'types/project';
 
 /* 주석 처리된 프로젝트 복원용 아이콘 — 삭제하지 않음 */
 const _commentedProjectIcons = {

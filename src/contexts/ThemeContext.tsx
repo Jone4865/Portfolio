@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { ThemeProvider } from "styled-components";
 
-import { darkTheme, lightTheme } from "../styled/theme";
+import { darkTheme, lightTheme } from 'styled/theme';
 
 const STORAGE_KEY = "portfolio-theme";
 
