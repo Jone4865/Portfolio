@@ -9,7 +9,8 @@ export const GlobalStyle = createGlobalStyle`
 
   html {
     color-scheme: ${(p) => p.theme.colorScheme};
-    scroll-behavior: smooth;
+    /* smooth는 휠 스크롤만 — 프로그래매틱 이동은 JS에서 instant 처리 */
+    scroll-behavior: auto;
   }
 
   @media (prefers-reduced-motion: reduce) {

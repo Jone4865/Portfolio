@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useMemo, useState, useCallback, useRef } from 'react';
-import { motion, useScroll, type Transition } from 'framer-motion';
+import { motion, useScroll } from 'framer-motion';
 import styled, { css } from 'styled-components';
 import Typical from 'react-typical';
 
@@ -29,7 +29,6 @@ import backgroundImage from '../../src/assets/image/background.jpg';
 import useResponsive from '../hooks/useResponsive';
 import HomeHeroCard from './homeHero/HomeHeroCard';
 import SkillInsight from '../component/charts/SkillInsight';
-import { animate, stagger } from 'animejs';
 
 /* 주석 처리된 프로젝트 복원용 아이콘 — 삭제하지 않음 */
 const _commentedProjectIcons = {
@@ -57,29 +56,19 @@ const easeOutExpo: [number, number, number, number] = [0.22, 1, 0.36, 1];
 /** Home + Intro + Skills */
 const SECTION_BASE = 3;
 
-const sectionTransition: Transition = {
-  duration: 0.22,
-  ease: easeOutExpo,
-};
-
 const cardRevealVariants = {
   off: {
-    opacity: 0,
-    y: 36,
-    scale: 0.96,
-    filter: 'blur(5px)',
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: 'blur(0px)',
   },
   on: {
     opacity: 1,
     y: 0,
     scale: 1,
     filter: 'blur(0px)',
-    transition: {
-      type: 'spring',
-      stiffness: 300,
-      damping: 30,
-      mass: 0.88,
-    },
+    transition: { duration: 0 },
   },
 };
 
@@ -87,19 +76,19 @@ const stackParentVariants = {
   off: {},
   on: {
     transition: {
-      staggerChildren: 0.055,
-      delayChildren: 0.18,
+      staggerChildren: 0.04,
+      delayChildren: 0.05,
     },
   },
 };
 
 const stackChipVariants = {
-  off: { opacity: 0, y: 10, scale: 0.94 },
+  off: { opacity: 1, y: 0, scale: 1 },
   on: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.38, ease: easeOutExpo },
+    transition: { duration: 0 },
   },
 };
 
@@ -109,9 +98,10 @@ function PageIndex() {
 
   const [activeSection, setActiveSection] = useState<number>(0);
   const [sidebarHeight, setSidebarHeight] = useState<number>(0);
-  const [isProgrammaticScroll, setIsProgrammaticScroll] = useState<boolean>(false);
   const pendingScrollTopRef = useRef<number | null>(null);
+  const pendingSectionRef = useRef<number | null>(null);
   const isProgrammaticScrollRef = useRef(false);
+  const scrollNavCleanupRef = useRef<(() => void) | null>(null);
   const [project] = useState<Data[]>([
     {
       key: 'FastPace',
@@ -524,8 +514,13 @@ function PageIndex() {
 
   // 스크롤 위치에 따른 활성 섹션 계산
   const handleScroll = useCallback(() => {
-    // ref로 동기 가드 — setState 반영 전 scroll 이벤트가 activeSection을 되돌리는 깜빡임 방지
-    if (isProgrammaticScrollRef.current || pendingScrollTopRef.current !== null) {
+    // 프로그래매틱 이동 중에는 스크롤 위치로 섹션을 되돌리지 않음
+    // (다음 이동 시 floor 경계 전엔 항상 이전 섹션 값이 나와 깜빡임의 원인)
+    if (
+      isProgrammaticScrollRef.current ||
+      pendingScrollTopRef.current !== null ||
+      pendingSectionRef.current !== null
+    ) {
       return;
     }
 
@@ -540,13 +535,11 @@ function PageIndex() {
       } else {
         const adjustedScrollY = scrollY - introThreshold;
         const currentSection = Math.floor(adjustedScrollY / sectionHeight);
-        const maxSection = 2 + project.length;
-        newActiveSection = Math.min(Math.max(currentSection, 0), maxSection);
+        newActiveSection = Math.min(Math.max(currentSection, 0), 2 + project.length);
       }
     } else {
       const currentSection = Math.floor(scrollY / sectionHeight);
-      const maxSection = 2 + project.length;
-      newActiveSection = Math.min(currentSection, maxSection);
+      newActiveSection = Math.min(currentSection, 2 + project.length);
     }
 
     setActiveSection((prev) => (newActiveSection !== prev ? newActiveSection : prev));
@@ -567,41 +560,86 @@ function PageIndex() {
   );
 
   const goToSection = useCallback(
-    (targetSection: number, opts?: { behavior?: ScrollBehavior }) => {
+    (targetSection: number) => {
       const next = Math.min(Math.max(targetSection, isMobile ? -1 : 0), maxSection);
-      if (next === activeSection && pendingScrollTopRef.current === null) return;
+      if (next === activeSection && pendingSectionRef.current === null) return;
 
-      const behavior = opts?.behavior ?? 'smooth';
       const top = sectionScrollTop(next);
+      scrollNavCleanupRef.current?.();
 
-      // 동기 잠금 먼저 — scrollTo가 일으키는 scroll 이벤트보다 앞서야 함
+      // 이동 중엔 handleScroll이 floor로 이전 섹션을 덮어쓰지 못하게 잠금
+      // (아래로 갈 때만 경계 전까지 floor가 현재 섹션으로 남는 비대칭)
       isProgrammaticScrollRef.current = true;
       pendingScrollTopRef.current = top;
-      setIsProgrammaticScroll(true);
+      pendingSectionRef.current = next;
       setActiveSection(next);
-      window.scrollTo({ top, behavior });
 
-      const settle = () => {
-        if (pendingScrollTopRef.current !== top) return;
-        if (Math.abs(window.scrollY - top) < 2) {
-          pendingScrollTopRef.current = null;
-          isProgrammaticScrollRef.current = false;
-          setIsProgrammaticScroll(false);
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const startY = window.scrollY;
+      const delta = top - startY;
+
+      const release = () => {
+        if (pendingSectionRef.current !== next) return;
+        pendingScrollTopRef.current = null;
+        pendingSectionRef.current = null;
+        isProgrammaticScrollRef.current = false;
+      };
+
+      if (reduceMotion || Math.abs(delta) < 1) {
+        window.scrollTo(0, top);
+        release();
+        return;
+      }
+
+      // CSS smooth는 환경에 따라 무시되거나 끊길 수 있어 rAF ease로 통일
+      const duration = Math.min(720, Math.max(420, Math.abs(delta) * 0.55));
+      const t0 = performance.now();
+      let rafId = 0;
+      let done = false;
+
+      const cleanup = () => {
+        cancelAnimationFrame(rafId);
+        if (scrollNavCleanupRef.current === cleanup) {
+          scrollNavCleanupRef.current = null;
+        }
+      };
+
+      const finish = () => {
+        if (done) return;
+        done = true;
+        window.scrollTo(0, top);
+        release();
+        cleanup();
+      };
+
+      const easeInOutCubic = (t: number) =>
+        t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+      const step = (now: number) => {
+        if (pendingSectionRef.current !== next) {
+          cleanup();
           return;
         }
-        requestAnimationFrame(settle);
+        const t = Math.min(1, (now - t0) / duration);
+        window.scrollTo(0, startY + delta * easeInOutCubic(t));
+        if (t < 1) {
+          rafId = requestAnimationFrame(step);
+        } else {
+          finish();
+        }
       };
-      requestAnimationFrame(settle);
-      // 안전망: 목표에 못 닿아도 잠금 해제 + 스냅
-      window.setTimeout(() => {
-        if (pendingScrollTopRef.current !== top) return;
-        window.scrollTo({ top, behavior: 'auto' });
-        pendingScrollTopRef.current = null;
-        isProgrammaticScrollRef.current = false;
-        setIsProgrammaticScroll(false);
-      }, 900);
+
+      scrollNavCleanupRef.current = cleanup;
+      rafId = requestAnimationFrame(step);
     },
     [activeSection, isMobile, maxSection, sectionScrollTop],
+  );
+
+  useEffect(
+    () => () => {
+      scrollNavCleanupRef.current?.();
+    },
+    [],
   );
 
   useEffect(() => {
@@ -629,9 +667,9 @@ function PageIndex() {
 
       e.preventDefault();
       if (key === 'ArrowDown' || key === 'ArrowRight') {
-        goToSection(activeSection + 1, { behavior: 'auto' });
+        goToSection(activeSection + 1);
       } else {
-        goToSection(activeSection - 1, { behavior: 'auto' });
+        goToSection(activeSection - 1);
       }
     };
 
@@ -681,21 +719,6 @@ function PageIndex() {
       window.removeEventListener('resize', measureSidebarHeight);
     };
   }, [isMobile]);
-
-  useEffect(() => {
-    if (isProgrammaticScroll || activeSection < SECTION_BASE) return;
-    const chips = document.querySelectorAll('[data-stack-chip="active"]');
-    if (!chips.length) return;
-
-    animate(chips, {
-      scale: [0.92, 1],
-      translateY: [10, 0],
-      opacity: [0.35, 1],
-      delay: stagger(45),
-      duration: 420,
-      ease: 'outBack',
-    });
-  }, [activeSection, isProgrammaticScroll]);
 
   return (
     <Container isDesktop={isDesktop} isTablet={isTablet}>
@@ -753,11 +776,6 @@ function PageIndex() {
           isActive={activeSection === 0}
           isDesktop={isDesktop}
           isTablet={isTablet}
-          initial={false}
-          animate={{
-            opacity: activeSection === 0 ? 1 : 0,
-          }}
-          transition={sectionTransition}
         >
           <TypingWrapper isDesktop={isDesktop} isTablet={isTablet}>
             <HomeHeroCard
@@ -772,25 +790,10 @@ function PageIndex() {
           isActive={activeSection === 1}
           isDesktop={isDesktop}
           isTablet={isTablet}
-          initial={false}
-          animate={{
-            opacity: activeSection === 1 ? 1 : 0,
-          }}
-          transition={sectionTransition}
         >
           <Invitation
             isDesktop={isDesktop}
             isTablet={isTablet}
-            initial={false}
-            animate={
-              activeSection === 1
-                ? { opacity: 1, scale: 1 }
-                : { opacity: 0, scale: 0.995 }
-            }
-            transition={{
-              duration: 0.22,
-              ease: easeOutExpo,
-            }}
           >
             <div>
               시작은 주변의 권유로 시작하게 되었습니다.
@@ -820,11 +823,6 @@ function PageIndex() {
           isActive={activeSection === 2}
           isDesktop={isDesktop}
           isTablet={isTablet}
-          initial={false}
-          animate={{
-            opacity: activeSection === 2 ? 1 : 0,
-          }}
-          transition={sectionTransition}
         >
           <SkillInsight
             active={activeSection === 2}
@@ -840,11 +838,6 @@ function PageIndex() {
             isActive={activeSection === idx + SECTION_BASE}
             isDesktop={isDesktop}
             isTablet={isTablet}
-            initial={false}
-            animate={{
-              opacity: activeSection === idx + SECTION_BASE ? 1 : 0,
-            }}
-            transition={sectionTransition}
           >
             <CardWrapper
               isDesktop={isDesktop}
@@ -970,7 +963,7 @@ const Container = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
   margin-left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? `${SIDER_RAIL}px` : '0')};
 `;
 
-const SectionContainer = styled(motion.div)<{
+const SectionContainer = styled.div<{
   isActive: boolean;
   isDesktop?: boolean;
   isTablet?: boolean;
@@ -987,6 +980,11 @@ const SectionContainer = styled(motion.div)<{
   box-sizing: border-box;
   z-index: ${({ isActive }) => (isActive ? 10 : 1)};
   pointer-events: ${({ isActive }) => (isActive ? 'auto' : 'none')};
+  opacity: ${({ isActive }) => (isActive ? 1 : 0)};
+  visibility: ${({ isActive }) => (isActive ? 'visible' : 'hidden')};
+  transition:
+    opacity 0.32s ease,
+    visibility 0s linear ${({ isActive }) => (isActive ? '0s' : '0.32s')};
 
   &::before {
     content: '';
@@ -994,7 +992,7 @@ const SectionContainer = styled(motion.div)<{
     inset: 0;
     z-index: 0;
     opacity: ${({ isActive }) => (isActive ? 1 : 0)};
-    transition: opacity 0.6s ease;
+    transition: opacity 0.28s ease;
     background: radial-gradient(
       ellipse 85% 65% at 50% 38%,
       ${({ theme }) => theme.accentMuted},
@@ -1029,7 +1027,7 @@ const TypingWrapper = styled.div<{
   padding: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '0' : '0 20px')};
 `;
 
-const Invitation = styled(motion.div)<{ isDesktop: boolean; isTablet: boolean }>`
+const Invitation = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
   width: min(640px, 92%);
   margin: 0 auto;
   padding: clamp(24px, 4vw, 40px);
