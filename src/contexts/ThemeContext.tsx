@@ -1,62 +1,30 @@
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useCallback,
-  ReactNode,
-} from "react";
-import { ThemeProvider } from "styled-components";
+import { createContext, useCallback, useEffect, useState } from 'react';
+import { ThemeProvider } from 'styled-components';
 
-import { darkTheme, lightTheme } from 'styled/theme';
+import { darkTheme, lightTheme } from 'data/themes';
+import type { ThemeContextValue, ThemeProviderProps } from 'types/themeContext';
 
-const STORAGE_KEY = "portfolio-theme";
+import { readStoredTheme, writeStoredTheme } from './themeContext.storage';
 
-function readStoredTheme(): boolean | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const v = window.localStorage.getItem(STORAGE_KEY);
-    if (v === "light") return false;
-    if (v === "dark") return true;
-  } catch {
-    /* private mode */
-  }
-  return null;
-}
-
-interface ThemeContextProps {
-  isDarkMode: boolean;
-  toggleTheme: () => void;
-}
-
-export const ThemeContext = createContext<ThemeContextProps>({
+export const ThemeContext = createContext<ThemeContextValue>({
   isDarkMode: true,
   toggleTheme: () => {},
 });
 
-export const CustomThemeProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const [isDarkMode, setIsDarkMode] = useState(
-    () => readStoredTheme() ?? true,
-  );
+export function CustomThemeProvider({ children }: ThemeProviderProps) {
+  const [isDarkMode, setIsDarkMode] = useState(() => readStoredTheme() ?? true);
 
   const toggleTheme = useCallback(() => {
-    setIsDarkMode((d) => !d);
+    setIsDarkMode((dark) => !dark);
   }, []);
 
   useEffect(() => {
-    try {
-      window.localStorage.setItem(STORAGE_KEY, isDarkMode ? "dark" : "light");
-    } catch {
-      /* */
-    }
+    writeStoredTheme(isDarkMode);
   }, [isDarkMode]);
 
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
-      <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-        {children}
-      </ThemeProvider>
+      <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>{children}</ThemeProvider>
     </ThemeContext.Provider>
   );
-};
+}

@@ -7,6 +7,7 @@ import {
   skillRadar,
   skillStats,
 } from 'data/skillRadar';
+import type { SkillInsightProps } from 'types/components/skillInsight';
 
 import {
   ChartCard,
@@ -23,13 +24,7 @@ import {
   Title,
 } from './SkillInsight.styles';
 
-type Props = {
-  active: boolean;
-  isDesktop: boolean;
-  isTablet: boolean;
-};
-
-export default function SkillInsight({ active, isDesktop, isTablet }: Props) {
+export default function SkillInsight({ active, isDesktop, isTablet }: SkillInsightProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const radarPathRef = useRef<SVGPathElement>(null);
 

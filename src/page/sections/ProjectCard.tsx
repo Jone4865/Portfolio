@@ -1,4 +1,4 @@
-import type { Project } from 'types';
+import type { ProjectCardProps } from 'types/components/projectCard';
 import { easeOutExpo } from 'constants/layout';
 import {
   cardRevealVariants,
@@ -23,21 +23,13 @@ import {
   StackRow,
 } from '../styles/pageLayout.styles';
 
-type Props = {
-  project: Project;
-  isActive: boolean;
-  isDesktop: boolean;
-  isTablet: boolean;
-  isMobile: boolean;
-};
-
 export default function ProjectCard({
   project,
   isActive,
   isDesktop,
   isTablet,
   isMobile,
-}: Props) {
+}: ProjectCardProps) {
   return (
     <SectionContainer isActive={isActive} isDesktop={isDesktop} isTablet={isTablet}>
       <CardWrapper

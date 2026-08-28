@@ -1,11 +1,18 @@
-import { useMediaQuery } from "react-responsive";
+import { useMediaQuery } from 'react-responsive';
+
+import {
+  DESKTOP_MIN_WIDTH,
+  MOBILE_MAX_WIDTH,
+  TABLET_MAX_WIDTH,
+  TABLET_MIN_WIDTH,
+} from 'constants/responsive';
 
 const useResponsive = () => {
-  const isDesktop = useMediaQuery({ minWidth: 1224 });
-  const isTablet = useMediaQuery({ minWidth: 920, maxWidth: 1224 });
-  const isMobile = useMediaQuery({ maxWidth: 919 });
-  const isRetina = useMediaQuery({ minResolution: "2dppx" });
-  const isPortrait = useMediaQuery({ orientation: "portrait" });
+  const isDesktop = useMediaQuery({ minWidth: DESKTOP_MIN_WIDTH });
+  const isTablet = useMediaQuery({ minWidth: TABLET_MIN_WIDTH, maxWidth: TABLET_MAX_WIDTH });
+  const isMobile = useMediaQuery({ maxWidth: MOBILE_MAX_WIDTH });
+  const isRetina = useMediaQuery({ minResolution: '2dppx' });
+  const isPortrait = useMediaQuery({ orientation: 'portrait' });
 
   return { isDesktop, isTablet, isMobile, isRetina, isPortrait };
 };

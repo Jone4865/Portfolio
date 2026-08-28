@@ -6,6 +6,7 @@ import backgroundImage from 'assets/image/background.jpg';
 import SkillInsight from 'component/charts/SkillInsight';
 import { SECTION_BASE } from 'constants/layout';
 import { projects } from 'data/projects';
+import { heroTypingLoop, heroTypingSteps } from 'data/heroTyping';
 import {
   useResponsive,
   useSectionNavigation,
@@ -37,15 +38,7 @@ function PageIndex() {
 
   const typicalComponent = useMemo(
     () => (
-      <Typical
-        steps={[
-          '안녕하세요. 키보드 위를 서핑하는,',
-          1000,
-          'Developer 채종원의 포트폴리오입니다.',
-          1000,
-        ]}
-        loop={3}
-      />
+      <Typical steps={[...heroTypingSteps]} loop={heroTypingLoop} />
     ),
     [],
   );

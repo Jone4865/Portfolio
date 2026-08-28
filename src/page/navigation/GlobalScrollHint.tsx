@@ -1,13 +1,12 @@
 import { motion } from 'framer-motion';
 import { FaChevronDown } from 'react-icons/fa';
+
+import { scrollHintChevronTransition } from 'constants/animations';
+import type { GlobalScrollHintProps } from 'types/components/globalScrollHint';
+
 import { GlobalScrollHint as HintButton } from '../styles/pageLayout.styles';
 
-type Props = {
-  isMobile: boolean;
-  onNext: () => void;
-};
-
-export default function GlobalScrollHint({ isMobile, onNext }: Props) {
+export default function GlobalScrollHint({ isMobile, onNext }: GlobalScrollHintProps) {
   return (
     <HintButton
       isMobile={isMobile}
@@ -17,11 +16,7 @@ export default function GlobalScrollHint({ isMobile, onNext }: Props) {
     >
       <motion.span
         animate={{ y: [0, 5, 0] }}
-        transition={{
-          duration: 1.45,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
+        transition={scrollHintChevronTransition}
         style={{ display: 'flex' }}
       >
         <FaChevronDown />
