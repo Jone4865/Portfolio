@@ -759,47 +759,19 @@ function PageIndex() {
             {/* Home */}
             <DotGroup>
               <DotLabel>Home</DotLabel>
-              <PageDot
-                isActive={activeSection === 0}
-                onClick={() => {
-                  setIsProgrammaticScroll(true);
-                  setShowLoader(true);
-                  const targetScroll = isMobile ? sidebarHeight + 100 : 0 * window.innerHeight;
-                  window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-                }}
-              />
+              <PageDot isActive={activeSection === 0} onClick={() => goToSection(0)} />
             </DotGroup>
 
             {/* Intro */}
             <DotGroup>
               <DotLabel>Intro</DotLabel>
-              <PageDot
-                isActive={activeSection === 1}
-                onClick={() => {
-                  setIsProgrammaticScroll(true);
-                  setShowLoader(true);
-                  const targetScroll = isMobile
-                    ? sidebarHeight + 100 + window.innerHeight
-                    : 1 * window.innerHeight;
-                  window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-                }}
-              />
+              <PageDot isActive={activeSection === 1} onClick={() => goToSection(1)} />
             </DotGroup>
 
             {/* Skills */}
             <DotGroup>
               <DotLabel>Skills</DotLabel>
-              <PageDot
-                isActive={activeSection === 2}
-                onClick={() => {
-                  setIsProgrammaticScroll(true);
-                  setShowLoader(true);
-                  const targetScroll = isMobile
-                    ? sidebarHeight + 100 + 2 * window.innerHeight
-                    : 2 * window.innerHeight;
-                  window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-                }}
-              />
+              <PageDot isActive={activeSection === 2} onClick={() => goToSection(2)} />
             </DotGroup>
 
             {/* Projects */}
@@ -809,14 +781,7 @@ function PageIndex() {
                 <PageDot
                   key={idx}
                   isActive={activeSection === idx + SECTION_BASE}
-                  onClick={() => {
-                    setIsProgrammaticScroll(true);
-                    setShowLoader(true);
-                    const targetScroll = isMobile
-                      ? sidebarHeight + 100 + (idx + SECTION_BASE) * window.innerHeight
-                      : (idx + SECTION_BASE) * window.innerHeight;
-                    window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-                  }}
+                  onClick={() => goToSection(idx + SECTION_BASE)}
                 />
               ))}
             </DotGroup>
