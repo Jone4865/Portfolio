@@ -2,7 +2,8 @@ import type { ReactNode } from 'react';
 import { lazy, Suspense } from 'react';
 import { useReducedMotion } from 'framer-motion';
 
-import useResponsive from '../../hooks/useResponsive';
+import { useResponsive } from 'hooks';
+
 import {
   AccentMotion,
   EditorialScrim,
@@ -13,7 +14,7 @@ import {
   TypingMotion,
 } from './HomeHeroCard.styles';
 
-const HeroWireframe = lazy(() => import('../../component/hero/HeroWireframe'));
+const HeroWireframe = lazy(() => import('component/hero/HeroWireframe'));
 
 type Props = {
   typicalContent: ReactNode;

@@ -12,11 +12,12 @@ import { LuBookOpenCheck, LuMessagesSquare } from 'react-icons/lu';
 import { MdOutlineLightMode, MdOutlineNightlightRound } from 'react-icons/md';
 import { GrRun } from 'react-icons/gr';
 
-import profileImage from '../../assets/image/profile.png';
-import { profile } from '../../data/profile';
-import { experienceGroups, techGroups } from '../../data/siderTech';
-import { ThemeContext } from '../../contexts/ThemeContext';
-import useResponsive from '../../hooks/useResponsive';
+import profileImage from 'assets/image/profile.png';
+import { profile } from 'data/profile';
+import { experienceGroups, techGroups } from 'data/siderTech';
+import { ThemeContext } from 'contexts';
+import { useResponsive } from 'hooks';
+
 import {
   Chevron,
   Container,

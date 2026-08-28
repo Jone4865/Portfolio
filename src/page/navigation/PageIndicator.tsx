@@ -1,4 +1,4 @@
-import { SECTION_BASE } from '../../constants/layout';
+import { SECTION_BASE } from 'constants/layout';
 import {
   DotGroup,
   DotLabel,

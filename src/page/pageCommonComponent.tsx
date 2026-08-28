@@ -2,15 +2,18 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaChevronRight } from 'react-icons/fa';
 
-import Button from '../component/button';
-import CardExpand from '../component/CardExpand';
-import CardGallery from '../component/CardGallery';
-import CheckBox from '../component/checkBox';
-import Input from '../component/input';
-import InputWithIcon from '../component/inputWithIcon';
-import RadioButton from '../component/radio';
-import TextArea from '../component/textArea';
-import useResponsive from '../hooks/useResponsive';
+import {
+  Button,
+  CardExpand,
+  CardGallery,
+  CheckBox,
+  Input,
+  InputWithIcon,
+  RadioButton,
+  TextArea,
+} from 'component/ui';
+import { useResponsive } from 'hooks';
+
 import {
   BackdropGrid,
   BackLink,

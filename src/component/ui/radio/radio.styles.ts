@@ -1,22 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-type RadioProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  size?: number;
-  error?: boolean;
-};
+import type { RadioStyleProps } from './radio.types';
 
-const RadioButton: React.FC<RadioProps> = ({ size = 20, error, ...rest }) => {
-  return (
-    <Label size={size} error={error}>
-      <HiddenRadioButton type="radio" {...rest} />
-      <CustomRadioButton size={size} error={error} />
-    </Label>
-  );
-};
-
-export default RadioButton;
-
-const Label = styled.label<{ size: number; error?: boolean }>`
+export const Label = styled.label<RadioStyleProps>`
   display: inline-block;
   position: relative;
   width: ${({ size }) => `${size}px`};
@@ -24,7 +10,7 @@ const Label = styled.label<{ size: number; error?: boolean }>`
   cursor: pointer;
 `;
 
-const HiddenRadioButton = styled.input.attrs({ type: "radio" })`
+export const HiddenRadioButton = styled.input.attrs({ type: 'radio' })`
   position: absolute;
   opacity: 0;
   width: 0;
@@ -33,14 +19,14 @@ const HiddenRadioButton = styled.input.attrs({ type: "radio" })`
   pointer-events: none;
 `;
 
-const CustomRadioButton = styled.div<{ size: number; error?: boolean }>`
+export const CustomRadioButton = styled.div<RadioStyleProps>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
   background-color: white;
-  border: ${({ error }) => (error ? "1px solid #F84D61" : "1px solid #e8e5e5")};
+  border: ${({ error }) => (error ? '1px solid #F84D61' : '1px solid #e8e5e5')};
   border-radius: 50%;
   transition: all 0.3s;
 
@@ -50,7 +36,7 @@ const CustomRadioButton = styled.div<{ size: number; error?: boolean }>`
   }
 
   ${HiddenRadioButton}:checked + &::after {
-    content: "";
+    content: '';
     display: block;
     width: 50%;
     height: 50%;

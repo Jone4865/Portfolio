@@ -1,5 +1,5 @@
-import type { Project } from '../../types/project';
-import { easeOutExpo } from '../../constants/layout';
+import type { Project } from 'types';
+import { easeOutExpo } from 'constants/layout';
 import {
   cardRevealVariants,
   stackChipVariants,

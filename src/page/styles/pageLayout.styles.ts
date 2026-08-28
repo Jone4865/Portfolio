@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import styled, { css } from 'styled-components';
-import { SIDER_RAIL } from '../../constants/layout';
+import { SIDER_RAIL } from 'constants/layout';
 
 export const Wrap = styled.div<{ totalSections: number }>`
   position: relative;

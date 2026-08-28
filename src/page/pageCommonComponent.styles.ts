@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { SIDER_RAIL } from '../constants/layout';
+import { SIDER_RAIL } from 'constants/layout';
 
 export const Page = styled.main<{ isDesktop: boolean; isTablet: boolean }>`
   position: relative;

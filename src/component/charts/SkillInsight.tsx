@@ -6,7 +6,8 @@ import {
   polarToCartesian,
   skillRadar,
   skillStats,
-} from '../../data/skillRadar';
+} from 'data/skillRadar';
+
 import {
   ChartCard,
   ChartTitle,
