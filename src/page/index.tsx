@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useState, useCallback } from 'react';
+import { ReactNode, useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { motion, useScroll, type Transition } from 'framer-motion';
 import styled, { css } from 'styled-components';
 import Typical from 'react-typical';
@@ -58,7 +58,7 @@ const easeOutExpo: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const SECTION_BASE = 3;
 
 const sectionTransition: Transition = {
-  duration: 0.28,
+  duration: 0.22,
   ease: easeOutExpo,
 };
 
@@ -110,7 +110,8 @@ function PageIndex() {
   const [activeSection, setActiveSection] = useState<number>(0);
   const [sidebarHeight, setSidebarHeight] = useState<number>(0);
   const [isProgrammaticScroll, setIsProgrammaticScroll] = useState<boolean>(false);
-  const [showLoader, setShowLoader] = useState<boolean>(false);
+  const pendingScrollTopRef = useRef<number | null>(null);
+  const isProgrammaticScrollRef = useRef(false);
   const [project] = useState<Data[]>([
     {
       key: 'FastPace',
@@ -523,8 +524,8 @@ function PageIndex() {
 
   // 스크롤 위치에 따른 활성 섹션 계산
   const handleScroll = useCallback(() => {
-    // 프로그래매틱 스크롤 중에는 activeSection을 업데이트하지 않음 (이전 뷰 유지)
-    if (isProgrammaticScroll) {
+    // ref로 동기 가드 — setState 반영 전 scroll 이벤트가 activeSection을 되돌리는 깜빡임 방지
+    if (isProgrammaticScrollRef.current || pendingScrollTopRef.current !== null) {
       return;
     }
 
@@ -533,66 +534,74 @@ function PageIndex() {
     let newActiveSection = 0;
 
     if (isMobile) {
-      // 모바일: 사이더 높이 + 100px 이후부터 섹션 계산
       const introThreshold = sidebarHeight + 100;
       if (scrollY < introThreshold) {
-        newActiveSection = -1; // 사이더만 보이는 상태
+        newActiveSection = -1;
       } else {
         const adjustedScrollY = scrollY - introThreshold;
-        // 섹션 경계를 더 정확하게 계산 (시작 지점 기준)
-        const currentSection = Math.floor(adjustedScrollY / sectionHeight); // Home부터 시작
+        const currentSection = Math.floor(adjustedScrollY / sectionHeight);
         const maxSection = 2 + project.length;
         newActiveSection = Math.min(Math.max(currentSection, 0), maxSection);
       }
     } else {
-      // 데스크톱: 기존 로직
       const currentSection = Math.floor(scrollY / sectionHeight);
       const maxSection = 2 + project.length;
       newActiveSection = Math.min(currentSection, maxSection);
     }
 
-    setActiveSection((prev) => {
-      // 이전 섹션과 다를 때만 업데이트하여 중복 활성화 방지
-      if (newActiveSection !== prev) {
-        return newActiveSection;
-      }
-      return prev;
-    });
-  }, [isMobile, sidebarHeight, project.length, isProgrammaticScroll]);
+    setActiveSection((prev) => (newActiveSection !== prev ? newActiveSection : prev));
+  }, [isMobile, sidebarHeight, project.length]);
 
   const maxSection = 2 + project.length;
+
+  const sectionScrollTop = useCallback(
+    (section: number) => {
+      const vh = window.innerHeight;
+      if (isMobile) {
+        if (section < 0) return 0;
+        return sidebarHeight + 100 + section * vh;
+      }
+      return section * vh;
+    },
+    [isMobile, sidebarHeight],
+  );
 
   const goToSection = useCallback(
     (targetSection: number, opts?: { behavior?: ScrollBehavior }) => {
       const next = Math.min(Math.max(targetSection, isMobile ? -1 : 0), maxSection);
-      if (next === activeSection && !isProgrammaticScroll) return;
+      if (next === activeSection && pendingScrollTopRef.current === null) return;
 
       const behavior = opts?.behavior ?? 'smooth';
-      setIsProgrammaticScroll(true);
-      setShowLoader(false);
-      setActiveSection(next);
+      const top = sectionScrollTop(next);
 
-      const vh = window.innerHeight;
-      let top = 0;
-      if (isMobile) {
-        if (next < 0) {
-          top = 0;
-        } else {
-          top = sidebarHeight + 100 + next * vh;
-        }
-      } else {
-        top = next * vh;
-      }
+      // 동기 잠금 먼저 — scrollTo가 일으키는 scroll 이벤트보다 앞서야 함
+      isProgrammaticScrollRef.current = true;
+      pendingScrollTopRef.current = top;
+      setIsProgrammaticScroll(true);
+      setActiveSection(next);
       window.scrollTo({ top, behavior });
 
-      // instant면 스크롤 완료 대기를 짧게 끝냄
-      if (behavior === 'auto') {
-        requestAnimationFrame(() => {
+      const settle = () => {
+        if (pendingScrollTopRef.current !== top) return;
+        if (Math.abs(window.scrollY - top) < 2) {
+          pendingScrollTopRef.current = null;
+          isProgrammaticScrollRef.current = false;
           setIsProgrammaticScroll(false);
-        });
-      }
+          return;
+        }
+        requestAnimationFrame(settle);
+      };
+      requestAnimationFrame(settle);
+      // 안전망: 목표에 못 닿아도 잠금 해제 + 스냅
+      window.setTimeout(() => {
+        if (pendingScrollTopRef.current !== top) return;
+        window.scrollTo({ top, behavior: 'auto' });
+        pendingScrollTopRef.current = null;
+        isProgrammaticScrollRef.current = false;
+        setIsProgrammaticScroll(false);
+      }, 900);
     },
-    [activeSection, isMobile, isProgrammaticScroll, maxSection, sidebarHeight],
+    [activeSection, isMobile, maxSection, sectionScrollTop],
   );
 
   useEffect(() => {
@@ -619,7 +628,6 @@ function PageIndex() {
       }
 
       e.preventDefault();
-      // 좌우도 섹션 상하 이동과 동일 — 키보드는 즉시 전환
       if (key === 'ArrowDown' || key === 'ArrowRight') {
         goToSection(activeSection + 1, { behavior: 'auto' });
       } else {
@@ -632,47 +640,7 @@ function PageIndex() {
   }, [activeSection, goToSection]);
 
   useEffect(() => {
-    // 스크롤 이벤트를 throttling하여 중복 호출 방지
     let ticking = false;
-    let lastScrollY = window.scrollY;
-    let checkFrame: number | null = null;
-
-    const checkScrollComplete = () => {
-      const currentScrollY = window.scrollY;
-
-      // 스크롤 위치가 변하지 않았으면 스크롤 완료로 간주
-      if (Math.abs(currentScrollY - lastScrollY) < 1) {
-        setIsProgrammaticScroll(false);
-        setShowLoader(false);
-
-        // 스크롤 완료 후 현재 위치에 맞는 섹션으로 업데이트
-        const sectionHeight = window.innerHeight;
-        let newActiveSection = 0;
-
-        if (isMobile) {
-          const introThreshold = sidebarHeight + 100;
-          if (currentScrollY < introThreshold) {
-            newActiveSection = -1;
-          } else {
-            const adjustedScrollY = currentScrollY - introThreshold;
-            const currentSection = Math.floor(adjustedScrollY / sectionHeight);
-            const maxSection = 2 + project.length;
-            newActiveSection = Math.min(Math.max(currentSection, 0), maxSection);
-          }
-        } else {
-          const currentSection = Math.floor(currentScrollY / sectionHeight);
-          const maxSection = 2 + project.length;
-          newActiveSection = Math.min(currentSection, maxSection);
-        }
-
-        setActiveSection(newActiveSection);
-        checkFrame = null;
-      } else {
-        lastScrollY = currentScrollY;
-        // 계속 스크롤 중이면 다음 프레임에서 다시 확인
-        checkFrame = requestAnimationFrame(checkScrollComplete);
-      }
-    };
 
     const throttledHandleScroll = () => {
       if (!ticking) {
@@ -682,28 +650,15 @@ function PageIndex() {
         });
         ticking = true;
       }
-
-      // 프로그래매틱 스크롤 중일 때, 스크롤 위치 변화를 추적하여 스크롤 완료 감지
-      if (isProgrammaticScroll) {
-        if (checkFrame !== null) {
-          cancelAnimationFrame(checkFrame);
-        }
-        checkFrame = requestAnimationFrame(checkScrollComplete);
-      } else {
-        lastScrollY = window.scrollY;
-      }
     };
 
-    window.addEventListener('scroll', throttledHandleScroll);
-    handleScroll(); // 초기 실행
+    window.addEventListener('scroll', throttledHandleScroll, { passive: true });
+    handleScroll();
 
     return () => {
       window.removeEventListener('scroll', throttledHandleScroll);
-      if (checkFrame !== null) {
-        cancelAnimationFrame(checkFrame);
-      }
     };
-  }, [handleScroll, isProgrammaticScroll, isMobile, sidebarHeight, project.length]);
+  }, [handleScroll]);
 
   // 사이더 높이 측정
   useEffect(() => {
@@ -791,19 +746,7 @@ function PageIndex() {
           </PageIndicator>
         )}
 
-        {/* 스크롤 중 로딩 뷰 */}
-        {isProgrammaticScroll && showLoader && (
-          <ScrollLoadingContainer isDesktop={isDesktop} isTablet={isTablet}>
-            <LoadingContent>
-              <LoadingSpinner>
-                <SpinnerCircle />
-                <SpinnerCircle />
-                <SpinnerCircle />
-              </LoadingSpinner>
-              <LoadingText>이동 중...</LoadingText>
-            </LoadingContent>
-          </ScrollLoadingContainer>
-        )}
+        {/* 섹션 전환은 도트/하단버튼/방향키 공통 goToSection */}
 
         {/* 섹션 0: TypingWrapper */}
         <SectionContainer
@@ -813,7 +756,6 @@ function PageIndex() {
           initial={false}
           animate={{
             opacity: activeSection === 0 ? 1 : 0,
-            y: activeSection === 0 ? 0 : 16,
           }}
           transition={sectionTransition}
         >
@@ -833,7 +775,6 @@ function PageIndex() {
           initial={false}
           animate={{
             opacity: activeSection === 1 ? 1 : 0,
-            y: activeSection === 1 ? 0 : 16,
           }}
           transition={sectionTransition}
         >
@@ -843,12 +784,11 @@ function PageIndex() {
             initial={false}
             animate={
               activeSection === 1
-                ? { opacity: 1, y: 0, scale: 1 }
-                : { opacity: 0, y: 20, scale: 0.98 }
+                ? { opacity: 1, scale: 1 }
+                : { opacity: 0, scale: 0.995 }
             }
             transition={{
-              duration: 0.55,
-              delay: activeSection === 1 ? 0.1 : 0,
+              duration: 0.22,
               ease: easeOutExpo,
             }}
           >
@@ -883,7 +823,6 @@ function PageIndex() {
           initial={false}
           animate={{
             opacity: activeSection === 2 ? 1 : 0,
-            y: activeSection === 2 ? 0 : 16,
           }}
           transition={sectionTransition}
         >
@@ -904,7 +843,6 @@ function PageIndex() {
             initial={false}
             animate={{
               opacity: activeSection === idx + SECTION_BASE ? 1 : 0,
-              y: activeSection === idx + SECTION_BASE ? 0 : 16,
             }}
             transition={sectionTransition}
           >
@@ -1382,120 +1320,3 @@ const GlobalScrollHint = styled(motion.div)<{ isMobile: boolean }>`
   }
 `;
 
-const ScrollLoadingContainer = styled.div<{ isDesktop?: boolean; isTablet?: boolean }>`
-  position: fixed;
-  top: 0;
-  left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? `${SIDER_RAIL}px` : '0')};
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(145deg, rgba(6, 8, 12, 0.92) 0%, rgba(18, 22, 32, 0.94) 100%);
-  backdrop-filter: blur(24px);
-  z-index: 100;
-  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-`;
-
-const LoadingContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 28px;
-  padding: 36px 44px;
-  border-radius: 20px;
-  background: ${({ theme }) => theme.cardColor};
-  border: 1px solid ${({ theme }) => theme.cardBorder};
-  box-shadow: ${({ theme }) => theme.shadowElevated};
-`;
-
-const LoadingSpinner = styled.div`
-  position: relative;
-  width: 64px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const SpinnerCircle = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border: 3px solid transparent;
-  border-top-color: ${({ theme }) => theme.accent};
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-
-  &:nth-child(1) {
-    animation-duration: 1s;
-    border-top-color: ${({ theme }) => theme.accent};
-  }
-
-  &:nth-child(2) {
-    width: 80%;
-    height: 80%;
-    animation-duration: 1.2s;
-    animation-direction: reverse;
-    border-top-color: ${({ theme }) => theme.accentMuted};
-  }
-
-  &:nth-child(3) {
-    width: 60%;
-    height: 60%;
-    animation-duration: 0.8s;
-    border-top-color: ${({ theme }) => theme.accentMuted};
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-`;
-
-const LoadingText = styled.div`
-  color: ${({ theme }) => theme.cardText};
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 2px;
-    border-radius: 2px;
-    background: ${({ theme }) => theme.progressGradient};
-    animation: expand 1.5s ease-in-out infinite;
-  }
-
-  @keyframes expand {
-    0%,
-    100% {
-      width: 0;
-      opacity: 0;
-    }
-    50% {
-      width: 100%;
-      opacity: 1;
-    }
-  }
-`;
