@@ -2,7 +2,7 @@
 
 프론트엔드 개발자 채종원의 포트폴리오 사이트입니다.
 
-**Live:** https://portfolio-jone4865s-projects.vercel.app
+**Live:** https://jone4865-portfolio.vercel.app/
 
 ## 실행
 
