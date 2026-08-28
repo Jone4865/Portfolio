@@ -45,6 +45,8 @@ src/
 
 타입·스타일·정적 데이터는 컴포넌트 파일과 분리해 두었습니다. import는 `tsconfig`의 `baseUrl: "src"` 기준 절대 경로(`hooks`, `data/projects` 등)를 씁니다.
 
+자세한 규칙은 [CONVENTIONS.md](./CONVENTIONS.md)를 참고하세요.
+
 ## 배포
 
 Vercel에 연결해 두었습니다. `main` 브랜치 push 시 자동 배포됩니다.
