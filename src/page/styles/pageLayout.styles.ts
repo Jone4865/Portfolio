@@ -2,27 +2,28 @@ import { motion } from 'framer-motion';
 import styled, { css } from 'styled-components';
 import { SIDER_RAIL } from 'constants/layout';
 
-export const Wrap = styled.div<{ totalSections: number }>`
+export const Wrap = styled.div<{ $totalSections: number }>`
   position: relative;
   z-index: 2;
-  height: ${({ totalSections }) => totalSections * 100}vh;
+  height: ${({ $totalSections }) => $totalSections * 100}vh;
   background: ${({ theme }) => theme.canvasGradient};
 `;
 
-export const Container = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
+export const Container = styled.main<{ $isDesktop: boolean; $isTablet: boolean }>`
   position: relative;
   z-index: 2;
-  margin-left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? `${SIDER_RAIL}px` : '0')};
+  margin-left: ${({ $isDesktop, $isTablet }) =>
+    $isDesktop || $isTablet ? `${SIDER_RAIL}px` : '0'};
 `;
 
 export const SectionContainer = styled.div<{
-  isActive: boolean;
-  isDesktop?: boolean;
-  isTablet?: boolean;
+  $isActive: boolean;
+  $isDesktop?: boolean;
+  $isTablet?: boolean;
 }>`
   position: fixed;
   top: 0;
-  left: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? `${SIDER_RAIL}px` : '0')};
+  left: ${({ $isDesktop, $isTablet }) => ($isDesktop || $isTablet ? `${SIDER_RAIL}px` : '0')};
   right: 0;
   bottom: 0;
   display: flex;
@@ -30,20 +31,20 @@ export const SectionContainer = styled.div<{
   justify-content: center;
   padding: clamp(16px, 4vw, 32px);
   box-sizing: border-box;
-  z-index: ${({ isActive }) => (isActive ? 10 : 1)};
-  pointer-events: ${({ isActive }) => (isActive ? 'auto' : 'none')};
-  opacity: ${({ isActive }) => (isActive ? 1 : 0)};
-  visibility: ${({ isActive }) => (isActive ? 'visible' : 'hidden')};
+  z-index: ${({ $isActive }) => ($isActive ? 10 : 1)};
+  pointer-events: ${({ $isActive }) => ($isActive ? 'auto' : 'none')};
+  opacity: ${({ $isActive }) => ($isActive ? 1 : 0)};
+  visibility: ${({ $isActive }) => ($isActive ? 'visible' : 'hidden')};
   transition:
     opacity 0.32s ease,
-    visibility 0s linear ${({ isActive }) => (isActive ? '0s' : '0.32s')};
+    visibility 0s linear ${({ $isActive }) => ($isActive ? '0s' : '0.32s')};
 
   &::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: 0;
-    opacity: ${({ isActive }) => (isActive ? 1 : 0)};
+    opacity: ${({ $isActive }) => ($isActive ? 1 : 0)};
     transition: opacity 0.28s ease;
     background: radial-gradient(
       ellipse 85% 65% at 50% 38%,
@@ -60,12 +61,13 @@ export const SectionContainer = styled.div<{
 `;
 
 export const TypingWrapper = styled.div<{
-  isDesktop: boolean;
-  isTablet: boolean;
+  $isDesktop: boolean;
+  $isTablet: boolean;
 }>`
-  position: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? 'relative' : 'absolute')};
-  top: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '0' : '50%')};
-  transform: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? 'none' : 'translateY(-50%)')};
+  position: ${({ $isDesktop, $isTablet }) => ($isDesktop || $isTablet ? 'relative' : 'absolute')};
+  top: ${({ $isDesktop, $isTablet }) => ($isDesktop || $isTablet ? '0' : '50%')};
+  transform: ${({ $isDesktop, $isTablet }) =>
+    $isDesktop || $isTablet ? 'none' : 'translateY(-50%)'};
   left: 0;
   right: 0;
   display: flex;
@@ -74,12 +76,12 @@ export const TypingWrapper = styled.div<{
   width: 100%;
   max-width: min(920px, 94vw);
   margin: 0 auto;
-  height: ${({ isDesktop, isTablet }) =>
-    isDesktop ? 'min(52vh, 520px)' : isTablet ? '420px' : '280px'};
-  padding: ${({ isDesktop, isTablet }) => (isDesktop || isTablet ? '0' : '0 20px')};
+  height: ${({ $isDesktop, $isTablet }) =>
+    $isDesktop ? 'min(52vh, 520px)' : $isTablet ? '420px' : '280px'};
+  padding: ${({ $isDesktop, $isTablet }) => ($isDesktop || $isTablet ? '0' : '0 20px')};
 `;
 
-export const Invitation = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
+export const Invitation = styled.div<{ $isDesktop: boolean; $isTablet: boolean }>`
   width: min(640px, 92%);
   margin: 0 auto;
   padding: clamp(24px, 4vw, 40px);
@@ -90,7 +92,7 @@ export const Invitation = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
   box-shadow: ${({ theme }) => theme.shadowCard};
   backdrop-filter: blur(12px);
   font-weight: 500;
-  font-size: ${({ isDesktop, isTablet }) => (isDesktop ? '15px' : isTablet ? '14px' : '13px')};
+  font-size: ${({ $isDesktop, $isTablet }) => ($isDesktop ? '15px' : $isTablet ? '14px' : '13px')};
   line-height: 1.75;
   letter-spacing: -0.01em;
 
@@ -100,7 +102,7 @@ export const Invitation = styled.div<{ isDesktop: boolean; isTablet: boolean }>`
   }
 `;
 
-export const PrograssStyle = styled(motion.div)<{ isDesktop: boolean }>`
+export const PrograssStyle = styled(motion.div)<{ $isDesktop: boolean }>`
   position: fixed;
   bottom: 0;
   left: 0;
@@ -109,14 +111,14 @@ export const PrograssStyle = styled(motion.div)<{ isDesktop: boolean }>`
   background: ${({ theme }) => theme.progressGradient};
   transform-origin: 0%;
   z-index: 3;
-  margin-left: ${({ isDesktop }) => (isDesktop ? `${SIDER_RAIL}px` : '0')};
+  margin-left: ${({ $isDesktop }) => ($isDesktop ? `${SIDER_RAIL}px` : '0')};
   box-shadow: 0 -4px 20px ${({ theme }) => theme.accentMuted};
 `;
 
 export const CardWrapper = styled(motion.div)<{
-  isDesktop: boolean;
-  isTablet: boolean;
-  isMobile: boolean;
+  $isDesktop: boolean;
+  $isTablet: boolean;
+  $isMobile: boolean;
 }>`
   width: min(720px, 94%);
   max-height: calc(100vh - 120px);
@@ -144,8 +146,8 @@ export const CardWrapper = styled(motion.div)<{
     box-shadow: ${({ theme }) => theme.shadowElevated};
   }
 
-  ${({ isMobile }) =>
-    isMobile &&
+  ${({ $isMobile }) =>
+    $isMobile &&
     css`
       font-size: 13px;
       padding: 18px;
@@ -189,12 +191,12 @@ export const CardMeta = styled.time`
   white-space: nowrap;
 `;
 
-export const LineOne = styled.div<{ isDesktop: boolean }>`
+export const LineOne = styled.div<{ $isDesktop: boolean }>`
   display: flex;
-  flex-direction: ${({ isDesktop }) => (isDesktop ? 'row' : 'column')};
-  align-items: ${({ isDesktop }) => (isDesktop ? 'flex-end' : 'flex-start')};
+  flex-direction: ${({ $isDesktop }) => ($isDesktop ? 'row' : 'column')};
+  align-items: ${({ $isDesktop }) => ($isDesktop ? 'flex-end' : 'flex-start')};
   justify-content: space-between;
-  gap: ${({ isDesktop }) => (isDesktop ? '16px' : '8px')};
+  gap: ${({ $isDesktop }) => ($isDesktop ? '16px' : '8px')};
 `;
 
 export const MetaBlock = styled.div`
@@ -296,7 +298,7 @@ export const ExternalLink = styled(motion.a)`
   }
 `;
 
-export const PageIndicator = styled.div<{ isDesktop?: boolean; isTablet?: boolean }>`
+export const PageIndicator = styled.div<{ $isDesktop?: boolean; $isTablet?: boolean }>`
   position: fixed;
   right: 12px;
   top: 50%;
@@ -327,18 +329,25 @@ export const DotLabel = styled.div`
   letter-spacing: 0.12em;
 `;
 
-export const PageDot = styled.div<{ isActive: boolean }>`
+export const PageDot = styled.button<{ $isActive: boolean }>`
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  color: inherit;
+  margin: 0;
   width: 10px;
   height: 10px;
+  border: none;
+  padding: 0;
   border-radius: 50%;
-  background-color: ${({ isActive, theme }) => (isActive ? theme.accent : theme.indicatorDot)};
-  box-shadow: ${({ isActive, theme }) => (isActive ? `0 0 0 3px ${theme.accentMuted}` : 'none')};
+  background-color: ${({ $isActive, theme }) => ($isActive ? theme.accent : theme.indicatorDot)};
+  box-shadow: ${({ $isActive, theme }) => ($isActive ? `0 0 0 3px ${theme.accentMuted}` : 'none')};
   cursor: pointer;
   transition:
     transform 0.25s ease,
     background 0.25s ease,
     box-shadow 0.25s ease;
-  transform: scale(${({ isActive }) => (isActive ? 1.15 : 1)});
+  transform: scale(${({ $isActive }) => ($isActive ? 1.15 : 1)});
 
   &:hover {
     background-color: ${({ theme }) => theme.accent};
@@ -346,9 +355,14 @@ export const PageDot = styled.div<{ isActive: boolean }>`
   }
 `;
 
-export const GlobalScrollHint = styled(motion.div)<{ isMobile: boolean }>`
+export const GlobalScrollHint = styled(motion.button)<{ $isMobile: boolean }>`
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  color: inherit;
+  margin: 0;
   position: fixed;
-  left: ${({ isMobile }) => (isMobile ? '50%' : `calc(50% + ${SIDER_RAIL / 2}px)`)};
+  left: ${({ $isMobile }) => ($isMobile ? '50%' : `calc(50% + ${SIDER_RAIL / 2}px)`)};
   translate: -50% 0;
   bottom: 28px;
   display: flex;
@@ -356,6 +370,7 @@ export const GlobalScrollHint = styled(motion.div)<{ isMobile: boolean }>`
   justify-content: center;
   width: 44px;
   height: 44px;
+  padding: 0;
   border-radius: 9999px;
   background: ${({ theme }) => theme.cardColor};
   color: ${({ theme }) => theme.accent};
@@ -369,4 +384,3 @@ export const GlobalScrollHint = styled(motion.div)<{ isMobile: boolean }>`
     box-shadow: ${({ theme }) => theme.shadowElevated};
   }
 `;
-

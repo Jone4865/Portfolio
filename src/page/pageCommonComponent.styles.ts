@@ -2,15 +2,15 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { SIDER_RAIL } from 'constants/layout';
 
-export const Page = styled.main<{ isDesktop: boolean; isTablet: boolean }>`
+export const Page = styled.main<{ $isDesktop: boolean; $isTablet: boolean }>`
   position: relative;
   min-height: 100vh;
-  margin-left: ${({ isDesktop, isTablet }) =>
-    isDesktop || isTablet ? `${SIDER_RAIL}px` : '0'};
-  padding: ${({ isDesktop, isTablet }) =>
-    isDesktop ? '44px 48px 96px' : isTablet ? '36px 28px 72px' : '28px 20px 64px'};
-  max-width: ${({ isDesktop, isTablet }) =>
-    isDesktop || isTablet ? `min(1040px, calc(100vw - ${SIDER_RAIL}px - 56px))` : '100%'};
+  margin-left: ${({ $isDesktop, $isTablet }) =>
+    $isDesktop || $isTablet ? `${SIDER_RAIL}px` : '0'};
+  padding: ${({ $isDesktop, $isTablet }) =>
+    $isDesktop ? '44px 48px 96px' : $isTablet ? '36px 28px 72px' : '28px 20px 64px'};
+  max-width: ${({ $isDesktop, $isTablet }) =>
+    $isDesktop || $isTablet ? `min(1040px, calc(100vw - ${SIDER_RAIL}px - 56px))` : '100%'};
   background: ${({ theme }) => theme.canvasGradient};
   overflow-x: hidden;
 `;

@@ -38,7 +38,7 @@ function PageCommonComponent() {
   const [errorText, setErrorText] = useState('');
 
   return (
-    <Page isDesktop={isDesktop} isTablet={isTablet}>
+    <Page $isDesktop={isDesktop} $isTablet={isTablet}>
       <BackdropGrid aria-hidden />
 
       <PageHeader>
@@ -52,8 +52,8 @@ function PageCommonComponent() {
         <Eyebrow>Design system</Eyebrow>
         <h1>UI 컴포넌트</h1>
         <Lead>
-          버튼·폼·카드 등 공용 컴포넌트의 상태를 한 화면에서 확인합니다. 라이트/다크
-          전환과 함께 대조해 보세요.
+          버튼·폼·카드 등 공용 컴포넌트의 상태를 한 화면에서 확인합니다. 라이트/다크 전환과 함께
+          대조해 보세요.
         </Lead>
         <HeaderAccent aria-hidden />
       </PageHeader>

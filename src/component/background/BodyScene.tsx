@@ -1,8 +1,9 @@
-import { Suspense } from 'react';
+import { Suspense, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import * as THREE from 'three';
 
 import { BODY_CAMERA } from 'constants/three/bodyScene';
+import { useCanvasFrameLoop } from 'hooks';
 import type { BodySceneProps } from 'types/components/bodyScene';
 
 import { CanvasHost } from './bodyScene.styles';
@@ -10,11 +11,15 @@ import SceneContent from './SceneContent';
 
 /** body 뒤 배경 — FE 포트폴리오 톤에 맞는 MacBook */
 export default function BodyScene({ enabled = true, accent = '#b83253' }: BodySceneProps) {
+  const hostRef = useRef<HTMLDivElement>(null);
+  const frameloop = useCanvasFrameLoop(hostRef, enabled);
+
   if (!enabled) return null;
 
   return (
-    <CanvasHost aria-hidden>
+    <CanvasHost ref={hostRef} aria-hidden>
       <Canvas
+        frameloop={frameloop}
         dpr={[1, 1.6]}
         gl={{
           antialias: true,

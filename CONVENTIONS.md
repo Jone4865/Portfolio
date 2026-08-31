@@ -33,17 +33,17 @@ import 순서:
 
 ## 폴더 역할
 
-| 경로 | 넣을 것 |
-|------|---------|
-| `app/` | 라우터 바깥 앱 셸, 전역 배경 |
-| `page/` | 라우트 단위 페이지, 페이지 전용 스타일·애니메이션 |
-| `component/` | 재사용 UI·차트·3D·사이드바 |
-| `hooks/` | 커스텀 훅 |
-| `data/` | 프로필, 프로젝트, 테마 객체, JSX 포함 정적 콘텐츠 |
-| `constants/` | 레이아웃 수치, 애니메이션 preset, Three.js 상수 |
-| `types/` | 타입·인터페이스 (`types/components/`에 컴포넌트 props) |
-| `contexts/` | React Context |
-| `styled/` | GlobalStyle, styled-components 테마 re-export |
+| 경로         | 넣을 것                                                |
+| ------------ | ------------------------------------------------------ |
+| `app/`       | 라우터 바깥 앱 셸, 전역 배경                           |
+| `page/`      | 라우트 단위 페이지, 페이지 전용 스타일·애니메이션      |
+| `component/` | 재사용 UI·차트·3D·사이드바                             |
+| `hooks/`     | 커스텀 훅                                              |
+| `data/`      | 프로필, 프로젝트, 테마 객체, JSX 포함 정적 콘텐츠      |
+| `constants/` | 레이아웃 수치, 애니메이션 preset, Three.js 상수        |
+| `types/`     | 타입·인터페이스 (`types/components/`에 컴포넌트 props) |
+| `contexts/`  | React Context                                          |
+| `styled/`    | GlobalStyle, styled-components 테마 re-export          |
 
 **컴포넌트 파일에는 로직만.** 아래는 분리합니다.
 

@@ -140,23 +140,13 @@ export function useSectionNavigation({
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       const key = e.key;
-      if (
-        key !== 'ArrowDown' &&
-        key !== 'ArrowUp' &&
-        key !== 'ArrowRight' &&
-        key !== 'ArrowLeft'
-      ) {
+      if (key !== 'ArrowDown' && key !== 'ArrowUp' && key !== 'ArrowRight' && key !== 'ArrowLeft') {
         return;
       }
 
       const target = e.target as HTMLElement | null;
       const tag = target?.tagName;
-      if (
-        tag === 'INPUT' ||
-        tag === 'TEXTAREA' ||
-        tag === 'SELECT' ||
-        target?.isContentEditable
-      ) {
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target?.isContentEditable) {
         return;
       }
 

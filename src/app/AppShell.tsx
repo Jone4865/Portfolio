@@ -2,6 +2,7 @@ import { useLocation, Route, Routes } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 
 import BodyBackground from 'app/BodyBackground';
+import SkipLink from 'component/ui/skipLink';
 import Sider from 'component/sider/sider';
 import { CustomThemeProvider } from 'contexts';
 import NotFoundPage from 'page/404';
@@ -16,6 +17,7 @@ export default function AppShell() {
   return (
     <CustomThemeProvider>
       <GlobalStyle />
+      <SkipLink />
       <BodyBackground />
       {!is404Page && <Sider />}
       <Routes>

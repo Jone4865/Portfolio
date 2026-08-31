@@ -1,12 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { animate, stagger } from 'animejs';
-import {
-  FaEnvelope,
-  FaFeather,
-  FaGraduationCap,
-  FaHeartbeat,
-  FaPhoneAlt,
-} from 'react-icons/fa';
+import { FaEnvelope, FaFeather, FaGraduationCap, FaHeartbeat, FaPhoneAlt } from 'react-icons/fa';
 import { MdOutlineLightMode, MdOutlineNightlightRound } from 'react-icons/md';
 
 import profileImage from 'assets/image/profile.png';
@@ -79,7 +73,7 @@ const Sider = () => {
   };
 
   return (
-    <Container isBig={isDesktop || isTablet} data-sider="true">
+    <Container $isBig={isDesktop || isTablet} data-sider="true">
       <ThemeToggle
         type="button"
         aria-label={isDarkMode ? '라이트 모드' : '다크 모드'}
@@ -131,16 +125,17 @@ const Sider = () => {
       <Line />
       <TitleStyle
         type="button"
+        aria-expanded={stackVisible}
+        aria-controls="sider-tech-stack"
         onClick={() => setStackVisible((prev) => !prev)}
-        visible={stackVisible}
       >
         <FaFeather size={22} aria-hidden />
         <div>Tech Stack</div>
-        <Chevron aria-hidden visible={stackVisible}>
+        <Chevron aria-hidden $visible={stackVisible}>
           ›
         </Chevron>
       </TitleStyle>
-      <TechWrapper visible={stackVisible}>
+      <TechWrapper id="sider-tech-stack" $visible={stackVisible}>
         {techGroups.map((group) => (
           <TechGroup key={group.label}>
             <TechGroupLabel>{group.label}</TechGroupLabel>
@@ -156,16 +151,17 @@ const Sider = () => {
       <Line />
       <TitleStyle
         type="button"
+        aria-expanded={experienceVisible}
+        aria-controls="sider-experience-tech"
         onClick={() => setExperienceVisible((prev) => !prev)}
-        visible={experienceVisible}
       >
         <FaFeather size={22} aria-hidden />
         <div>Experience Tech</div>
-        <Chevron aria-hidden visible={experienceVisible}>
+        <Chevron aria-hidden $visible={experienceVisible}>
           ›
         </Chevron>
       </TitleStyle>
-      <TechWrapper visible={experienceVisible}>
+      <TechWrapper id="sider-experience-tech" $visible={experienceVisible}>
         {experienceGroups.map((group) => (
           <TechGroup key={group.label}>
             <TechGroupLabel>{group.label}</TechGroupLabel>
@@ -179,7 +175,7 @@ const Sider = () => {
         ))}
       </TechWrapper>
       <Line />
-      <TitleStyle as="div" unActiveHover>
+      <TitleStyle as="div" $unActiveHover>
         <FaGraduationCap size={22} aria-hidden />
         <div>Education</div>
         <span />

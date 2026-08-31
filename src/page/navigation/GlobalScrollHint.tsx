@@ -9,7 +9,9 @@ import { GlobalScrollHint as HintButton } from '../styles/pageLayout.styles';
 export default function GlobalScrollHint({ isMobile, onNext }: GlobalScrollHintProps) {
   return (
     <HintButton
-      isMobile={isMobile}
+      type="button"
+      aria-label="다음 섹션으로 이동"
+      $isMobile={isMobile}
       onClick={onNext}
       whileHover={{ scale: 1.06 }}
       whileTap={{ scale: 0.94 }}
@@ -18,6 +20,7 @@ export default function GlobalScrollHint({ isMobile, onNext }: GlobalScrollHintP
         animate={{ y: [0, 5, 0] }}
         transition={scrollHintChevronTransition}
         style={{ display: 'flex' }}
+        aria-hidden
       >
         <FaChevronDown />
       </motion.span>

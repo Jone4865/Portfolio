@@ -31,11 +31,11 @@ export default function ProjectCard({
   isMobile,
 }: ProjectCardProps) {
   return (
-    <SectionContainer isActive={isActive} isDesktop={isDesktop} isTablet={isTablet}>
+    <SectionContainer $isActive={isActive} $isDesktop={isDesktop} $isTablet={isTablet}>
       <CardWrapper
-        isDesktop={isDesktop}
-        isTablet={isTablet}
-        isMobile={isMobile}
+        $isDesktop={isDesktop}
+        $isTablet={isTablet}
+        $isMobile={isMobile}
         initial={false}
         variants={cardRevealVariants}
         animate={isActive ? 'on' : 'off'}
@@ -43,7 +43,7 @@ export default function ProjectCard({
       >
         <CardHeader>
           <OrgPill>{project.key}</OrgPill>
-          <LineOne isDesktop={isDesktop}>
+          <LineOne $isDesktop={isDesktop}>
             <CardTitle>{project.title}</CardTitle>
             <CardMeta>{project.date}</CardMeta>
           </LineOne>

@@ -1,13 +1,14 @@
 {
-  "name": "common_component",
+  "name": "jongwon-portfolio",
   "version": "0.1.0",
   "private": true,
+  "description": "키보드 서퍼 채종원의 Portfolio 입니다.",
   "dependencies": {
     "@react-three/drei": "9.121.4",
     "@react-three/fiber": "8.17.14",
     "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^13.0.0",
-    "@testing-library/user-event": "^13.2.1",
+    "@testing-library/react": "^14.3.1",
+    "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
@@ -44,6 +45,11 @@
       "react-app/jest"
     ]
   },
+  "jest": {
+    "moduleNameMapper": {
+      "^@vercel/analytics/react$": "<rootDir>/src/test/mocks/vercelAnalytics.tsx"
+    }
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -62,5 +68,9 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "prettier": "^3.6.2"
+  },
+  "resolutions": {
+    "browserslist": "4.28.8",
+    "caniuse-lite": "1.0.30001810"
   }
 }
