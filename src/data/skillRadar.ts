@@ -12,11 +12,7 @@ export const skillRadar: SkillRadarItem[] = [
   { label: 'Architecture', value: 80 },
 ];
 
-export const skillStats = {
-  months: 44,
-  projects: 14,
-  coreFrameworks: 3,
-} as const;
+export { portfolioStats as skillStats } from './portfolioStats';
 
 export function polarToCartesian(cx: number, cy: number, radius: number, angle: number) {
   const rad = ((angle - 90) * Math.PI) / 180;

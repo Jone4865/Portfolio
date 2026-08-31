@@ -1,12 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { animate, svg, stagger } from 'animejs';
 
-import {
-  buildRadarPath,
-  polarToCartesian,
-  skillRadar,
-  skillStats,
-} from 'data/skillRadar';
+import { buildRadarPath, polarToCartesian, skillRadar, skillStats } from 'data/skillRadar';
 import type { SkillInsightProps } from 'types/components/skillInsight';
 
 import {
@@ -29,7 +24,11 @@ export default function SkillInsight({ active, isDesktop, isTablet }: SkillInsig
   const radarPathRef = useRef<SVGPathElement>(null);
 
   const radarOutline = useMemo(
-    () => buildRadarPath(skillRadar.map((s) => s.value), 280),
+    () =>
+      buildRadarPath(
+        skillRadar.map((s) => s.value),
+        280,
+      ),
     [],
   );
   const radarGuides = useMemo(

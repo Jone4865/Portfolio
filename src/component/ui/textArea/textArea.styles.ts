@@ -7,8 +7,7 @@ export const TextAreaRoot = styled.textarea<TextAreaProps>`
   border-radius: 12px;
   font-size: 15px;
   font-family: inherit;
-  border: 1px solid
-    ${({ error, theme }) => (error ? theme.accent : theme.inputBorder)};
+  border: 1px solid ${({ error, theme }) => (error ? theme.accent : theme.inputBorder)};
   resize: vertical;
   min-height: 100px;
   outline: none;

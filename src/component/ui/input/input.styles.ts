@@ -15,8 +15,7 @@ export const InputRoot = styled.input<InputProps>`
   width: ${({ width }) => (width ? `${width}px` : 'auto')};
   background: ${({ theme }) => theme.inputBg};
   color: ${({ theme }) => theme.text};
-  border: 1px solid
-    ${({ error, theme }) => (error ? theme.accent : theme.inputBorder)};
+  border: 1px solid ${({ error, theme }) => (error ? theme.accent : theme.inputBorder)};
 
   &::placeholder {
     color: ${({ theme }) => theme.textMuted};

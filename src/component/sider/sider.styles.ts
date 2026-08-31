@@ -1,17 +1,17 @@
 import styled, { css } from 'styled-components';
 import { SIDER_RAIL } from 'constants/layout';
 
-export const Container = styled.div<{ isBig: boolean }>`
+export const Container = styled.div<{ $isBig: boolean }>`
   transition: background 0.25s ease;
-  width: ${({ isBig }) => (isBig ? `${SIDER_RAIL}px` : 'auto')};
+  width: ${({ $isBig }) => ($isBig ? `${SIDER_RAIL}px` : 'auto')};
   background: ${({ theme }) => theme.siderGradient};
-  border-right: ${({ isBig, theme }) => (isBig ? `1px solid ${theme.siderBorder}` : 'none')};
+  border-right: ${({ $isBig, theme }) => ($isBig ? `1px solid ${theme.siderBorder}` : 'none')};
   backdrop-filter: blur(16px);
   padding: 16px 12px 24px;
   z-index: 12;
 
-  ${({ isBig }) =>
-    isBig
+  ${({ $isBig }) =>
+    $isBig
       ? css`
           position: fixed;
           top: 0;
@@ -175,17 +175,17 @@ export const Line = styled.div`
   background: linear-gradient(90deg, transparent, ${({ theme }) => theme.siderBorder}, transparent);
 `;
 
-export const Chevron = styled.span<{ visible?: boolean }>`
+export const Chevron = styled.span<{ $visible?: boolean }>`
   margin-left: auto;
   font-size: 18px;
   font-weight: 300;
   line-height: 1;
-  transform: rotate(${({ visible }) => (visible ? '90deg' : '0deg')});
+  transform: rotate(${({ $visible }) => ($visible ? '90deg' : '0deg')});
   transition: transform 0.2s ease;
   color: ${({ theme }) => theme.textMuted};
 `;
 
-export const TitleStyle = styled.button<{ visible?: boolean; unActiveHover?: boolean }>`
+export const TitleStyle = styled.button<{ $unActiveHover?: boolean }>`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -200,12 +200,12 @@ export const TitleStyle = styled.button<{ visible?: boolean; unActiveHover?: boo
   font-size: 14px;
   color: ${({ theme }) => theme.text};
   text-align: left;
-  cursor: ${({ unActiveHover }) => (unActiveHover ? 'default' : 'pointer')};
+  cursor: ${({ $unActiveHover }) => ($unActiveHover ? 'default' : 'pointer')};
   transition: background 0.15s ease;
 
   &:hover {
-    background: ${({ theme, unActiveHover }) =>
-      unActiveHover ? 'transparent' : theme.siderArrowColor};
+    background: ${({ theme, $unActiveHover }) =>
+      $unActiveHover ? 'transparent' : theme.siderArrowColor};
   }
 
   svg {
@@ -214,13 +214,13 @@ export const TitleStyle = styled.button<{ visible?: boolean; unActiveHover?: boo
   }
 `;
 
-export const TechWrapper = styled.div<{ visible: boolean }>`
+export const TechWrapper = styled.div<{ $visible: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 14px;
-  max-height: ${({ visible }) => (visible ? '2400px' : '0')};
-  padding: ${({ visible }) => (visible ? '8px 4px 12px 8px' : '0')};
-  opacity: ${({ visible }) => (visible ? 1 : 0)};
+  max-height: ${({ $visible }) => ($visible ? '2400px' : '0')};
+  padding: ${({ $visible }) => ($visible ? '8px 4px 12px 8px' : '0')};
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
   overflow: hidden;
   transition:
     max-height 0.32s ease,

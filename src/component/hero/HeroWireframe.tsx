@@ -1,19 +1,24 @@
-import { Suspense } from 'react';
+import { Suspense, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 
 import { HERO_WIRE_CAMERA } from 'constants/three/heroWireframe';
+import { useCanvasFrameLoop } from 'hooks';
 import type { HeroWireframeProps } from 'types/components/heroWireframe';
 
 import HeroWireScene from './HeroWireScene';
 import { WireHost } from './heroWireframe.styles';
 
 /** 히어로 카드 안 — 회색 wireframe */
-export default function HeroWireframe({ enabled = true }: HeroWireframeProps) {
+export default function HeroWireframe({ enabled = true, active = true }: HeroWireframeProps) {
+  const hostRef = useRef<HTMLDivElement>(null);
+  const frameloop = useCanvasFrameLoop(hostRef, enabled && active);
+
   if (!enabled) return null;
 
   return (
-    <WireHost aria-hidden>
+    <WireHost ref={hostRef} aria-hidden>
       <Canvas
+        frameloop={frameloop}
         dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
         camera={{

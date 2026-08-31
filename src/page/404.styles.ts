@@ -31,11 +31,11 @@ export const ErrorCode = styled(motion.h1)`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  
+
   @media (max-width: 768px) {
     font-size: 6rem;
   }
-  
+
   @media (max-width: 480px) {
     font-size: 4rem;
   }
@@ -47,11 +47,11 @@ export const ErrorMessage = styled(motion.h2)`
   margin: 20px 0 12px;
   color: ${({ theme }) => theme.text};
   letter-spacing: -0.03em;
-  
+
   @media (max-width: 768px) {
     font-size: 1.5rem;
   }
-  
+
   @media (max-width: 480px) {
     font-size: 1.2rem;
   }
@@ -62,11 +62,11 @@ export const ErrorDescription = styled(motion.p)`
   margin: 0 0 36px;
   color: ${({ theme }) => theme.textMuted};
   line-height: 1.65;
-  
+
   @media (max-width: 768px) {
     font-size: 1rem;
   }
-  
+
   @media (max-width: 480px) {
     font-size: 0.9rem;
   }
@@ -101,7 +101,7 @@ export const HomeButton = styled(motion.button)`
     filter: brightness(1.06);
     box-shadow: ${({ theme }) => theme.shadowElevated};
   }
-  
+
   @media (max-width: 480px) {
     padding: 12px 24px;
     font-size: 0.9rem;
@@ -129,7 +129,7 @@ export const BackButton = styled(motion.button)`
     background: ${({ theme }) => theme.siderArrowColor};
     border-color: ${({ theme }) => theme.accentMuted};
   }
-  
+
   @media (max-width: 480px) {
     padding: 12px 24px;
     font-size: 0.9rem;

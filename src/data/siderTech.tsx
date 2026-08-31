@@ -1,12 +1,5 @@
 import type { ReactNode } from 'react';
-import {
-  FaEdit,
-  FaAws,
-  FaGithub,
-  FaSourcetree,
-  FaFigma,
-  FaReact,
-} from 'react-icons/fa';
+import { FaEdit, FaAws, FaGithub, FaSourcetree, FaFigma, FaReact } from 'react-icons/fa';
 import {
   SiNextdotjs,
   SiTypescript,

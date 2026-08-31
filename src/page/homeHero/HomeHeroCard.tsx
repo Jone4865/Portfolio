@@ -25,7 +25,11 @@ import {
 const HeroWireframe = lazy(() => import('component/hero/HeroWireframe'));
 
 /** 홈 히어로 — 사진 + 우측 회색 wireframe */
-export default function HomeHeroCard({ typicalContent, backgroundSrc }: HomeHeroCardProps) {
+export default function HomeHeroCard({
+  typicalContent,
+  backgroundSrc,
+  wireActive = true,
+}: HomeHeroCardProps) {
   const reduceMotion = useReducedMotion();
   const { isMobile } = useResponsive();
   const enableWire = !reduceMotion && !isMobile;
@@ -55,7 +59,7 @@ export default function HomeHeroCard({ typicalContent, backgroundSrc }: HomeHero
       </HeroImageShell>
       {enableWire && (
         <Suspense fallback={null}>
-          <HeroWireframe enabled />
+          <HeroWireframe enabled active={wireActive} />
         </Suspense>
       )}
       <EditorialScrim

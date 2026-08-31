@@ -4,14 +4,10 @@ import { useScroll } from 'framer-motion';
 
 import backgroundImage from 'assets/image/background.jpg';
 import SkillInsight from 'component/charts/SkillInsight';
-import { SECTION_BASE } from 'constants/layout';
+import { MAIN_CONTENT_ID, SECTION_BASE } from 'constants/layout';
 import { projects } from 'data/projects';
 import { heroTypingLoop, heroTypingSteps } from 'data/heroTyping';
-import {
-  useResponsive,
-  useSectionNavigation,
-  useSidebarHeight,
-} from 'hooks';
+import { useResponsive, useSectionNavigation, useSidebarHeight } from 'hooks';
 
 import HomeHeroCard from './homeHero/HomeHeroCard';
 import GlobalScrollHint from './navigation/GlobalScrollHint';
@@ -37,16 +33,14 @@ function PageIndex() {
   });
 
   const typicalComponent = useMemo(
-    () => (
-      <Typical steps={[...heroTypingSteps]} loop={heroTypingLoop} />
-    ),
+    () => <Typical steps={[...heroTypingSteps]} loop={heroTypingLoop} />,
     [],
   );
 
   return (
-    <Container isDesktop={isDesktop} isTablet={isTablet}>
+    <Container id={MAIN_CONTENT_ID} $isDesktop={isDesktop} $isTablet={isTablet}>
       <Wrap
-        totalSections={SECTION_BASE + projects.length}
+        $totalSections={SECTION_BASE + projects.length}
         style={
           isMobile
             ? {
@@ -55,7 +49,7 @@ function PageIndex() {
             : undefined
         }
       >
-        <PrograssStyle isDesktop={isDesktop} style={{ scaleX: scrollYProgress }} />
+        <PrograssStyle $isDesktop={isDesktop} style={{ scaleX: scrollYProgress }} />
 
         {isDesktop && (
           <PageIndicator
@@ -68,34 +62,27 @@ function PageIndex() {
         )}
 
         <SectionContainer
-          isActive={activeSection === 0}
-          isDesktop={isDesktop}
-          isTablet={isTablet}
+          $isActive={activeSection === 0}
+          $isDesktop={isDesktop}
+          $isTablet={isTablet}
         >
-          <TypingWrapper isDesktop={isDesktop} isTablet={isTablet}>
+          <TypingWrapper $isDesktop={isDesktop} $isTablet={isTablet}>
             <HomeHeroCard
+              wireActive={activeSection === 0}
               typicalContent={typicalComponent}
               backgroundSrc={String(backgroundImage)}
             />
           </TypingWrapper>
         </SectionContainer>
 
-        <IntroSection
-          isActive={activeSection === 1}
-          isDesktop={isDesktop}
-          isTablet={isTablet}
-        />
+        <IntroSection isActive={activeSection === 1} isDesktop={isDesktop} isTablet={isTablet} />
 
         <SectionContainer
-          isActive={activeSection === 2}
-          isDesktop={isDesktop}
-          isTablet={isTablet}
+          $isActive={activeSection === 2}
+          $isDesktop={isDesktop}
+          $isTablet={isTablet}
         >
-          <SkillInsight
-            active={activeSection === 2}
-            isDesktop={isDesktop}
-            isTablet={isTablet}
-          />
+          <SkillInsight active={activeSection === 2} isDesktop={isDesktop} isTablet={isTablet} />
         </SectionContainer>
 
         {projects.map((project, idx) => (
@@ -111,10 +98,7 @@ function PageIndex() {
       </Wrap>
 
       {activeSection >= 0 && activeSection < 2 + projects.length && (
-        <GlobalScrollHint
-          isMobile={isMobile}
-          onNext={() => goToSection(activeSection + 1)}
-        />
+        <GlobalScrollHint isMobile={isMobile} onNext={() => goToSection(activeSection + 1)} />
       )}
     </Container>
   );

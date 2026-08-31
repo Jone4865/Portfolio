@@ -28,6 +28,7 @@ yarn format:check             # Prettier 검사
 
 ## 제약
 
+<!-- prettier-ignore-start -->
 | 항목 | 내용 |
 |---|---|
 | **CRA** | `react-scripts` 5 — eject 없이 webpack 설정 변경 불가 |
@@ -35,6 +36,7 @@ yarn format:check             # Prettier 검사
 | **모바일 3D** | `BodyBackground`·`BodyScene`은 **데스크톱만** 렌더 (`useResponsive` mobile 분기) |
 | **reduced motion** | `prefers-reduced-motion: reduce`이면 3D 배경·섹션 스냅 스크롤 애니메이션 비활성 |
 | **라우트** | `/`, `/test`만 메인 레이아웃. 그 외는 404 전용 레이아웃 (사이드바·3D 없음) |
+<!-- prettier-ignore-end -->
 
 ## 스크립트
 
