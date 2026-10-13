@@ -10,7 +10,7 @@ import EarlierWorkSection, { EARLIER_VISIBLE_COUNT } from './EarlierWorkSection'
 const layout = { isActive: true, isDesktop: true, isTablet: false, isMobile: false };
 
 describe('AiWorkflowSection', () => {
-  it('renders the headings, cases, principles and the Jone Lab link in a new tab', () => {
+  it('renders the headings, productivity, principles and the Jone Lab link in a new tab', () => {
     render(
       <CustomThemeProvider>
         <AiWorkflowSection {...layout} />
@@ -18,7 +18,7 @@ describe('AiWorkflowSection', () => {
     );
 
     expect(screen.getByRole('region', { name: 'AI와 함께 일하는 방식' })).toBeInTheDocument();
-    aiWorkflow.cases.forEach((item) => expect(screen.getByText(item.title)).toBeInTheDocument());
+    aiWorkflow.productivity.forEach((item) => expect(screen.getByText(item)).toBeInTheDocument());
     aiWorkflow.principles.forEach((item) => expect(screen.getByText(item)).toBeInTheDocument());
 
     const link = screen.getByRole('link', { name: /Jone Lab 보러 가기/ });

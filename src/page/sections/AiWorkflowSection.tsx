@@ -3,8 +3,6 @@ import type { ResponsiveFlags, SectionLayoutProps } from 'types/section';
 
 import { cardRevealVariants } from '../animations/projectCardVariants';
 import {
-  CaseItem,
-  CaseList,
   Closing,
   Lead,
   PrincipleList,
@@ -31,7 +29,7 @@ export default function AiWorkflowSection({
   isTablet,
   isMobile,
 }: AiWorkflowSectionProps) {
-  const { title, pill, lead, usage, cases, productivity, principles, closing, link } = aiWorkflow;
+  const { title, pill, lead, usage, productivity, principles, closing, link } = aiWorkflow;
 
   return (
     <SectionContainer $isActive={isActive} $isDesktop={isDesktop} $isTablet={isTablet}>
@@ -64,27 +62,6 @@ export default function AiWorkflowSection({
           </UsageList>
         </MetaBlock>
 
-        <MetaBlock>
-          <MetaLabel as="h3">사례</MetaLabel>
-          <CaseList>
-            {cases.map((item) => (
-              <CaseItem key={item.title}>
-                <summary>
-                  <span className="case-title">{item.title}</span>
-                  <span className="case-summary">{item.summary}</span>
-                  <span className="case-toggle" aria-hidden>
-                    ▾
-                  </span>
-                </summary>
-                <ul>
-                  {item.points.map((point) => (
-                    <li key={point}>{point}</li>
-                  ))}
-                </ul>
-              </CaseItem>
-            ))}
-          </CaseList>
-        </MetaBlock>
 
         <MetaBlock>
           <MetaLabel as="h3">팀 생산성</MetaLabel>
