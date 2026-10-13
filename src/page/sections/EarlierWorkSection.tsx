@@ -43,7 +43,7 @@ export default function EarlierWorkSection({
       >
         <CardHeader>
           <OrgPill>Earlier Work</OrgPill>
-          <CardTitle id="earlier-work-title">그 전의 작업 (2022~2023)</CardTitle>
+          <CardTitle id="earlier-work-title">이전 프로젝트</CardTitle>
         </CardHeader>
 
         <Timeline id="earlier-work-list">

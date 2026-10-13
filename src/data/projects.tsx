@@ -253,7 +253,7 @@ export const projects: Project[] = [
 */
 ];
 
-/** 그 전의 작업 (2022~2023) — 메인 카드 대신 간단한 타임라인으로 노출 (원본 데이터 유지) */
+/** 이전 프로젝트 — 메인 카드 대신 간단한 타임라인으로 노출 (원본 데이터 유지) */
 export const earlierProjects: Project[] = [
   {
     key: 'Lawdians',

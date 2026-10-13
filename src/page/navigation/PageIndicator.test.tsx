@@ -61,7 +61,7 @@ describe('PageIndicator', () => {
     );
 
     expect(screen.queryByRole('button', { name: /Skills/ })).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: '그 전의 작업 섹션으로 이동' }));
+    fireEvent.click(screen.getByRole('button', { name: '이전 프로젝트 섹션으로 이동' }));
     expect(onGoToSection).toHaveBeenCalledWith(4);
     expect(
       screen.getByRole('button', { name: 'AI와 함께 일하는 방식 섹션으로 이동' }),

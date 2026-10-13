@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-/** AI·그 전의 작업 섹션 — 기존 카드(CardWrapper) 안에서 쓰는 보조 요소 */
+/** AI·이전 프로젝트 섹션 — 기존 카드(CardWrapper) 안에서 쓰는 보조 요소 */
 
 export const Lead = styled.p`
   margin: 0;

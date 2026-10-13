@@ -7,7 +7,7 @@ export const MAIN_CONTENT_ID = 'main-content';
 /** Home + Intro — 프로젝트 카드 앞 섹션 수 */
 export const SECTION_BASE = 2;
 
-/** 프로젝트 카드 뒤 섹션 수 — 그 전의 작업 + AI와 함께 일하는 방식 */
+/** 프로젝트 카드 뒤 섹션 수 — 이전 프로젝트 + AI와 함께 일하는 방식 */
 export const TRAILING_SECTIONS = 2;
 
 /** 전체 풀페이지 섹션 수 */
