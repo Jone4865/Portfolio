@@ -43,17 +43,17 @@ describe('PageIndicator', () => {
     );
 
     fireEvent.click(screen.getByRole('button', { name: '프로젝트 1 섹션으로 이동' }));
-    expect(onGoToSection).toHaveBeenCalledWith(2);
+    expect(onGoToSection).toHaveBeenCalledWith(3);
   });
 
-  it('places the earlier-work and AI dots after the project dots', () => {
+  it('places the AI dot right after intro and the earlier-work dot after the projects', () => {
     const onGoToSection = jest.fn();
     render(
       <CustomThemeProvider>
         <PageIndicator
           isDesktop
           isTablet={false}
-          activeSection={5}
+          activeSection={2}
           projectCount={2}
           onGoToSection={onGoToSection}
         />
@@ -62,9 +62,10 @@ describe('PageIndicator', () => {
 
     expect(screen.queryByRole('button', { name: /Skills/ })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: '이전 프로젝트 섹션으로 이동' }));
-    expect(onGoToSection).toHaveBeenCalledWith(4);
-    expect(
-      screen.getByRole('button', { name: 'AI와 함께 일하는 방식 섹션으로 이동' }),
-    ).toHaveAttribute('aria-current', 'true');
+    expect(onGoToSection).toHaveBeenCalledWith(5);
+    expect(screen.getByRole('button', { name: 'AI 섹션으로 이동' })).toHaveAttribute(
+      'aria-current',
+      'true',
+    );
   });
 });

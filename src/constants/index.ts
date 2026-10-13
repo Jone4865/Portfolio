@@ -1,4 +1,5 @@
 export {
+  AI_SECTION,
   easeOutExpo,
   getTotalSections,
   SECTION_BASE,

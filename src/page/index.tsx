@@ -5,7 +5,7 @@ import { useScroll } from 'framer-motion';
 import CommandPalette, { MOD_KEY } from 'component/palette/CommandPalette';
 import type { PaletteItem } from 'component/palette/CommandPalette';
 import { PaletteTrigger } from 'component/palette/commandPalette.styles';
-import { getTotalSections, MAIN_CONTENT_ID, SECTION_BASE } from 'constants/layout';
+import { AI_SECTION, getTotalSections, MAIN_CONTENT_ID, SECTION_BASE } from 'constants/layout';
 import { ThemeContext } from 'contexts';
 import { aiWorkflow } from 'data/aiWorkflow';
 import { profile } from 'data/profile';
@@ -49,7 +49,7 @@ function PageIndex() {
   const sidebarHeight = useSidebarHeight(isMobile);
   const totalSections = getTotalSections(projects.length);
   const earlierSection = SECTION_BASE + projects.length;
-  const aiSection = earlierSection + 1;
+  const aiSection = AI_SECTION;
   const { activeSection, goToSection, maxSection } = useSectionNavigation({
     isMobile,
     projectCount: projects.length,
@@ -185,6 +185,13 @@ function PageIndex() {
 
         <IntroSection isActive={activeSection === 1} isDesktop={isDesktop} isTablet={isTablet} />
 
+        <AiWorkflowSection
+          isActive={activeSection === aiSection}
+          isDesktop={isDesktop}
+          isTablet={isTablet}
+          isMobile={isMobile}
+        />
+
         {projects.map((project, idx) => (
           <ProjectCard
             key={`${project.title}-${project.date}`}
@@ -200,13 +207,6 @@ function PageIndex() {
 
         <EarlierWorkSection
           isActive={activeSection === earlierSection}
-          isDesktop={isDesktop}
-          isTablet={isTablet}
-          isMobile={isMobile}
-        />
-
-        <AiWorkflowSection
-          isActive={activeSection === aiSection}
           isDesktop={isDesktop}
           isTablet={isTablet}
           isMobile={isMobile}
