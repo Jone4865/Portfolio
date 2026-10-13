@@ -9,7 +9,7 @@ import {
   heroSpringSoft,
   heroTypingTransition,
 } from 'constants/animations';
-import { useResponsive } from 'hooks';
+import { useIdleReady, useResponsive } from 'hooks';
 import type { HomeHeroCardProps } from 'types/components/homeHero';
 
 import {
@@ -32,7 +32,9 @@ export default function HomeHeroCard({
 }: HomeHeroCardProps) {
   const reduceMotion = useReducedMotion();
   const { isMobile } = useResponsive();
-  const enableWire = !reduceMotion && !isMobile;
+  // 히어로 이미지·텍스트가 먼저 그려진 뒤(load + idle) wireframe 청크를 받습니다.
+  const wireReady = useIdleReady(!reduceMotion && !isMobile);
+  const enableWire = !reduceMotion && !isMobile && wireReady;
 
   return (
     <HeroVisualFrame

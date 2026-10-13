@@ -20,7 +20,7 @@ export default function BodyScene({ enabled = true, accent = '#b83253' }: BodySc
     <CanvasHost ref={hostRef} aria-hidden>
       <Canvas
         frameloop={frameloop}
-        dpr={[1, 1.6]}
+        dpr={[1, 1.5]}
         gl={{
           antialias: true,
           alpha: true,
