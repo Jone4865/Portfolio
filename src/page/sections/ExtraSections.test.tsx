@@ -22,7 +22,7 @@ describe('AiWorkflowSection', () => {
     aiWorkflow.principles.forEach((item) => expect(screen.getByText(item)).toBeInTheDocument());
 
     const link = screen.getByRole('link', { name: /Jone Lab 보러 가기/ });
-    expect(link).toHaveAttribute('href', 'https://jone-lab.vercel.app');
+    expect(link).toHaveAttribute('href', 'https://jone-lab.pages.dev');
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAttribute('rel', expect.stringContaining('noopener'));
   });

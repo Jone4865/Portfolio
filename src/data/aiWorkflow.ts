@@ -43,5 +43,5 @@ export const aiWorkflow: AiWorkflowContent = {
     'AI 결과는 근거까지 확인합니다.',
   ],
   closing: '회사 밖에서도 AI와 함께 필요한 서비스를 기획부터 배포까지 직접 만들고 있습니다.',
-  link: { name: 'Jone Lab 보러 가기', url: 'https://jone-lab.vercel.app' },
+  link: { name: 'Jone Lab 보러 가기', url: 'https://jone-lab.pages.dev' },
 };
