@@ -1,5 +1,5 @@
 import { SECTION_BASE } from 'constants/layout';
-import { pageIndicatorSections } from 'data/pageIndicator';
+import { pageIndicatorSections, pageIndicatorTrailingSections } from 'data/pageIndicator';
 import type { PageIndicatorProps } from 'types/components/pageIndicator';
 
 import {
@@ -47,6 +47,22 @@ export default function PageIndicator({
           );
         })}
       </DotGroup>
+
+      {pageIndicatorTrailingSections.map((section) => {
+        const sectionIndex = SECTION_BASE + projectCount + section.offset;
+        return (
+          <DotGroup key={section.id}>
+            <DotLabel>{section.label}</DotLabel>
+            <PageDot
+              type="button"
+              aria-label={`${section.ariaLabel} 섹션으로 이동`}
+              aria-current={activeSection === sectionIndex ? 'true' : undefined}
+              $isActive={activeSection === sectionIndex}
+              onClick={() => onGoToSection(sectionIndex)}
+            />
+          </DotGroup>
+        );
+      })}
     </PageIndicatorRail>
   );
 }

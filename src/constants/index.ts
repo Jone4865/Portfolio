@@ -1,4 +1,10 @@
-export { easeOutExpo, SECTION_BASE, SIDER_RAIL } from './layout';
+export {
+  easeOutExpo,
+  getTotalSections,
+  SECTION_BASE,
+  SIDER_RAIL,
+  TRAILING_SECTIONS,
+} from './layout';
 export { THEME_STORAGE_KEY } from './theme';
 export {
   DESKTOP_MIN_WIDTH,

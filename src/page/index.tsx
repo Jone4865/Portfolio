@@ -3,8 +3,7 @@ import Typical from 'react-typical';
 import { useScroll } from 'framer-motion';
 
 import backgroundImage from 'assets/image/background.jpg';
-import SkillInsight from 'component/charts/SkillInsight';
-import { MAIN_CONTENT_ID, SECTION_BASE } from 'constants/layout';
+import { getTotalSections, MAIN_CONTENT_ID, SECTION_BASE } from 'constants/layout';
 import { projects } from 'data/projects';
 import { heroTypingLoop, heroTypingSteps } from 'data/heroTyping';
 import { useResponsive, useSectionNavigation, useSidebarHeight } from 'hooks';
@@ -12,6 +11,8 @@ import { useResponsive, useSectionNavigation, useSidebarHeight } from 'hooks';
 import HomeHeroCard from './homeHero/HomeHeroCard';
 import GlobalScrollHint from './navigation/GlobalScrollHint';
 import PageIndicator from './navigation/PageIndicator';
+import AiWorkflowSection from './sections/AiWorkflowSection';
+import EarlierWorkSection from './sections/EarlierWorkSection';
 import IntroSection from './sections/IntroSection';
 import ProjectCard from './sections/ProjectCard';
 import {
@@ -26,7 +27,10 @@ function PageIndex() {
   const { isDesktop, isTablet, isMobile } = useResponsive();
   const { scrollYProgress } = useScroll();
   const sidebarHeight = useSidebarHeight(isMobile);
-  const { activeSection, goToSection } = useSectionNavigation({
+  const totalSections = getTotalSections(projects.length);
+  const earlierSection = SECTION_BASE + projects.length;
+  const aiSection = earlierSection + 1;
+  const { activeSection, goToSection, maxSection } = useSectionNavigation({
     isMobile,
     projectCount: projects.length,
     sidebarHeight,
@@ -40,11 +44,11 @@ function PageIndex() {
   return (
     <Container id={MAIN_CONTENT_ID} $isDesktop={isDesktop} $isTablet={isTablet}>
       <Wrap
-        $totalSections={SECTION_BASE + projects.length}
+        $totalSections={totalSections}
         style={
           isMobile
             ? {
-                height: `calc(${SECTION_BASE + projects.length} * 100vh + ${sidebarHeight + 100}px)`,
+                height: `calc(${totalSections} * 100vh + ${sidebarHeight + 100}px)`,
               }
             : undefined
         }
@@ -77,14 +81,6 @@ function PageIndex() {
 
         <IntroSection isActive={activeSection === 1} isDesktop={isDesktop} isTablet={isTablet} />
 
-        <SectionContainer
-          $isActive={activeSection === 2}
-          $isDesktop={isDesktop}
-          $isTablet={isTablet}
-        >
-          <SkillInsight active={activeSection === 2} isDesktop={isDesktop} isTablet={isTablet} />
-        </SectionContainer>
-
         {projects.map((project, idx) => (
           <ProjectCard
             key={`${project.title}-${project.date}`}
@@ -95,9 +91,23 @@ function PageIndex() {
             isMobile={isMobile}
           />
         ))}
+
+        <EarlierWorkSection
+          isActive={activeSection === earlierSection}
+          isDesktop={isDesktop}
+          isTablet={isTablet}
+          isMobile={isMobile}
+        />
+
+        <AiWorkflowSection
+          isActive={activeSection === aiSection}
+          isDesktop={isDesktop}
+          isTablet={isTablet}
+          isMobile={isMobile}
+        />
       </Wrap>
 
-      {activeSection >= 0 && activeSection < 2 + projects.length && (
+      {activeSection >= 0 && activeSection < maxSection && (
         <GlobalScrollHint isMobile={isMobile} onNext={() => goToSection(activeSection + 1)} />
       )}
     </Container>
