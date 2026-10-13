@@ -42,7 +42,29 @@ describe('PageIndicator', () => {
       </CustomThemeProvider>,
     );
 
-    fireEvent.click(screen.getByRole('button', { name: 'Skills 섹션으로 이동' }));
+    fireEvent.click(screen.getByRole('button', { name: '프로젝트 1 섹션으로 이동' }));
     expect(onGoToSection).toHaveBeenCalledWith(2);
+  });
+
+  it('places the earlier-work and AI dots after the project dots', () => {
+    const onGoToSection = jest.fn();
+    render(
+      <CustomThemeProvider>
+        <PageIndicator
+          isDesktop
+          isTablet={false}
+          activeSection={5}
+          projectCount={2}
+          onGoToSection={onGoToSection}
+        />
+      </CustomThemeProvider>,
+    );
+
+    expect(screen.queryByRole('button', { name: /Skills/ })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: '그 전의 작업 섹션으로 이동' }));
+    expect(onGoToSection).toHaveBeenCalledWith(4);
+    expect(
+      screen.getByRole('button', { name: 'AI와 함께 일하는 방식 섹션으로 이동' }),
+    ).toHaveAttribute('aria-current', 'true');
   });
 });

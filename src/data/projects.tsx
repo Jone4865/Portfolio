@@ -187,178 +187,7 @@ export const projects: Project[] = [
       },
     ],
   },
-  /* 자사 쇼핑몰 CMS 템플릿 이하 — 임시 숨김 (삭제하지 않음)
-{
-  key: 'Lawdians',
-  date: '2023.04 - 2023.05',
-  experience: [
-    'Apollo Client + GraphQL 기반 API 연동 → 데이터 일관성 및 효율적 통신',
-    'React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선',
-    'react-responsive 기반 반응형 구현 → 다양한 디바이스 대응',
-    'Ant Design 기반 UI 설계·개발 → 일관된 컴포넌트 활용',
-  ],
-  people: '기획 1, 프론트엔드 2, 백엔드 1',
-  stack: [
-    { name: 'React.js', icon: <FaReact /> },
-    { name: 'TypeScript', icon: <SiTypescript /> },
-    { name: 'Ant Design', icon: <SiAntdesign /> },
-    { name: 'Apollographql', icon: <SiApollographql /> },
-    { name: 'styled-components', icon: <SiStyledcomponents /> },
-  ],
-  subTitle: '자사 쇼핑몰 CMS 개발 대비 템플릿 구현',
-  title: '자사 쇼핑몰 CMS 템플릿',
-  link: [
-    {
-      name: '저장소 링크',
-      url: 'https://github.com/Jone4865/law_cms_shopSolution',
-    },
-  ],
-},
-{
-  key: 'Lawdians',
-  date: '2023.02 - 2023.03',
-  experience: [
-    'Apollo Client + GraphQL 기반 API 연동 → 데이터 일관성 및 효율적 통신',
-    'React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선',
-    'react-responsive 기반 반응형 구현 → 다양한 디바이스 대응',
-    'Ant Design 기반 UI 설계·개발 → 일관된 컴포넌트 활용',
-  ],
-  people: '기획 1, 프론트엔드 2, 백엔드 1',
-  stack: [
-    { name: 'React.js', icon: <FaReact /> },
-    { name: 'TypeScript', icon: <SiTypescript /> },
-    { name: 'Ant Design', icon: <SiAntdesign /> },
-    { name: 'Apollographql', icon: <SiApollographql /> },
-    { name: 'styled-components', icon: <SiStyledcomponents /> },
-  ],
-  subTitle: '리얼파이 프로젝트 관리자 홈페이지 구현',
-  title: '리얼파이 CMS',
-  link: [
-    {
-      name: '저장소 링크',
-      url: 'https://github.com/Jone4865/law_cms_realfi',
-    },
-  ],
-},
-{
-  key: 'Lawdians',
-  date: '2023.01 - 2023.02',
-  experience: [
-    'Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선',
-    'Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리',
-    'KakaoMap API 기반 지도 컴포넌트 → 직관적 위치 정보 제공',
-    'SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응',
-  ],
-  people: '기획 1, 디자인 1, 프론트엔드 1',
-  stack: [
-    { name: 'Next.js', icon: <SiNextdotjs /> },
-    { name: 'TypeScript', icon: <SiTypescript /> },
-    { name: 'Sass', icon: <SiSass /> },
-    { name: 'axios', icon: <SiAxios /> },
-  ],
-  subTitle: '기업 홈페이지 구현',
-  title: '로디언즈 홀딩스',
-  link: [
-    {
-      name: '저장소 링크',
-      url: 'https://github.com/Jone4865/law_lawdiansHoldings',
-    },
-    {
-      name: '관련영상 링크',
-      url: 'https://drive.google.com/file/d/12jmJR7EIZw0DbMfhUEqaU9RaIU8XM2w0/view?usp=drive_link',
-    },
-  ],
-},
-{
-  key: 'Lawdians',
-  date: '2023.01 - 2023.01',
-  experience: [
-    'Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선',
-    'react-responsive 기반 반응형 구현 → 다양한 디바이스 대응',
-    'Storybook 기반 컴포넌트 문서화 → 재사용성과 협업 효율 향상',
-    'SCSS 기반 스타일링 → 일관된 스타일과 유지보수성 강화',
-  ],
-  people: '기획 1, 디자인 1, 프론트엔드 1',
-  stack: [
-    { name: 'Next.js', icon: <SiNextdotjs /> },
-    { name: 'TypeScript', icon: <SiTypescript /> },
-    { name: 'Sass', icon: <SiSass /> },
-    { name: 'StoryBook', icon: <SiStorybook /> },
-  ],
-  subTitle: '조각거래 플랫폼 랜딩페이지 구현',
-  title: '리얼파이 랜딩페이지',
-  link: [
-    {
-      name: '저장소 링크',
-      url: 'https://github.com/Jone4865/law_landing_realfi',
-    },
-    {
-      name: '관련영상 링크',
-      url: 'https://drive.google.com/file/d/1-C0ixxMNVXRO6CDO9l-dtJPNETvxTWqG/view?usp=drive_link',
-    },
-  ],
-},
-{
-  key: 'Lawdians',
-  date: '2023.01 - 2023.01',
-  experience: [
-    'Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선',
-    'Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리',
-    'SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응',
-    'Storybook 기반 컴포넌트 문서화 → 재사용성과 협업 효율 향상',
-  ],
-  people: '기획 1, 디자인 1, 프론트엔드 1',
-  stack: [
-    { name: 'Next.js', icon: <SiNextdotjs /> },
-    { name: 'TypeScript', icon: <SiTypescript /> },
-    { name: 'Sass', icon: <SiSass /> },
-    { name: 'StoryBook', icon: <SiStorybook /> },
-    { name: 'axios', icon: <SiAxios /> },
-  ],
-  subTitle: '마케팅 운용 및 운영 대행 사이트 랜딩페이지 구현',
-  title: '감동기획 랜딩페이지',
-  link: [
-    {
-      name: '저장소 링크',
-      url: 'https://github.com/Jone4865/law_landing_gamdongplan',
-    },
-    {
-      name: '관련영상 링크',
-      url: 'https://drive.google.com/file/d/1PvmixTpkjmTdYCh2hcXi-TlG_pLokSN7/view?usp=drive_link',
-    },
-  ],
-},
-{
-  key: 'Lawdians',
-  date: '2023.01 - 2023.01',
-  experience: [
-    'Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선',
-    'Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리',
-    'Cheerio 기반 크롤링 → 외부 데이터 자동 수집 및 운영 효율화',
-    'SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응',
-    'Storybook 기반 컴포넌트 문서화 → 재사용성과 협업 효율 향상',
-  ],
-  people: '기획 1, 디자인 1, 프론트엔드 1',
-  stack: [
-    { name: 'Next.js', icon: <SiNextdotjs /> },
-    { name: 'TypeScript', icon: <SiTypescript /> },
-    { name: 'Sass', icon: <SiSass /> },
-    { name: 'StoryBook', icon: <SiStorybook /> },
-    { name: 'axios', icon: <SiAxios /> },
-  ],
-  subTitle: '상품권 판매, IT 서비스 대행 사이트 랜딩페이지',
-  title: '방배사 랜딩페이지',
-  link: [
-    {
-      name: '저장소 링크',
-      url: 'https://github.com/Jone4865/law_landing_bangbaesa',
-    },
-    {
-      name: '관련영상 링크',
-      url: 'https://drive.google.com/file/d/1vhBm38_C92M3ov5CCcB_MgwmsGebARqp/view?usp=drive_link',
-    },
-  ],
-},
+  /* 덜지니어스·20-Questions — 임시 숨김 (삭제하지 않음)
 {
   key: 'Hanghae99',
   date: '2022.08 - 2022.09',
@@ -422,4 +251,179 @@ export const projects: Project[] = [
   ],
 },
 */
+];
+
+/** 그 전의 작업 (2022~2023) — 메인 카드 대신 간단한 타임라인으로 노출 (원본 데이터 유지) */
+export const earlierProjects: Project[] = [
+  {
+    key: 'Lawdians',
+    date: '2023.04 - 2023.05',
+    experience: [
+      'Apollo Client + GraphQL 기반 API 연동 → 데이터 일관성 및 효율적 통신',
+      'React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선',
+      'react-responsive 기반 반응형 구현 → 다양한 디바이스 대응',
+      'Ant Design 기반 UI 설계·개발 → 일관된 컴포넌트 활용',
+    ],
+    people: '기획 1, 프론트엔드 2, 백엔드 1',
+    stack: [
+      { name: 'React.js', icon: <FaReact /> },
+      { name: 'TypeScript', icon: <SiTypescript /> },
+      { name: 'Ant Design', icon: <SiAntdesign /> },
+      { name: 'Apollographql', icon: <SiApollographql /> },
+      { name: 'styled-components', icon: <SiStyledcomponents /> },
+    ],
+    subTitle: '자사 쇼핑몰 CMS 개발 대비 템플릿 구현',
+    title: '자사 쇼핑몰 CMS 템플릿',
+    link: [
+      {
+        name: '저장소 링크',
+        url: 'https://github.com/Jone4865/law_cms_shopSolution',
+      },
+    ],
+  },
+  {
+    key: 'Lawdians',
+    date: '2023.02 - 2023.03',
+    experience: [
+      'Apollo Client + GraphQL 기반 API 연동 → 데이터 일관성 및 효율적 통신',
+      'React 기반 CSR 구현 → 사용자 상호작용 응답 속도 개선',
+      'react-responsive 기반 반응형 구현 → 다양한 디바이스 대응',
+      'Ant Design 기반 UI 설계·개발 → 일관된 컴포넌트 활용',
+    ],
+    people: '기획 1, 프론트엔드 2, 백엔드 1',
+    stack: [
+      { name: 'React.js', icon: <FaReact /> },
+      { name: 'TypeScript', icon: <SiTypescript /> },
+      { name: 'Ant Design', icon: <SiAntdesign /> },
+      { name: 'Apollographql', icon: <SiApollographql /> },
+      { name: 'styled-components', icon: <SiStyledcomponents /> },
+    ],
+    subTitle: '리얼파이 프로젝트 관리자 홈페이지 구현',
+    title: '리얼파이 CMS',
+    link: [
+      {
+        name: '저장소 링크',
+        url: 'https://github.com/Jone4865/law_cms_realfi',
+      },
+    ],
+  },
+  {
+    key: 'Lawdians',
+    date: '2023.01 - 2023.02',
+    experience: [
+      'Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선',
+      'Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리',
+      'KakaoMap API 기반 지도 컴포넌트 → 직관적 위치 정보 제공',
+      'SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응',
+    ],
+    people: '기획 1, 디자인 1, 프론트엔드 1',
+    stack: [
+      { name: 'Next.js', icon: <SiNextdotjs /> },
+      { name: 'TypeScript', icon: <SiTypescript /> },
+      { name: 'Sass', icon: <SiSass /> },
+      { name: 'axios', icon: <SiAxios /> },
+    ],
+    subTitle: '기업 홈페이지 구현',
+    title: '로디언즈 홀딩스',
+    link: [
+      {
+        name: '저장소 링크',
+        url: 'https://github.com/Jone4865/law_lawdiansHoldings',
+      },
+      {
+        name: '관련영상 링크',
+        url: 'https://drive.google.com/file/d/12jmJR7EIZw0DbMfhUEqaU9RaIU8XM2w0/view?usp=drive_link',
+      },
+    ],
+  },
+  {
+    key: 'Lawdians',
+    date: '2023.01 - 2023.01',
+    experience: [
+      'Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선',
+      'react-responsive 기반 반응형 구현 → 다양한 디바이스 대응',
+      'Storybook 기반 컴포넌트 문서화 → 재사용성과 협업 효율 향상',
+      'SCSS 기반 스타일링 → 일관된 스타일과 유지보수성 강화',
+    ],
+    people: '기획 1, 디자인 1, 프론트엔드 1',
+    stack: [
+      { name: 'Next.js', icon: <SiNextdotjs /> },
+      { name: 'TypeScript', icon: <SiTypescript /> },
+      { name: 'Sass', icon: <SiSass /> },
+      { name: 'StoryBook', icon: <SiStorybook /> },
+    ],
+    subTitle: '조각거래 플랫폼 랜딩페이지 구현',
+    title: '리얼파이 랜딩페이지',
+    link: [
+      {
+        name: '저장소 링크',
+        url: 'https://github.com/Jone4865/law_landing_realfi',
+      },
+      {
+        name: '관련영상 링크',
+        url: 'https://drive.google.com/file/d/1-C0ixxMNVXRO6CDO9l-dtJPNETvxTWqG/view?usp=drive_link',
+      },
+    ],
+  },
+  {
+    key: 'Lawdians',
+    date: '2023.01 - 2023.01',
+    experience: [
+      'Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선',
+      'Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리',
+      'SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응',
+      'Storybook 기반 컴포넌트 문서화 → 재사용성과 협업 효율 향상',
+    ],
+    people: '기획 1, 디자인 1, 프론트엔드 1',
+    stack: [
+      { name: 'Next.js', icon: <SiNextdotjs /> },
+      { name: 'TypeScript', icon: <SiTypescript /> },
+      { name: 'Sass', icon: <SiSass /> },
+      { name: 'StoryBook', icon: <SiStorybook /> },
+      { name: 'axios', icon: <SiAxios /> },
+    ],
+    subTitle: '마케팅 운용 및 운영 대행 사이트 랜딩페이지 구현',
+    title: '감동기획 랜딩페이지',
+    link: [
+      {
+        name: '저장소 링크',
+        url: 'https://github.com/Jone4865/law_landing_gamdongplan',
+      },
+      {
+        name: '관련영상 링크',
+        url: 'https://drive.google.com/file/d/1PvmixTpkjmTdYCh2hcXi-TlG_pLokSN7/view?usp=drive_link',
+      },
+    ],
+  },
+  {
+    key: 'Lawdians',
+    date: '2023.01 - 2023.01',
+    experience: [
+      'Next.js 기반 SSR 구현 → SEO 최적화 및 초기 로딩 속도 개선',
+      'Nodemailer + Axios 기반 메일 발송 → 사용자 요청 자동 처리',
+      'Cheerio 기반 크롤링 → 외부 데이터 자동 수집 및 운영 효율화',
+      'SCSS Mixin 기반 반응형 스타일링 → 다양한 디바이스 대응',
+      'Storybook 기반 컴포넌트 문서화 → 재사용성과 협업 효율 향상',
+    ],
+    people: '기획 1, 디자인 1, 프론트엔드 1',
+    stack: [
+      { name: 'Next.js', icon: <SiNextdotjs /> },
+      { name: 'TypeScript', icon: <SiTypescript /> },
+      { name: 'Sass', icon: <SiSass /> },
+      { name: 'StoryBook', icon: <SiStorybook /> },
+      { name: 'axios', icon: <SiAxios /> },
+    ],
+    subTitle: '상품권 판매, IT 서비스 대행 사이트 랜딩페이지',
+    title: '방배사 랜딩페이지',
+    link: [
+      {
+        name: '저장소 링크',
+        url: 'https://github.com/Jone4865/law_landing_bangbaesa',
+      },
+      {
+        name: '관련영상 링크',
+        url: 'https://drive.google.com/file/d/1vhBm38_C92M3ov5CCcB_MgwmsGebARqp/view?usp=drive_link',
+      },
+    ],
+  },
 ];

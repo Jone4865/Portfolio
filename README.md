@@ -53,7 +53,7 @@ yarn format:check   # Prettier 검사만
 
 | 경로    | 설명                                                 |
 | ------- | ---------------------------------------------------- |
-| `/`     | 메인 — 히어로, 소개, 스킬 차트, 프로젝트 카드 (14개) |
+| `/`     | 메인 — 히어로, 소개, 프로젝트 카드, 그 전의 작업, AI |
 | `/test` | UI 컴포넌트 데모 (Button, Input, CardGallery 등)     |
 | `*`     | 404 (`src/page/404.tsx`)                             |
 
@@ -61,14 +61,15 @@ yarn format:check   # Prettier 검사만
 
 ### 메인(`/`) 섹션 구조
 
-`constants/layout.ts`의 `SECTION_BASE = 3`(히어로·소개·스킬) + `data/projects.tsx` 항목 수만큼 풀페이지 섹션이 이어집니다.
+`constants/layout.ts`의 `SECTION_BASE = 2`(히어로·소개) + `data/projects.tsx` 항목 수 + `TRAILING_SECTIONS = 2`(그 전의 작업·AI)만큼 풀페이지 섹션이 이어집니다.
 
-| 섹션 | 컴포넌트                         | 내용                               |
-| ---- | -------------------------------- | ---------------------------------- |
-| 0    | `HomeHeroCard` + `HeroWireframe` | 타이핑 히어로, wireframe 3D        |
-| 1    | `IntroSection`                   | 자기소개 (`data/introContent.tsx`) |
-| 2    | `SkillInsight`                   | 레이더 차트 (`data/skillRadar.ts`) |
-| 3…   | `ProjectCard` × 14               | 프로젝트별 경력·스택·링크          |
+| 섹션 | 컴포넌트                         | 내용                                         |
+| ---- | -------------------------------- | -------------------------------------------- |
+| 0    | `HomeHeroCard` + `HeroWireframe` | 타이핑 히어로, wireframe 3D                  |
+| 1    | `IntroSection`                   | 자기소개 (`data/introContent.tsx`)           |
+| 2…   | `ProjectCard` × N                | 프로젝트별 경력·스택·링크                    |
+| N+2  | `EarlierWorkSection`             | 그 전의 작업 타임라인 (`earlierProjects`)    |
+| N+3  | `AiWorkflowSection`              | AI와 함께 일하는 방식 (`data/aiWorkflow.ts`) |
 
 데스크톱: 휠·키보드(↑↓)로 섹션 스냅 이동, `PageIndicator`로 점프. 모바일: 사이드바 높이를 고려한 스크롤 오프셋(`useSectionNavigation`). 하단 `GlobalScrollHint`로 다음 섹션 안내.
 
@@ -97,15 +98,15 @@ Three.js + `@react-three/fiber` + `@react-three/drei`. 상수는 `constants/thre
 
 ## 데이터 수정
 
-| 파일                    | 내용                                |
-| ----------------------- | ----------------------------------- |
-| `data/profile.ts`       | 이름, 연락처, 학력, 장점            |
-| `data/projects.tsx`     | 프로젝트 14개 (주석 처리 블록 유지) |
-| `data/skillRadar.ts`    | 스킬 레이더 값·통계                 |
-| `data/themes.ts`        | 색·간격 테마 토큰                   |
-| `data/siderTech.tsx`    | 사이드바 기술·경력 그룹             |
-| `data/introContent.tsx` | 소개 섹션 카피                      |
-| `data/heroTyping.ts`    | 히어로 타이핑 steps                 |
+| 파일                    | 내용                                                      |
+| ----------------------- | --------------------------------------------------------- |
+| `data/profile.ts`       | 이름, 연락처, 학력, 장점                                  |
+| `data/projects.tsx`     | 프로젝트 카드(`projects`)·그 전의 작업(`earlierProjects`) |
+| `data/aiWorkflow.ts`    | AI와 함께 일하는 방식 섹션 카피                           |
+| `data/themes.ts`        | 색·간격 테마 토큰                                         |
+| `data/siderTech.tsx`    | 사이드바 기술·경력 그룹                                   |
+| `data/introContent.tsx` | 소개 섹션 카피                                            |
+| `data/heroTyping.ts`    | 히어로 타이핑 steps                                       |
 
 ## 스택
 

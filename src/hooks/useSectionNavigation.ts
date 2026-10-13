@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { getTotalSections } from 'constants/layout';
 import type { SectionNavigationOptions } from 'types/sectionNavigation';
 
 export function useSectionNavigation({
@@ -13,7 +14,7 @@ export function useSectionNavigation({
   const isProgrammaticScrollRef = useRef(false);
   const scrollNavCleanupRef = useRef<(() => void) | null>(null);
 
-  const maxSection = 2 + projectCount;
+  const maxSection = getTotalSections(projectCount) - 1;
 
   const handleScroll = useCallback(() => {
     if (
@@ -35,15 +36,15 @@ export function useSectionNavigation({
       } else {
         const adjustedScrollY = scrollY - introThreshold;
         const currentSection = Math.floor(adjustedScrollY / sectionHeight);
-        newActiveSection = Math.min(Math.max(currentSection, 0), 2 + projectCount);
+        newActiveSection = Math.min(Math.max(currentSection, 0), maxSection);
       }
     } else {
       const currentSection = Math.floor(scrollY / sectionHeight);
-      newActiveSection = Math.min(currentSection, 2 + projectCount);
+      newActiveSection = Math.min(currentSection, maxSection);
     }
 
     setActiveSection((prev) => (newActiveSection !== prev ? newActiveSection : prev));
-  }, [isMobile, sidebarHeight, projectCount]);
+  }, [isMobile, sidebarHeight, maxSection]);
 
   const sectionScrollTop = useCallback(
     (section: number) => {

@@ -1,14 +1,13 @@
 export { profile } from './profile';
-export { projects } from './projects';
+export { earlierProjects, projects } from './projects';
+export { aiWorkflow } from './aiWorkflow';
 export { portfolioStats } from './portfolioStats';
 export { experienceGroups, techGroups } from './siderTech';
 export type { TechGroup, TechItem } from './siderTech';
-export { buildRadarPath, polarToCartesian, skillRadar, skillStats } from './skillRadar';
-export type { SkillRadarItem } from './skillRadar';
 export { darkTheme, lightTheme } from './themes';
 export { cardExpandImages } from './cardExpand';
 export { cardGalleryImages } from './cardGallery';
 export type { GalleryImage } from './cardGallery';
 export { heroTypingLoop, heroTypingSteps } from './heroTyping';
-export { pageIndicatorSections } from './pageIndicator';
+export { pageIndicatorSections, pageIndicatorTrailingSections } from './pageIndicator';
 export { default as IntroContent } from './introContent';

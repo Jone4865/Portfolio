@@ -6,7 +6,6 @@ export type { Data, Project, ProjectLink, StackItem } from './project';
 export type { BodySceneProps, SceneContentProps } from './components/bodyScene';
 export type { HeroWireframeProps } from './components/heroWireframe';
 export type { HomeHeroCardProps } from './components/homeHero';
-export type { SkillInsightProps } from './components/skillInsight';
 export type { ProjectCardProps } from './components/projectCard';
 export type { IntroSectionProps } from './components/introSection';
 export type { PageIndicatorProps } from './components/pageIndicator';
