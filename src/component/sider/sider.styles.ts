@@ -6,7 +6,6 @@ export const Container = styled.div<{ $isBig: boolean }>`
   width: ${({ $isBig }) => ($isBig ? `${SIDER_RAIL}px` : 'auto')};
   background: ${({ theme }) => theme.siderGradient};
   border-right: ${({ $isBig, theme }) => ($isBig ? `1px solid ${theme.siderBorder}` : 'none')};
-  backdrop-filter: blur(16px);
   padding: 16px 12px 24px;
   z-index: 12;
 
@@ -73,11 +72,12 @@ export const PictureWrapper = styled.div`
   padding: 4px;
   border-radius: 100%;
   background: linear-gradient(
-    135deg,
-    ${({ theme }) => theme.accent},
-    ${({ theme }) => theme.accentMuted}
+    160deg,
+    #ff7a50,
+    ${({ theme }) => theme.accent} 45%,
+    transparent 100%
   );
-  box-shadow: 0 8px 28px ${({ theme }) => theme.accentMuted};
+  box-shadow: 0 14px 40px -12px ${({ theme }) => theme.accentMuted};
 
   img {
     display: block;
@@ -93,18 +93,19 @@ export const NameWrapper = styled.div`
   text-align: center;
 
   .name {
-    font-size: 1.35rem;
-    font-weight: 800;
+    font-size: 1.4rem;
+    font-weight: 700;
     letter-spacing: -0.04em;
     color: ${({ theme }) => theme.text};
   }
 
   .role {
-    margin-top: 4px;
-    font-size: 13px;
-    font-weight: 600;
+    margin-top: 6px;
+    font-family: ${({ theme }) => theme.fontMono};
+    font-size: 11.5px;
+    font-weight: 500;
     color: ${({ theme }) => theme.textMuted};
-    letter-spacing: 0.04em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 `;
@@ -236,9 +237,10 @@ export const TechGroup = styled.div`
 
 export const TechGroupLabel = styled.div`
   padding: 4px 10px 6px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-family: ${({ theme }) => theme.fontMono};
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: ${({ theme }) => theme.textMuted};
 `;

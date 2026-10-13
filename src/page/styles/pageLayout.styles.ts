@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { SIDER_RAIL } from 'constants/layout';
+
+const EASE = 'cubic-bezier(0.2, 0.7, 0.1, 1)';
 
 export const Wrap = styled.div<{ $totalSections: number }>`
   position: relative;
@@ -20,6 +22,8 @@ export const SectionContainer = styled.div<{
   $isActive: boolean;
   $isDesktop?: boolean;
   $isTablet?: boolean;
+  /** 히어로처럼 가장자리까지 꽉 채우는 섹션 */
+  $bleed?: boolean;
 }>`
   position: fixed;
   top: 0;
@@ -29,7 +33,7 @@ export const SectionContainer = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(16px, 4vw, 32px);
+  padding: ${({ $bleed }) => ($bleed ? '0' : 'clamp(16px, 4vw, 32px)')};
   box-sizing: border-box;
   z-index: ${({ $isActive }) => ($isActive ? 10 : 1)};
   pointer-events: ${({ $isActive }) => ($isActive ? 'auto' : 'none')};
@@ -44,12 +48,13 @@ export const SectionContainer = styled.div<{
     position: absolute;
     inset: 0;
     z-index: 0;
-    opacity: ${({ $isActive }) => ($isActive ? 1 : 0)};
+    opacity: ${({ $isActive, $bleed }) => ($isActive && !$bleed ? 1 : 0)};
     transition: opacity 0.28s ease;
     background: radial-gradient(
-      ellipse 85% 65% at 50% 38%,
-      ${({ theme }) => theme.accentMuted},
-      transparent 68%
+      ellipse 70% 55% at 50% 40%,
+      ${({ theme }) =>
+        theme.colorScheme === 'dark' ? 'rgba(255, 90, 44, 0.07)' : 'rgba(226, 67, 26, 0.06)'},
+      transparent 70%
     );
     pointer-events: none;
   }
@@ -60,45 +65,39 @@ export const SectionContainer = styled.div<{
   }
 `;
 
-export const TypingWrapper = styled.div<{
-  $isDesktop: boolean;
-  $isTablet: boolean;
-}>`
-  position: ${({ $isDesktop, $isTablet }) => ($isDesktop || $isTablet ? 'relative' : 'absolute')};
-  top: ${({ $isDesktop, $isTablet }) => ($isDesktop || $isTablet ? '0' : '50%')};
-  transform: ${({ $isDesktop, $isTablet }) =>
-    $isDesktop || $isTablet ? 'none' : 'translateY(-50%)'};
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: min(920px, 94vw);
-  margin: 0 auto;
-  height: ${({ $isDesktop, $isTablet }) =>
-    $isDesktop ? 'min(52vh, 520px)' : $isTablet ? '420px' : '280px'};
-  padding: ${({ $isDesktop, $isTablet }) => ($isDesktop || $isTablet ? '0' : '0 20px')};
+/** 섹션 머리의 모노 인덱스 — 예: 03 / 10 · PROJECT */
+export const SecIdx = styled.span`
+  display: block;
+  font-family: ${({ theme }) => theme.fontMono};
+  font-size: 12px;
+  color: ${({ theme }) => theme.textMuted};
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 `;
 
 export const Invitation = styled.div<{ $isDesktop: boolean; $isTablet: boolean }>`
-  width: min(640px, 92%);
+  width: min(680px, 94%);
   margin: 0 auto;
-  padding: clamp(24px, 4vw, 40px);
-  border-radius: 20px;
-  background: ${({ theme }) => theme.cardColor};
-  color: ${({ theme }) => theme.cardText};
+  padding: clamp(24px, 4vw, 44px);
+  border-radius: 24px;
+  background:
+    radial-gradient(80% 120% at 100% 0%, ${({ theme }) => theme.accentMuted}, transparent 60%),
+    ${({ theme }) => theme.panel};
+  color: ${({ theme }) => theme.cardTextMuted};
   border: 1px solid ${({ theme }) => theme.cardBorder};
   box-shadow: ${({ theme }) => theme.shadowCard};
-  backdrop-filter: blur(12px);
-  font-weight: 500;
-  font-size: ${({ $isDesktop, $isTablet }) => ($isDesktop ? '15px' : $isTablet ? '14px' : '13px')};
-  line-height: 1.75;
+  font-weight: 400;
+  font-size: ${({ $isDesktop, $isTablet }) => ($isDesktop ? '16px' : $isTablet ? '15px' : '14px')};
+  line-height: 1.85;
   letter-spacing: -0.01em;
 
-  span {
+  ${SecIdx} {
+    margin-bottom: 18px;
+  }
+
+  > div span {
     color: ${({ theme }) => theme.accent};
-    font-weight: 700;
+    font-weight: 600;
   }
 `;
 
@@ -107,7 +106,7 @@ export const PrograssStyle = styled(motion.div)<{ $isDesktop: boolean }>`
   bottom: 0;
   left: 0;
   right: 0;
-  height: 3px;
+  height: 2px;
   background: ${({ theme }) => theme.progressGradient};
   transform-origin: 0%;
   z-index: 3;
@@ -115,34 +114,101 @@ export const PrograssStyle = styled(motion.div)<{ $isDesktop: boolean }>`
   box-shadow: 0 -4px 20px ${({ theme }) => theme.accentMuted};
 `;
 
+const flash = keyframes`
+  0% { box-shadow: 0 0 0 0 rgba(255, 90, 44, 0); }
+  15% { box-shadow: 0 0 0 4px rgba(255, 90, 44, 0.5); }
+  100% { box-shadow: 0 0 0 14px rgba(255, 90, 44, 0); }
+`;
+
+/**
+ * 카드 기울기 + 스포트라이트 셸 — 마우스(정밀 포인터) 환경에서만 반응합니다.
+ * transform은 framer-motion이 관리하는 카드 대신 이 셸에 걸어 충돌을 피합니다.
+ */
+export const TiltShell = styled.div`
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 0%;
+  --spot: 0;
+  width: min(720px, 94%);
+  margin: 0 auto;
+  border-radius: 20px;
+  transform: perspective(1200px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.5s ${EASE};
+  will-change: transform;
+
+  &[data-tilting='true'] {
+    transition: transform 0.12s linear;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: var(--spot);
+    transition: opacity 0.3s ease;
+    background: radial-gradient(
+      420px circle at var(--mx) var(--my),
+      ${({ theme }) =>
+        theme.colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(255, 255, 255, 0.5)'},
+      transparent 60%
+    );
+    box-shadow: inset 0 0 0 1px
+      ${({ theme }) =>
+        theme.colorScheme === 'dark' ? 'rgba(255, 140, 100, 0.18)' : 'rgba(201, 58, 18, 0.18)'};
+  }
+
+  &.flash > * {
+    animation: ${flash} 1.6s ${EASE};
+  }
+
+  > * {
+    width: 100% !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
+    &::after {
+      display: none;
+    }
+  }
+`;
+
 export const CardWrapper = styled(motion.div)<{
   $isDesktop: boolean;
   $isTablet: boolean;
   $isMobile: boolean;
 }>`
+  position: relative;
   width: min(720px, 94%);
   max-height: calc(100vh - 120px);
   overflow-y: auto;
   margin: 0 auto;
-  padding: clamp(22px, 3vw, 32px);
-  border-radius: 22px;
+  padding: clamp(22px, 3vw, 34px);
+  border-radius: 20px;
   font-size: 14px;
-  line-height: 1.55;
+  line-height: 1.6;
   letter-spacing: -0.01em;
 
-  background: ${({ theme }) => theme.cardColor};
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0) 40%),
+    ${({ theme }) => theme.panel};
   color: ${({ theme }) => theme.cardText};
   border: 1px solid ${({ theme }) => theme.cardBorder};
   box-shadow: ${({ theme }) => theme.shadowCard};
-  backdrop-filter: blur(14px);
 
   display: flex;
   flex-direction: column;
   gap: 18px;
 
-  transition: box-shadow 0.3s ease;
+  transition:
+    box-shadow 0.5s ${EASE},
+    border-color 0.3s ease;
 
   &:hover {
+    border-color: ${({ theme }) => theme.lineStrong};
     box-shadow: ${({ theme }) => theme.shadowElevated};
   }
 
@@ -150,7 +216,8 @@ export const CardWrapper = styled(motion.div)<{
     $isMobile &&
     css`
       font-size: 13px;
-      padding: 18px;
+      padding: 18px 16px;
+      max-height: calc(100vh - 110px);
     `}
 `;
 
@@ -158,58 +225,75 @@ export const CardHeader = styled.header`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding-bottom: 4px;
-  border-bottom: 1px solid ${({ theme }) => theme.cardBorder};
+  padding-bottom: 18px;
+  border-bottom: 1px dashed ${({ theme }) => theme.lineStrong};
+`;
+
+export const HeaderTop = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 `;
 
 export const OrgPill = styled.span`
   align-self: flex-start;
-  padding: 4px 12px;
-  border-radius: 999px;
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-family: ${({ theme }) => theme.fontMono};
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: ${({ theme }) => theme.accent};
-  background: ${({ theme }) => theme.chipBg};
-  border: 1px solid ${({ theme }) => theme.chipBorder};
+  background: ${({ theme }) => theme.accentMuted};
+  border: 1px solid transparent;
 `;
 
 export const CardTitle = styled.h2`
   margin: 0;
-  font-size: clamp(1.15rem, 2.2vw, 1.5rem);
-  font-weight: 700;
+  font-size: clamp(1.3rem, 2.4vw, 1.75rem);
+  font-weight: 600;
   letter-spacing: -0.03em;
   color: ${({ theme }) => theme.cardText};
-  line-height: 1.25;
+  line-height: 1.2;
 `;
 
 export const CardMeta = styled.time`
+  font-family: ${({ theme }) => theme.fontMono};
   font-size: 13px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.cardTextMuted};
+  color: ${({ theme }) => theme.textMuted};
   white-space: nowrap;
 `;
 
 export const LineOne = styled.div<{ $isDesktop: boolean }>`
   display: flex;
   flex-direction: ${({ $isDesktop }) => ($isDesktop ? 'row' : 'column')};
-  align-items: ${({ $isDesktop }) => ($isDesktop ? 'flex-end' : 'flex-start')};
+  align-items: ${({ $isDesktop }) => ($isDesktop ? 'baseline' : 'flex-start')};
   justify-content: space-between;
-  gap: ${({ $isDesktop }) => ($isDesktop ? '16px' : '8px')};
+  gap: ${({ $isDesktop }) => ($isDesktop ? '16px' : '6px')};
 `;
 
 export const MetaBlock = styled.div`
   display: grid;
-  gap: 6px;
+  grid-template-columns: 72px 1fr;
+  gap: 4px 12px;
+  align-items: baseline;
+
+  @media (max-width: 559px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const MetaLabel = styled.span`
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  margin: 0;
+  font-family: ${({ theme }) => theme.fontMono};
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: ${({ theme }) => theme.accent};
+  color: ${({ theme }) => theme.textMuted};
+  padding-top: 2px;
 `;
 
 export const MetaValue = styled.p`
@@ -221,14 +305,27 @@ export const MetaValue = styled.p`
 
 export const ExperienceList = styled.ul`
   margin: 0;
-  padding-left: 1.15rem;
+  padding: 0;
+  list-style: none;
   color: ${({ theme }) => theme.cardTextMuted};
   font-size: 14px;
 
   li {
+    position: relative;
     margin-bottom: 8px;
-    padding-left: 4px;
+    padding-left: 16px;
     word-break: keep-all;
+  }
+
+  li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 0.68em;
+    width: 7px;
+    height: 2px;
+    border-radius: 1px;
+    background: ${({ theme }) => theme.accent};
   }
 
   li:last-child {
@@ -239,18 +336,19 @@ export const ExperienceList = styled.ul`
 export const StackRow = styled(motion.div)`
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 6px;
 `;
 
 export const StackChip = styled(motion.span)`
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.cardText};
+  gap: 7px;
+  padding: 5px 10px;
+  border-radius: 7px;
+  font-family: ${({ theme }) => theme.fontMono};
+  font-size: 11.5px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.cardTextMuted};
   background: ${({ theme }) => theme.chipBg};
   border: 1px solid ${({ theme }) => theme.chipBorder};
   cursor: default;
@@ -258,12 +356,12 @@ export const StackChip = styled(motion.span)`
 
   .ico {
     display: flex;
-    font-size: 16px;
-    opacity: 0.95;
+    font-size: 13px;
+    color: ${({ theme }) => theme.accent};
   }
 
   .lbl {
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
   }
 `;
 
@@ -277,30 +375,31 @@ export const LinkBlock = styled.div`
 export const ExternalLink = styled(motion.a)`
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 600;
+  gap: 10px;
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 11px;
+  font-size: 14px;
+  font-weight: 500;
   text-decoration: none;
-  color: ${({ theme }) => theme.accentContrast};
-  background: ${({ theme }) => theme.accent};
+  color: ${({ theme }) => theme.background};
+  background: ${({ theme }) => theme.text};
   border: 1px solid transparent;
-  box-shadow: 0 4px 16px ${({ theme }) => theme.accentMuted};
 
   .arrow {
-    font-size: 14px;
-    opacity: 0.9;
+    font-family: ${({ theme }) => theme.fontMono};
+    font-size: 13px;
+    color: ${({ theme }) => theme.accent};
   }
 
   &:hover {
-    filter: brightness(1.05);
+    filter: brightness(1.06);
   }
 `;
 
-export const PageIndicator = styled.div<{ $isDesktop?: boolean; $isTablet?: boolean }>`
+export const PageIndicator = styled.nav<{ $isDesktop?: boolean; $isTablet?: boolean }>`
   position: fixed;
-  right: 12px;
+  right: 16px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
@@ -312,6 +411,7 @@ export const PageIndicator = styled.div<{ $isDesktop?: boolean; $isTablet?: bool
   background: ${({ theme }) => theme.indicatorRail};
   border: 1px solid ${({ theme }) => theme.siderBorder};
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 `;
 
 export const DotGroup = styled.div`
@@ -323,10 +423,11 @@ export const DotGroup = styled.div`
 
 export const DotLabel = styled.div`
   color: ${({ theme }) => theme.textMuted};
-  font-size: 10px;
-  font-weight: 700;
+  font-family: ${({ theme }) => theme.fontMono};
+  font-size: 9.5px;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
 `;
 
 export const PageDot = styled.button<{ $isActive: boolean }>`
@@ -335,23 +436,21 @@ export const PageDot = styled.button<{ $isActive: boolean }>`
   font: inherit;
   color: inherit;
   margin: 0;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: ${({ $isActive }) => ($isActive ? '18px' : '8px')};
   border: none;
   padding: 0;
-  border-radius: 50%;
+  border-radius: 999px;
   background-color: ${({ $isActive, theme }) => ($isActive ? theme.accent : theme.indicatorDot)};
   box-shadow: ${({ $isActive, theme }) => ($isActive ? `0 0 0 3px ${theme.accentMuted}` : 'none')};
   cursor: pointer;
   transition:
-    transform 0.25s ease,
+    height 0.3s ${EASE},
     background 0.25s ease,
     box-shadow 0.25s ease;
-  transform: scale(${({ $isActive }) => ($isActive ? 1.15 : 1)});
 
   &:hover {
     background-color: ${({ theme }) => theme.accent};
-    transform: scale(1.25);
   }
 `;
 
@@ -364,23 +463,25 @@ export const GlobalScrollHint = styled(motion.button)<{ $isMobile: boolean }>`
   position: fixed;
   left: ${({ $isMobile }) => ($isMobile ? '50%' : `calc(50% + ${SIDER_RAIL / 2}px)`)};
   translate: -50% 0;
-  bottom: 28px;
+  bottom: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   padding: 0;
   border-radius: 9999px;
-  background: ${({ theme }) => theme.cardColor};
-  color: ${({ theme }) => theme.accent};
-  border: 1px solid ${({ theme }) => theme.cardBorder};
-  box-shadow: ${({ theme }) => theme.shadowCard};
+  background: ${({ theme }) => theme.heroGlassBg};
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: ${({ theme }) => theme.text};
+  border: 1px solid ${({ theme }) => theme.lineStrong};
   cursor: pointer;
   z-index: 1001;
-  transition: box-shadow 0.2s ease;
+  transition: border-color 0.2s ease;
 
   &:hover {
-    box-shadow: ${({ theme }) => theme.shadowElevated};
+    border-color: ${({ theme }) => theme.accent};
+    color: ${({ theme }) => theme.accent};
   }
 `;

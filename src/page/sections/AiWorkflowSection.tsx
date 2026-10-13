@@ -2,12 +2,7 @@ import { aiWorkflow } from 'data/aiWorkflow';
 import type { ResponsiveFlags, SectionLayoutProps } from 'types/section';
 
 import { cardRevealVariants } from '../animations/projectCardVariants';
-import {
-  Closing,
-  Lead,
-  PrincipleList,
-  UsageList,
-} from '../styles/extraSections.styles';
+import { Closing, Lead, PrincipleList, UsageList } from '../styles/extraSections.styles';
 import {
   CardHeader,
   CardTitle,
@@ -61,7 +56,6 @@ export default function AiWorkflowSection({
             ))}
           </UsageList>
         </MetaBlock>
-
 
         <MetaBlock>
           <MetaLabel as="h3">팀 생산성</MetaLabel>

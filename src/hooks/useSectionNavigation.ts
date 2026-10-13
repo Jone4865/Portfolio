@@ -144,6 +144,9 @@ export function useSectionNavigation({
       if (key !== 'ArrowDown' && key !== 'ArrowUp' && key !== 'ArrowRight' && key !== 'ArrowLeft') {
         return;
       }
+      // 수정키 조합(⌘/Ctrl/Alt + 화살표)은 브라우저·OS 단축키로 남겨 둡니다.
+      // 화살표 자체는 섹션 이동 + 3D 키보드의 화살표 키캡 애니메이션을 함께 일으킵니다(키보드 씬은 preventDefault 하지 않음).
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
 
       const target = e.target as HTMLElement | null;
       const tag = target?.tagName;

@@ -35,4 +35,14 @@ export type AppTheme = {
   inputBorderHover: string;
   inputDisabledBg: string;
   fontSans: string;
+  /** 3D 키보드 디자인 — 모노 폰트(라벨·인덱스·키캡) */
+  fontMono: string;
+  /** 카드·팔레트 패널 바탕 */
+  panel: string;
+  /** 보조 본문 색 */
+  textSoft: string;
+  /** 가장 약한 텍스트(구분점·플레이스홀더) */
+  textFaint: string;
+  /** 강한 구분선 */
+  lineStrong: string;
 };
